@@ -19,11 +19,7 @@ public class PresentationLogic {
     }
 
     public List<Presentation> findAllForUser(UserInfo userInfo) {
-        if (userInfo.isAdmin()) {
-            return presentationRepository.findAll();
-        } else {
-            return presentationRepository.findByCreatorIdentifier(userInfo.getUserEmail());
-        }
+      return presentationRepository.findByCreatorIdentifier(userInfo.getUserEmail());
     }
 
     public Optional<Presentation> findById(Long id) {

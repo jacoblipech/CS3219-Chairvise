@@ -11,7 +11,7 @@
   </el-form-item>
   <el-form-item label="Description">
     <div v-if="!isInEditMode">{{ presentationForm.description }}</div>
-    <el-input v-model="presentationForm.description" v-if="isInEditMode"/>
+    <el-input v-model="presentationFormDescription" v-if="isInEditMode"/>
   </el-form-item>
   <el-form-item>
     <el-button type="primary" @click="changeEditMode(true)" v-if="!isInEditMode">Edit</el-button>
@@ -111,14 +111,13 @@ export default {
           // add
           this.$store.dispatch('savePresentation')
               .then(() => {
-                this.$store.commit('resetPresentationForm');
                 // redirect to the newly added presentation
                 this.$router.push({
                   name: 'analyze',
                   params: {
                     id: this.$store.state.presentation.presentationForm.id
                   }
-                })
+                });
               });
         } else {
           // edit
