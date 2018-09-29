@@ -74,7 +74,7 @@ public class GateKeeper {
         UserInfo currentUser = getCurrentLoginUser()
                 .orElseThrow(UnauthorisedException::new);
 
-        if (currentUser.getUserEmail().equals(presentation.getCreatorIdentifier())) {
+        if (!currentUser.getUserEmail().equals(presentation.getCreatorIdentifier())) {
             throw new UnauthorisedException();
         }
     }
@@ -82,6 +82,11 @@ public class GateKeeper {
     public void verifyAccessForPresentation(Presentation presentation, AccessLevel accessLevel) {
         if (presentation == null) {
             throw new UnauthorisedException();
+        }
+
+        // check public access
+        if (presentationAccessControlRepository.existsByPresentationAndUserIdentifierEqualsAndAccessLevelEquals(presentation, Const.SpecialIdentifier.PUBLIC, accessLevel)) {
+            return;
         }
 
         UserInfo currentUser = getCurrentLoginUser()
@@ -92,10 +97,7 @@ public class GateKeeper {
             return;
         }
 
-        boolean canAccess = presentationAccessControlRepository.existsByPresentationAndUserIdentifierEqualsAndAccessLevelEquals(presentation, Const.SpecialIdentifier.PUBLIC, accessLevel)
-                || presentationAccessControlRepository.existsByPresentationAndUserIdentifierEqualsAndAccessLevelEquals(presentation, currentUser.getUserEmail(), accessLevel);
-
-        if (!canAccess) {
+        if (!presentationAccessControlRepository.existsByPresentationAndUserIdentifierEqualsAndAccessLevelEquals(presentation, currentUser.getUserEmail(), accessLevel)) {
             throw new UnauthorisedException();
         }
     }
