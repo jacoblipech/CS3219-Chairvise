@@ -16,6 +16,9 @@ before_install:
 before_script:
 # set up production properties using secret file
 - cd deploy && ./setup && cd ../
+- gradleSetting=`cat build.gradle`
+- versionSetted=${gradleSetting//versionPlaceholder/$tag}
+- printf "$versionSetted" > build.gradle
 - export PATH=$HOME/google-cloud-sdk/bin:$PATH
 - curl -fsS -o $HOME/google-cloud-sdk.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/google-cloud-sdk.tar.gz
 - cd $HOME
@@ -23,12 +26,7 @@ before_script:
 - ./google-cloud-sdk/install.sh --usage-reporting false --path-update false --command-completion false
 - cd $TRAVIS_BUILD_DIR
 - gcloud -q components install app-engine-java
+- gcloud auth activate-service-account --key-file=deploy/viz-group1-1931c0ea4ed8.json
 
-deploy:
-  provider: gae
-  keyfile: deploy/viz-group1-1931c0ea4ed8.json
-  project: viz-group1
-  config: src/main/webapp/WEB-INF/appengine-web.xml
-  version: $tag
-  on:
-    all_branches: true
+script:
+- ./gradlew appengineDeploy
