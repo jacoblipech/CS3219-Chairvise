@@ -19,6 +19,13 @@ before_script:
 - gradleSetting=`cat build.gradle`
 - versionSetted=${gradleSetting//versionPlaceholder/$tag}
 - printf "$versionSetted" > build.gradle
+- export PATH=$HOME/google-cloud-sdk/bin:$PATH
+- curl -fsS -o $HOME/google-cloud-sdk.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/google-cloud-sdk.tar.gz
+- cd $HOME
+- tar -xzf google-cloud-sdk.tar.gz
+- ./google-cloud-sdk/install.sh --usage-reporting false --path-update false --command-completion false
+- cd $TRAVIS_BUILD_DIR
+- gcloud -q components install app-engine-java
 
 script:
 - ./gradlew appengineDeploy
