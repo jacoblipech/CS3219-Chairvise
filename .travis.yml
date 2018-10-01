@@ -27,9 +27,6 @@ before_script:
 - cd $TRAVIS_BUILD_DIR
 - gcloud -q components install app-engine-java
 
-script:
-- ./gradlew appengineDeploy
-
 deploy:
   provider: gae
   keyfile: deploy/viz-group1-1931c0ea4ed8.json
