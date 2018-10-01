@@ -5,6 +5,7 @@ jdk:
 before_install:
 # apt get jq to fill in blank
 - sudo apt-get install -y jq
+- sudo apt-get install -y npm
 
 # decrypt secret files
 - openssl aes-256-cbc -K $encrypted_7f9b08ce8bbc_key -iv $encrypted_7f9b08ce8bbc_iv -in deploy/secrets.tar.enc -out deploy/secrets.tar -d
@@ -19,6 +20,10 @@ before_script:
 - gradleSetting=`cat build.gradle`
 - versionSetted=${gradleSetting//versionPlaceholder/$tag}
 - printf "$versionSetted" > build.gradle
+- cd src/web/app
+- npm install
+- npm run build
+- cd ../../../
 - export PATH=$HOME/google-cloud-sdk/bin:$PATH
 - curl -fsS -o $HOME/google-cloud-sdk.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/google-cloud-sdk.tar.gz
 - cd $HOME
