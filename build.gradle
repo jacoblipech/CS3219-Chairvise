@@ -53,6 +53,7 @@ dependencies {
 
     // test dependencies
     testCompile('org.springframework.boot:spring-boot-starter-test')
+    testRuntime('com.h2database:h2')
 }
 
 appengine {
