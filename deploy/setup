@@ -1,0 +1,26 @@
+#!/bin/bash
+
+set -e
+
+set +x
+
+set -o pipefail
+
+# gets the secret file as a string
+secretStr=`cat secrets.json`
+
+# stores the secrets
+dbServer="$(jq '.dbServer' <<<"$secretStr" | tr -d '"')"
+dbUsername="$(jq '.dbUsername' <<<"$secretStr" | tr -d '"')"
+dbPassword="$(jq '.dbPassword' <<<"$secretStr" | tr -d '"')"
+
+# gets the whole url
+url="jdbc:mysql://google/viz?cloudSqlInstance=$dbServer&socketFactory=com.google.cloud.sql.mysql.SocketFactory&user=$dbUsername&password=$dbPassword&useSSL=false"
+
+# render properties file
+properties="spring.jpa.hibernate.ddl-auto=update
+spring.datasource.url=$url
+spring.jpa.database-platform=org.hibernate.dialect.MySQL5InnoDBDialect"
+
+# save the properties file
+printf "$properties" > ../src/main/resources/application-prod.properties

@@ -1,6 +1,33 @@
 language: java
 jdk:
-  - oraclejdk8
+- oraclejdk8
+
+before_install:
+# apt get jq to fill in blank
+- apt-get update && apt-get install -y jq
+
+# decrypt secret files
+- openssl aes-256-cbc -K $encrypted_7f9b08ce8bbc_key -iv $encrypted_7f9b08ce8bbc_iv \
+  -in deploy/secrets.json.enc -out deploy/secrets.json -d
+- openssl aes-256-cbc -K $encrypted_7f9b08ce8bbc_key -iv $encrypted_7f9b08ce8bbc_iv \
+  -in deploy/viz-group1-1931c0ea4ed8.json.enc -out deploy/viz-group1-1931c0ea4ed8.json -d
+
+# detects version number
+- tag=${TRAVIS_COMMIT:0:7}
 
 before_script:
-  - tag=${TRAVIS_COMMIT:0:7}
+# set up production properties using secret file
+- cd deploy && ./setup && cd ../
+- gradleSetting=`cat build.gradle` \
+  && versionSetted=${gradleSetting//versionPlaceholder/$tag} \
+  && printf "$versionSetted" > build.gradle
+
+script:
+- ./gradlew appengineDeploy
+
+deploy:
+  provider: gae
+  keyfile: deploy/viz-group1-1931c0ea4ed8.json
+  project: viz-group1
+  on:
+    all_branches: true

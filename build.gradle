@@ -65,7 +65,7 @@ appengine {
         String appengineWebXmlPath = "${projectDir}/src/main/webapp/WEB-INF/appengine-web.xml"
         Node appengineWebXml = new File(appengineWebXmlPath).exists() ? new XmlParser().parse(appengineWebXmlPath) : null
         project = appengineWebXml == null ? null : appengineWebXml.application.text()
-        version = appengineWebXml == null ? null : appengineWebXml.version.text()
+        version = "versionPlaceholder"
         stopPreviousVersion = false
         promote = false
     }
