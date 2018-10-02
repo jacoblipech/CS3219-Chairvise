@@ -47,11 +47,9 @@ script:
 # execute tests
 - ./gradlew check
 
-before_deploy:
-  - echo $TRAVIS_DEPLOY_VERSION
-
 deploy:
   provider: script
   script: ./gradlew appengineDeploy
   on:
     all_branches: true
+    condition: $TRAVIS_BRANCH =~ ^staging|master$
