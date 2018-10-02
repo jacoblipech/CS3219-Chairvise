@@ -48,13 +48,8 @@ script:
 - ./gradlew check
 
 deploy:
-  - provider: script
-    script: ./gradlew appengineDeploy
-    default: true
-    on:
-      branch: feature/ci-setup
-  - provider: script
-    script: ./gradlew appengineDeploy
-    default: false
-    on:
-      branch: staging
+  provider: script
+  script: ./gradlew appengineDeploy
+  on:
+    all_branches: true
+    condition: $TRAVIS_BRANCH =~ ^staging|master$
