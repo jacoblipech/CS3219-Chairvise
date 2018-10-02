@@ -51,8 +51,10 @@ deploy:
   - provider: script
     script: ./gradlew appengineDeploy
     default: true
-    on: feature/ci-setup
+    on:
+      branch: feature/ci-setup
   - provider: script
     script: ./gradlew appengineDeploy
     default: false
-    on: staging
+    on:
+      branch: staging
