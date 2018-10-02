@@ -18,9 +18,8 @@ dbPassword="$(jq '.dbPassword' <<<"$secretStr" | tr -d '"')"
 url="jdbc:mysql://google/viz?cloudSqlInstance=$dbServer&socketFactory=com.google.cloud.sql.mysql.SocketFactory&user=$dbUsername&password=$dbPassword&useSSL=false"
 
 # render properties file
-properties="spring.jpa.hibernate.ddl-auto=update
-spring.datasource.url=$url
-spring.jpa.database-platform=org.hibernate.dialect.MySQL5InnoDBDialect"
+template=`cat application-prod.properties.template`
+settedTemplate=${template//<datasourceURL>/$url}
 
 # save the properties file
-printf "$properties" > ../src/main/resources/application-prod.properties
+printf "$settedTemplate" > ../src/main/resources/application-prod.properties

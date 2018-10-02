@@ -1,3 +1,3 @@
 spring.jpa.hibernate.ddl-auto=update
-spring.datasource.url=jdbc:mysql://google/viz?cloudSqlInstance=<dbServer>&socketFactory=com.google.cloud.sql.mysql.SocketFactory&user=<dbUsername>&password=<dbPassword>&useSSL=false
+spring.datasource.url=<datasourceURL>
 spring.jpa.database-platform=org.hibernate.dialect.MySQL5InnoDBDialect

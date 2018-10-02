@@ -3,35 +3,55 @@ jdk:
 - oraclejdk8
 
 before_install:
-# apt get jq to fill in blank
+# use apt get to install dependencies
 - sudo apt-get install -y jq
 - sudo apt-get install -y npm
 
-# decrypt secret files
+# decrypt secret file (compressed using tar)
+# there are 2 files included: one is service account key (JSON format),
+# which is used for authentication on Google Cloud so that we can deploy.
+# the other file is secret information of the project (JSON format) e.g.
+# database user name and password on server side.
 - openssl aes-256-cbc -K $encrypted_7f9b08ce8bbc_key -iv $encrypted_7f9b08ce8bbc_iv -in deploy/secrets.tar.enc -out deploy/secrets.tar -d
 - cd deploy && tar xvf secrets.tar && cd ../
 
 # detects version number
 - tag=${TRAVIS_COMMIT:0:7}
 
+# defines environment variable(s)
+env:
+  - DEPLOY_VERSION="$tag"
+
 before_script:
+- frontendBuildPath=src/web/app
+
 # set up production properties using secret file
 - cd deploy && ./setup && cd ../
-- gradleSetting=`cat build.gradle`
-- versionSetted=${gradleSetting//versionPlaceholder/$tag}
-- printf "$versionSetted" > build.gradle
-- cd src/web/app
-- npm install
-- npm run build
-- cd ../../../
+
+# install google cloud sdk
 - export PATH=$HOME/google-cloud-sdk/bin:$PATH
 - curl -fsS -o $HOME/google-cloud-sdk.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/google-cloud-sdk.tar.gz
 - cd $HOME
 - tar -xzf google-cloud-sdk.tar.gz
 - ./google-cloud-sdk/install.sh --usage-reporting false --path-update false --command-completion false
+
+# authorize google cloud sdk
 - cd $TRAVIS_BUILD_DIR
 - gcloud -q components install app-engine-java
 - gcloud auth activate-service-account --key-file=deploy/viz-group1-1931c0ea4ed8.json
 
 script:
-- ./gradlew appengineDeploy
+# build front end
+- cd $frontendBuildPath
+- npm install
+- npm run build
+- cd $TRAVIS_BUILD_DIR
+
+# execute tests
+- ./gradlew check
+
+deploy:
+  provider: script
+  script: ./gradlew appengineDeploy
+  on:
+    all_branches: true
