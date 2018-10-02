@@ -18,10 +18,6 @@ before_install:
 # detects version number
 - tag=${TRAVIS_COMMIT:0:7}
 
-# defines environment variable(s)
-env:
-  - DEPLOY_VERSION="$tag"
-
 before_script:
 - frontendBuildPath=src/web/app
 
@@ -53,5 +49,6 @@ script:
 deploy:
   provider: script
   script: ./gradlew appengineDeploy
+  version: $tag
   on:
     all_branches: true
