@@ -1,5 +1,7 @@
 package sg.edu.nus.comp.cs3219.viz.testhelper;
 
+import sg.edu.nus.comp.cs3219.viz.common.util.Const;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
@@ -98,7 +100,8 @@ public class GaeSimulation {
     private Map<String, Object> getEnvironmentAttributesWithApplicationHostname() {
         Map<String, Object> attributes = new HashMap<>();
         try {
-            attributes.put("com.google.appengine.runtime.default_version_hostname",
+            // can be any value as it is integration test
+            attributes.put(Const.GaeEnvProperties.DEFAULT_VERSION_HOSTNAME,
                     new URL("http://localhost/").getAuthority());
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
