@@ -12,7 +12,7 @@ env:
     - TRAVIS_DEPLOY_VERSION=${TRAVIS_COMMIT:0:7}
 
 before_script:
-- frontendBuildPath=src/web/app
+- frontendBuildPath=$TRAVIS_BUILD_DIR/src/web/app
 
 # install google cloud sdk and setup corresponding environment
 - export PATH=$HOME/google-cloud-sdk/bin:$PATH
