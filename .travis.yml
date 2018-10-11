@@ -14,9 +14,6 @@ env:
 before_script:
 - frontendBuildPath=src/web/app
 
-# set up production properties using secret file
-- cd deploy && ./setup && cd ../
-
 # install google cloud sdk and setup corresponding environment
 - export PATH=$HOME/google-cloud-sdk/bin:$PATH
 - curl -fsS -o $HOME/google-cloud-sdk.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/google-cloud-sdk.tar.gz
@@ -45,7 +42,9 @@ deploy:
     # the other file is secret information of the project (JSON format) e.g.
     # database user name and password on server side.
     - openssl aes-256-cbc -K $encrypted_7f9b08ce8bbc_key -iv $encrypted_7f9b08ce8bbc_iv -in deploy/secrets.tar.enc -out deploy/secrets.tar -d
-    - cd deploy && tar xvf secrets.tar && cd ../
+
+    # set up production properties using secret file
+    - cd deploy && tar xvf secrets.tar && ./setup && cd ../
 
     # authorize google cloud sdk
     - gcloud auth activate-service-account --key-file=deploy/viz-group1-1931c0ea4ed8.json
