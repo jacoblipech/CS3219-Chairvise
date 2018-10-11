@@ -65,12 +65,15 @@ appengine {
         jvmFlags = ["-Xss2m", "-Dfile.encoding=UTF-8"]
     }
     deploy {
+        String travisDeployVersion = System.getenv("TRAVIS_DEPLOY_VERSION")
+        String currentBranch = System.getenv("TRAVIS_BRANCH")
         String appengineWebXmlPath = "${projectDir}/src/main/webapp/WEB-INF/appengine-web.xml"
         Node appengineWebXml = new File(appengineWebXmlPath).exists() ? new XmlParser().parse(appengineWebXmlPath) : null
         project = appengineWebXml == null ? null : appengineWebXml.application.text()
-        version = appengineWebXml == null ? null : appengineWebXml.version.text()
+        version = travisDeployVersion != null ? travisDeployVersion : (appengineWebXml == null ? null : appengineWebXml.version.text())
+
         stopPreviousVersion = false
-        promote = false
+        promote = currentBranch != null ? currentBranch == "master" : false
     }
 }
 
