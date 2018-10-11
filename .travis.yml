@@ -35,19 +35,6 @@ script:
 
 deploy:
   provider: script
-  script:
-    # decrypt secret file (compressed using tar)
-    # there are 2 files included: one is service account key (JSON format),
-    # which is used for authentication on Google Cloud so that we can deploy.
-    # the other file is secret information of the project (JSON format) e.g.
-    # database user name and password on server side.
-    - openssl aes-256-cbc -K $encrypted_7f9b08ce8bbc_key -iv $encrypted_7f9b08ce8bbc_iv -in deploy/secrets.tar.enc -out deploy/secrets.tar -d
-
-    # set up production properties using secret file
-    - cd deploy && tar xvf secrets.tar && ./setup && cd ../
-
-    # authorize google cloud sdk
-    - gcloud auth activate-service-account --key-file=deploy/viz-group1-1931c0ea4ed8.json
-    - ./gradlew appengineDeploy
+  script: ./deploy/setup
   on:
-    branch: master
+    branch: fix/condition-deploy
