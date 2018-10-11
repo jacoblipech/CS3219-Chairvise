@@ -14,7 +14,7 @@ set -o pipefail
 openssl aes-256-cbc -K $encrypted_7f9b08ce8bbc_key -iv $encrypted_7f9b08ce8bbc_iv -in secrets.tar.enc -out secrets.tar -d
 
 # extracts secret files
-- tar xvf secrets.tar
+tar xvf secrets.tar
 
 # gets the secret file as a string
 secretStr=`cat secrets.json`
@@ -35,8 +35,8 @@ settedTemplate=${template//<datasourceURL>/$url}
 printf "$settedTemplate" > ../src/main/resources/application-prod.properties
 
 # authorize google cloud sdk
-- gcloud auth activate-service-account --key-file=viz-group1-1931c0ea4ed8.json
+gcloud auth activate-service-account --key-file=viz-group1-1931c0ea4ed8.json
 
 # deploy
-- cd $TRAVIS_BUILD_DIR
-- ./gradlew appengineDeploy
+cd $TRAVIS_BUILD_DIR
+./gradlew appengineDeploy
