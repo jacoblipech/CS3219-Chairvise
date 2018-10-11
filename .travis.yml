@@ -35,6 +35,6 @@ script:
 
 deploy:
   provider: script
-  script: cd deploy && ./setup
+  script: cd deploy && ./deploy
   on:
     branch: master
