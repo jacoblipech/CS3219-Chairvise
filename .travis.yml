@@ -24,14 +24,14 @@ before_script:
 - gcloud -q components install app-engine-java
 
 script:
-# build front end
-- cd $frontendBuildPath
-- npm install
-- npm run build
-- cd $TRAVIS_BUILD_DIR
+# test front end
+- cd $frontendBuildPath && npm install && npm run test:unit
 
-# execute tests
-- ./gradlew check
+# build production files of frontend
+- cd $frontendBuildPath && npm run build
+
+# test backend and the server
+- cd $TRAVIS_BUILD_DIR && ./gradlew check
 
 deploy:
   provider: script
