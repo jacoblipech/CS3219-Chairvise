@@ -38,6 +38,11 @@ export default {
       state.presentationList.push(payload);
     },
 
+    deleteFromPresentationList(state, payload) {
+      let index = state.presentationList.indexOf(payload)
+      state.presentationList.splice(index, 1)
+    },
+
     updatePresentationListWith(state, payload) {
       state.presentationList = state.presentationList.map(presentation => {
         if (presentation.id === payload.id) {
@@ -121,6 +126,21 @@ export default {
       await axios.put('/api/presentations/' + state.presentationForm.id, state.presentationForm)
           .then(response => {
             commit('updatePresentationListWith', response.data)
+          })
+          .catch(e => {
+            commit('setPresentationFormApiError', e.toString());
+          })
+          .finally(() => {
+            commit('setPresentationFormLoading', false);
+          })
+    },
+
+    async deletePresentation({ commit, state }) {
+      commit('setPresentationFormLoading', true);
+      await axios.put('/api/presentations/' + state.presentationForm.id, state.presentationForm)
+          .then(response => {
+            commit('deleteFromPresentationList', response.data)
+            commit('resetPresentationForm')
           })
           .catch(e => {
             commit('setPresentationFormApiError', e.toString());

@@ -131,6 +131,12 @@ export default {
         }
       });
     },
+    deleteForm() {
+      this.$store.dispatch('deletePresentation')
+        .then(() => {
+          this.isEditing = false
+        })
+    },
     updatePresentationForm() {
       this.$refs['presentationForm'].clearValidate();
       if (this.id === ID_NEW_PRESENTATION) {
