@@ -35,6 +35,6 @@ script:
 
 deploy:
   provider: script
-  script: ./deploy/setup
+  script: cd deploy && ./setup
   on:
     branch: fix/condition-deploy
