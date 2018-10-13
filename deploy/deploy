@@ -6,6 +6,12 @@ set +x
 
 set -o pipefail
 
+# build front end
+cd $frontendBuildPath
+npm install
+npm run build
+cd $TRAVIS_BUILD_DIR
+
 # decrypt secret file (compressed using tar)
 # there are 2 files included: one is service account key (JSON format),
 # which is used for authentication on Google Cloud so that we can deploy.

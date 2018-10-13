@@ -31,10 +31,3 @@ deploy:
   script: cd deploy && ./deploy
   on:
     branch: fix/fix-front-end-build
-
-after_deploy:
-  # builds frontend
-  - cd $frontendBuildPath
-  - npm install
-  - npm run build
-  - cd $TRAVIS_BUILD_DIR
