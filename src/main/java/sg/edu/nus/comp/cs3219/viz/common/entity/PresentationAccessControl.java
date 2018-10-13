@@ -15,19 +15,24 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames={"presentation_id", "user_identifier", "access_level"}))
-public class PresentationAccessControl {
+public class PresentationAccessControl extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GenericGenerator(name = "UseExistingIdOtherwiseGenerateUsingIdentity", strategy = "sg.edu.nus.comp.cs3219.viz.common.entity.UseExistingIdOtherwiseGenerateUsingIdentity")
+    @GeneratedValue(generator = "UseExistingIdOtherwiseGenerateUsingIdentity")
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="presentation_id")
-    @JsonIgnore
     private Presentation presentation;
 
     @Column(name = "user_identifier")
@@ -42,6 +47,7 @@ public class PresentationAccessControl {
         return id;
     }
 
+    @JsonIgnore
     public Presentation getPresentation() {
         return presentation;
     }

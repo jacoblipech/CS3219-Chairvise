@@ -1,0 +1,22 @@
+{
+    "presentations": {
+        "presentationA": {
+            "name": "testA1",
+            "description": "test description 1",
+            "creatorIdentifier": "test1@viz.test"
+        },
+        "presentationB": {
+            "name": "testA2",
+            "description": "test description 2",
+            "creatorIdentifier": "test1@viz.test"
+        },
+        "presentationC": {
+            "name": "testB",
+            "description": "test description 3",
+            "creatorIdentifier": "test2@viz.test"
+        }
+    },
+    "presentationsAccessControl": {
+
+    }
+}
