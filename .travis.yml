@@ -23,13 +23,6 @@ before_script:
 - cd $TRAVIS_BUILD_DIR
 - gcloud -q components install app-engine-java
 
-script:
-# build front end
-- cd $frontendBuildPath
-- npm install
-- npm run build
-- cd $TRAVIS_BUILD_DIR
-
 # execute tests
 - ./gradlew check
 
@@ -37,4 +30,11 @@ deploy:
   provider: script
   script: cd deploy && ./deploy
   on:
-    branch: master
+    branch: fix/fix-front-end-build
+
+after_success:
+  # builds frontend
+  - cd $frontendBuildPath
+  - npm install
+  - npm run build
+  - cd $TRAVIS_BUILD_DIR
