@@ -12,6 +12,10 @@ env:
     - TRAVIS_DEPLOY_VERSION=${TRAVIS_COMMIT:0:7}
 
 before_script:
+- cd src/web/app
+- npm install
+- cd $TRAVIS_BUILD_DIR
+
 # install google cloud sdk and setup corresponding environment
 - export PATH=$HOME/google-cloud-sdk/bin:$PATH
 - curl -fsS -o $HOME/google-cloud-sdk.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/google-cloud-sdk.tar.gz

@@ -8,7 +8,6 @@ set -o pipefail
 
 # build front end
 cd $TRAVIS_BUILD_DIR/src/web/app
-npm install
 npm run build
 cd $TRAVIS_BUILD_DIR/deploy
 
