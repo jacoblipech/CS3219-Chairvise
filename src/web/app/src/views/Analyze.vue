@@ -12,6 +12,7 @@
         </el-aside>
         <el-main>
           <presentation-brief :id="id"/>
+          <section-list-panel />
         </el-main>
       </el-container>
     </div>
@@ -21,6 +22,7 @@
 <script>
 import ListOfPresentation from '@/components/ListOfPresentation.vue'
 import PresentationBrief from "@/components/PresentationBrief.vue";
+import SectionListPanel from "@/components/SectionListPanel.vue";
 
 export default {
   name: 'Analyze',
@@ -37,7 +39,8 @@ export default {
   },
   components: {
     PresentationBrief,
-    ListOfPresentation
+    ListOfPresentation,
+    SectionListPanel
   }
 }
 </script>

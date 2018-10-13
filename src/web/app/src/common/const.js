@@ -4,3 +4,5 @@ export const AccessLevel = Object.freeze({
 });
 
 export const ID_NEW_PRESENTATION = "__NEW__";
+
+export const SECTION_TYPE_WORD_CLOUD = 'word_cloud';
