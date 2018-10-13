@@ -9,14 +9,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 @Entity
-public class Presentation {
+public class Presentation extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GenericGenerator(name = "UseExistingIdOtherwiseGenerateUsingIdentity", strategy = "sg.edu.nus.comp.cs3219.viz.common.entity.UseExistingIdOtherwiseGenerateUsingIdentity")
+    @GeneratedValue(generator = "UseExistingIdOtherwiseGenerateUsingIdentity")
     @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 

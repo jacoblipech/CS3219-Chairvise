@@ -18,7 +18,7 @@ public class Config {
             return null;
         }
         String hostname = (String) serverEnvironment.getAttributes()
-                .get("com.google.appengine.runtime.default_version_hostname");
+                .get(Const.GaeEnvProperties.DEFAULT_VERSION_HOSTNAME);
         if (hostname == null) {
             return null;
         }

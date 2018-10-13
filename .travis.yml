@@ -12,9 +12,7 @@ env:
     - TRAVIS_DEPLOY_VERSION=${TRAVIS_COMMIT:0:7}
 
 before_script:
-- cd src/web/app
-- npm install
-- cd $TRAVIS_BUILD_DIR
+- frontendBuildPath=$TRAVIS_BUILD_DIR/src/web/app
 
 # install google cloud sdk and setup corresponding environment
 - export PATH=$HOME/google-cloud-sdk/bin:$PATH
@@ -25,11 +23,15 @@ before_script:
 - cd $TRAVIS_BUILD_DIR
 - gcloud -q components install app-engine-java
 
-# execute tests
-- ./gradlew check
+script:
+# test front end
+- cd $frontendBuildPath && npm install && npm run test:unit
 
-deploy:
-  provider: script
-  script: cd deploy && ./deploy
-  on:
-    branch: master
+# build production files of frontend
+- cd $frontendBuildPath && npm run build
+
+# test backend and the server
+- cd $TRAVIS_BUILD_DIR && ./gradlew check
+
+after_success:
+- test $TRAVIS_BRANCH = "master" && test $TRAVIS_PULL_REQUEST = "false" && cd deploy && ./deploy
