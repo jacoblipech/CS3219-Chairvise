@@ -28,4 +28,4 @@ deploy:
   provider: script
   script: cd deploy && ./deploy
   on:
-    branch: fix/fix-front-end-build
+    branch: master
