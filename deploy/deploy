@@ -7,10 +7,10 @@ set +x
 set -o pipefail
 
 # build front end
-cd $frontendBuildPath
+cd $TRAVIS_BUILD_DIR/src/web/app
 npm install
 npm run build
-cd $TRAVIS_BUILD_DIR
+cd $TRAVIS_BUILD_DIR/deploy
 
 # decrypt secret file (compressed using tar)
 # there are 2 files included: one is service account key (JSON format),
