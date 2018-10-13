@@ -1,4 +1,4 @@
-# Chairvise
+# Viz
 
 ## Overview
 This project is a tool to analyze paper submission information for conferences. It is basically a visualization tool combined with a backend query service.
