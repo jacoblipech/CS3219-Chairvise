@@ -1,4 +1,4 @@
-# Viz
+# Viz [![Build Status](https://travis-ci.com/CS3219-SEM1/chairvise-project-2018-team-01.svg?token=oqDiCi4rXZbKXaytpa6b&branch=master)](https://travis-ci.com/CS3219-SEM1/chairvise-project-2018-team-01)
 
 ## Overview
 This project is a tool to analyze paper submission information for conferences. It is basically a visualization tool combined with a backend query service.
@@ -14,6 +14,10 @@ To get started, you should have installed the latest version of IntelliJ on your
     - Google Cloud Tools 
     - Vue.js (optional)
   - Config your Google Cloud SDK. You can follow the instructions [here](https://cloud.google.com/sdk/)
+  - Prepare for app engine deployment under project root directory
+    ```
+    $ gcloud -q components install app-engine-java
+    ```
   - Config cloud SQL proxy. Please follow the instructions [here](https://cloud.google.com/sql/docs/mysql/connect-admin-proxy)
   - Install `npm`. We suggest using `NVM`, which stands for Node Version Manager. You can follow instructions [here](https://www.npmjs.com/get-npm)
   - Install sequel-pro from [here](https://www.sequelpro.com/) (optional)
@@ -59,10 +63,6 @@ You have two ways of deploying: locally and through continuous deployment.
   - Authorize your Google Cloud SDK locally through
     ```
     $ gcloud auth login
-    ```
-  - Prepare for app engine deployment under project root directory
-    ```
-    $ gcloud -q components install app-engine-java
     ```
   - Copy `application-prod.properties.template` under `/deploy` to `src/main/resources/`.
   - Name the file as `application-prod.properties`.
