@@ -132,7 +132,7 @@ export default {
       });
     },
     deleteForm() {
-      this.$store.dispatch('deletePresentation')
+      this.$store.dispatch('deletePresentation', this.id)
         .then(() => {
           this.isEditing = false
         })

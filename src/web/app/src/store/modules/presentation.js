@@ -140,11 +140,11 @@ export default {
           })
     },
 
-    async deletePresentation({ commit, state }) {
+    async deletePresentation({ commit }, payload) {
       commit('setPresentationFormLoading', true);
-      await axios.put('/api/presentations/' + state.presentationForm.id, state.presentationForm)
-          .then(response => {
-            commit('deleteFromPresentationList', response.data)
+      await axios.delete('/api/presentations/' + payload)
+          .then(() => {
+            commit('deleteFromPresentationList', payload);
             commit('resetPresentationForm')
           })
           .catch(e => {
