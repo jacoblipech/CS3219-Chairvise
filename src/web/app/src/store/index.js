@@ -4,6 +4,7 @@ import userInfo from './modules/userInfo'
 import mutations from './mutations'
 import presentation from "./modules/presentation";
 import section from "./modules/section.js";
+import dbMetaData from "./modules/dbMetaData.js";
 
 Vue.use(Vuex);
 
@@ -23,6 +24,7 @@ export default new Vuex.Store({
   modules: {
     userInfo,
     presentation,
-    section
+    section,
+    dbMetaData
   }
 })

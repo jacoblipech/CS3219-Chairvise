@@ -23,6 +23,8 @@ import AbstractSectionDetail from "@/components/AbstractSectionDetail.vue"
 export default {
   data() {
     return {
+      // loading db field
+      isLoading: false,
       options: [{
         value: 'Word Cloud for Submission Keyword',
         label: SECTION_TYPE_WORD_CLOUD
@@ -37,6 +39,13 @@ export default {
   },
   components: {
     AbstractSectionDetail
+  },
+  mounted() {
+    // load DB meta data
+    this.isLoading = true;
+    this.$store.dispatch('fetchDBMetaDataEntities').then(() => {
+      this.isLoading = false;
+    })
   }
 }
 </script>
