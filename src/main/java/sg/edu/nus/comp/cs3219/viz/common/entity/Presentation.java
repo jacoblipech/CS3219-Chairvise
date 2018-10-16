@@ -1,11 +1,11 @@
 package sg.edu.nus.comp.cs3219.viz.common.entity;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
@@ -13,6 +13,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import sg.edu.nus.comp.cs3219.viz.common.datatransfer.AccessControlMapping;
 
 @Entity
 public class Presentation extends BaseEntity {
@@ -24,6 +25,8 @@ public class Presentation extends BaseEntity {
     private Long id;
 
     private String name;
+
+    private ArrayList<AccessControlMapping> mappingList;
 
     private String description;
 
@@ -71,5 +74,13 @@ public class Presentation extends BaseEntity {
 
     public void setAccessControlList(Set<PresentationAccessControl> accessControlList) {
         this.accessControlList = accessControlList;
+    }
+
+    public ArrayList<AccessControlMapping> getMappingList() {
+        return mappingList;
+    }
+
+    public void setMappingList(ArrayList<AccessControlMapping> mappingList) {
+        this.mappingList = mappingList;
     }
 }
