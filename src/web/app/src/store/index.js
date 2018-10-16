@@ -11,6 +11,8 @@ export default new Vuex.Store({
 
   state: {
     isPageLoading: true,
+    isDataProcessing: false,
+    isUploading: false,
   },
 
   mutations: mutations,

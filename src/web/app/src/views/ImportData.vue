@@ -8,10 +8,15 @@
       &nbsp;<el-button type="warning" plain size="mini" @click="navigateToHomePage">Return to the Home Page</el-button>
     </el-alert>
     <div v-if="isAdmin">
-      <mapping-tool v-if="uploaded" :importList="importedTitles"></mapping-tool>
-      <el-button class="back-button" type="info" v-if="uploaded" plain v-on:click="backClicked">back</el-button>
+      <mapping-tool v-if="uploaded" :importList="importedTitles" ref="mapTool"></mapping-tool>
+      <el-row v-if="uploaded" class="button-row">
+        <el-col :offset="3">
+          <el-button class="back-button" type="info" v-on:click="backClicked">back</el-button>
+          <el-button class="back-button" type="success" v-on:click="uploadClicked">upload</el-button>
+        </el-col>
+      </el-row>
       <div v-else class="upload-box">
-        <el-upload drag action="" 
+        <el-upload drag action=""
           :auto-upload="false"
           :show-file-list="false"
           :multiple="false"
@@ -26,46 +31,59 @@
 </template>
 
 <script>
-  import MappingTool from "@/components/MappingTool.vue"
+import MappingTool from "@/components/MappingTool.vue";
 
-  export default {
-    name: "ImportData",
-    data() {
-      return {
-        importedTitles: ["number", "track number", "track name", "title", "authors"],
-        uploaded: false
-      };
+export default {
+  name: "ImportData",
+  data() {
+    return {
+      importedTitles: [
+        "number",
+        "track number",
+        "track name",
+        "title",
+        "authors"
+      ],
+      uploaded: false
+    };
+  },
+  computed: {
+    isAdmin: function() {
+      return this.$store.state.userInfo.isAdmin;
     },
-    computed: {
-      isAdmin: function() {
-        return this.$store.state.userInfo.isAdmin
-      },
-      isAppLoading: function() {
-        return this.$store.state.isPageLoading
-      }
-    },
-    methods: {
-      navigateToHomePage() {
-        this.$router.replace("/home")
-      },
-      fileUploaded: function(file, fileList) {
-        var fileReader = new FileReader();
-        fileReader.readAsText(file.raw);
-        fileReader.onloadend = function() {
-          var firstLine = fileReader.result.split("\n")[0];
-          this.importedTitles = firstLine.split(",").map(function(item) { return item.trim().replace(/['"]+/g, ""); });
-          this.uploaded = true;
-        }.bind(this)
-      },
-      backClicked: function() {
-        this.uploaded = false;
-        this.importedTitles = [];
-      }
-    },
-    components: {
-      MappingTool
+    isAppLoading: function() {
+      return this.$store.state.isPageLoading || this.$store.state.isDataProcessing;
     }
+  },
+  methods: {
+    navigateToHomePage() {
+      this.$router.replace("/home");
+    },
+    fileUploaded: function(file) {
+      this.$store.commit("setDataProcessingStatus", true);
+      var fileReader = new FileReader();
+      fileReader.readAsText(file.raw);
+      fileReader.onloadend = function() {
+        var firstLine = fileReader.result.split("\n")[0];
+        this.importedTitles = firstLine.split(",").map(function(item) {
+          return item.trim().replace(/['"]+/g, "");
+        });
+        this.uploaded = true;
+        this.$store.commit("setDataProcessingStatus", false);
+      }.bind(this);
+    },
+    backClicked: function() {
+      this.uploaded = false;
+      this.importedTitles = [];
+    },
+    uploadClicked: function() {
+      this.$refs.mapTool.uploadMapping();
+    }
+  },
+  components: {
+    MappingTool
   }
+};
 </script>
 
 <style scoped>
@@ -78,8 +96,7 @@
   padding-top: 100px;
 }
 
-.back-button {
-  margin-left: 12.5%;
+.button-row {
   margin-top: 30px;
 }
 </style>
