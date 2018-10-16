@@ -13,6 +13,11 @@ export default {
       name: '',
       description: '',
       creatorIdentifier: '',
+      mappingList: [],
+    },
+    shareForm: {
+      email: '',
+      accessLevel: '',
     },
     presentationFormStatus: {
       isLoading: false,
@@ -71,6 +76,13 @@ export default {
       state.presentationForm[field] = value
     },
 
+    setShareFormField(state, {field, value}) {
+      state.shareForm[field] = value
+    },
+
+    setPresentationFormAccessControlList(state, shareForm)  {
+        state.presentationForm.mappingList = new Array(shareForm);
+    }
   },
   actions: {
     async getPresentationList({ commit }) {
@@ -119,6 +131,20 @@ export default {
     async updatePresentation({ commit, state }) {
       commit('setPresentationFormLoading', true);
       await axios.put('/api/presentations/' + state.presentationForm.id, state.presentationForm)
+          .then(response => {
+            commit('updatePresentationListWith', response.data)
+          })
+          .catch(e => {
+            commit('setPresentationFormApiError', e.toString());
+          })
+          .finally(() => {
+            commit('setPresentationFormLoading', false);
+          })
+    },
+
+    async sharePresentation({ commit, state }) {
+      commit('setPresentationFormLoading', true);
+      await axios.post('/api/sharePresentation/' + state.presentationForm.id, state.presentationForm)
           .then(response => {
             commit('updatePresentationListWith', response.data)
           })
