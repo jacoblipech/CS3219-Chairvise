@@ -28,7 +28,7 @@ export default {
   },
 
   actions: {
-    async fetchDBMetaDataEntities({state, commit}) {
+    async fetchDBMetaDataEntities({commit}) {
       commit('setDBMetaDataEntitiesLoading', true);
 
       await axios.get('/api/db/entity')

@@ -9,6 +9,14 @@
         <el-input v-model="editForm.title"></el-input>
       </div>
       <el-alert
+        v-if="sectionDetail.status.isApiError"
+        :title="sectionDetail.status.apiErrorMsg"
+        :description="sectionDetail.status.apiErrorMsgDetail"
+        show-icon
+        type="error"
+        class="errorMessage">
+      </el-alert>
+      <el-alert
         v-if="words.length === 0"
         title="No Data to display"
         type="info"
@@ -20,21 +28,20 @@
                       :color="colorComputer"
                       :font-family="fontFamily"
                       style="width: 100%;height: 200px"></vue-word-cloud>
-      <el-alert
-        v-if="sectionDetail.status.isApiError"
-        :title="sectionDetail.status.apiErrorMsg"
-        type="error"
-        show-icon>
-      </el-alert>
       <div v-if="isEditing">
         <el-form-item label="Field to Analysis" prop="selections">
           <el-select v-model="editForm.selections" multiple placeholder="Please select">
-            <el-option
-              v-for="option in selectionsOptions"
-              :key="option.value"
-              :label="option.label"
-              :value="option.value">
-            </el-option>
+            <el-option-group
+              v-for="group in selectionsOptions"
+              :key="group.label"
+              :label="group.label">
+              <el-option
+                v-for="item in group.options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-option-group>
           </el-select>
         </el-form-item>
 
@@ -53,12 +60,17 @@
                       :key="index"
                       :prop="'filters.' + index" :rules="editFormFilterRule">
           <el-select placeholder="Filed" v-model="filter.field">
-            <el-option
-              v-for="option in filtersFieldOptions"
-              :key="option.value"
-              :label="option.label"
-              :value="option.value">
-            </el-option>
+            <el-option-group
+              v-for="group in filtersFieldOptions"
+              :key="group.label"
+              :label="group.label">
+              <el-option
+                v-for="item in group.options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-option-group>
           </el-select>&nbsp;
           <el-select v-model="filter.comparator" style="width: 80px">
             <el-option label=">" value=">" />
@@ -143,32 +155,31 @@
           }
         ],
 
-        // TODO change this to query backend API
-        selectionsOptions: [{
-          label: 'Keywords in submission',
-          value: 's_keywords',
-        }],
-        // TODO change this to query backend API
-        involvedRecordsOptions: [{
-          label: 'Submission Records',
-          value: 'submission_record',
-        }],
-        // TODO change this to query backend API
-        filtersFieldOptions: [
-          {
-            label: 'Submission Track',
-            value: 's_track_name',
-          },
-          {
-            label: 'Is Accepted',
-            value: 's_is_accepted',
-          }
-        ],
-
         // word cloud related field
         animationDuration: 50,
         fontFamily: "Roboto",
         words: []
+      }
+    },
+
+    computed: {
+      selectionsOptions() {
+        return this.$store.state.dbMetaData.entities.map(entity => ({
+          label: entity.name,
+          options: entity.fieldMetaDataList.map(field => ({
+            label: field.name,
+            value: field.fieldName
+          }))
+        }))
+      },
+      involvedRecordsOptions() {
+        return this.$store.state.dbMetaData.entities.map(entity => ({
+          label: entity.name,
+          value: entity.tableName
+        }))
+      },
+      filtersFieldOptions() {
+        return this.selectionsOptions;
       }
     },
 
@@ -297,5 +308,9 @@
   .noDataToDisplay {
     margin-top: 10px;
     margin-bottom: 10px;
+  }
+
+  .errorMessage {
+    margin-top: 10px;
   }
 </style>

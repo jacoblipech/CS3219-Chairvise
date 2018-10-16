@@ -20,11 +20,12 @@ export default {
         ],
         filters: [],
         result: [],
-        tmpResult: [],
+        previewResult: [],
         status: {
           isLoading: true,
           isApiError: false,
           apiErrorMsg: '',
+          apiErrorMsgDetail: '',
         }
       }
     ],
@@ -37,14 +38,17 @@ export default {
   mutations: {
     setSectionDetailLoading(state, {id, isLoading}) {
       let section = findSectionDetailById(state.sectionList, id);
-      section.status.isApiError = false;
+      if (isLoading) {
+        section.status.isApiError = false;
+      }
       section.status.isLoading = isLoading;
     },
 
-    setSectionDetailApiError(state, {id, msg}) {
+    setSectionDetailApiError(state, {id, msg, msgDetail}) {
       let section = findSectionDetailById(state.sectionList, id);
       section.status.isApiError = true;
       section.status.apiErrorMsg = msg;
+      section.status.apiErrorMsgDetail = msgDetail;
     },
 
     updateSectionAnalysisResult(state, {id, result}) {
@@ -58,7 +62,7 @@ export default {
     }
   },
   actions: {
-    async sendPreviewAnalysisRequest({state, commit}, {id, dataSet, selections, involvedRecords, filters, joiners}) {
+    async sendPreviewAnalysisRequest({commit}, {id, dataSet, selections, involvedRecords, filters, joiners}) {
       commit('setSectionDetailLoading', {id, isLoading: true});
 
       await axios.post('/api/analysis', {
@@ -72,7 +76,7 @@ export default {
           commit('updateSectionAnalysisPreviewResult', {id, result: response.data});
         })
         .catch(e => {
-          commit('setSectionDetailApiError', {id, msg: e.toString()});
+          commit('setSectionDetailApiError', {id, msg: e.toString(), msgDetail: JSON.stringify(e.response)});
         })
         .finally(() => {
           commit('setSectionDetailLoading', {id, isLoading: false});
@@ -94,7 +98,8 @@ export default {
           commit('updateSectionAnalysisResult', {id: sectionToAnalysis.id, result: response.data});
         })
         .catch(e => {
-          commit('setSectionDetailApiError', {id: sectionToAnalysis.id, msg: e.toString()});
+          commit('setSectionDetailApiError',
+            {id: sectionToAnalysis.id, msg: e.toString(), msgDetail: JSON.stringify(e.response)});
         })
         .finally(() => {
           commit('setSectionDetailLoading', {id: sectionToAnalysis.id, isLoading: false});
