@@ -81,7 +81,7 @@
         "fieldName": "r_num_review_assignment",
         "type": "int",
         "name": "Num Review Assignment",
-        "description": "Each reviewer is given a number for each track he\/she is reviewing"
+        "description": "Each reviewer is given a number for each track he/she is reviewing"
       },
       {
         "fieldName": "r_reviewer_name",
@@ -112,6 +112,18 @@
         "type": "Instant",
         "name": "Review Submission Time",
         "description": ""
+      },
+      {
+        "fieldName": "r_review_submission_time_date",
+        "type": "LocalDate",
+        "name": "Review Submission Time Date",
+        "description": "The date part of Review Submission Time"
+      },
+      {
+        "fieldName": "r_review_submission_time_time",
+        "type": "LocalTime",
+        "name": "Review Submission Time Time",
+        "description": "The time part of Review Submission Time"
       },
       {
         "fieldName": "r_has_recommended_for_best_paper",
@@ -163,10 +175,34 @@
         "description": ""
       },
       {
+        "fieldName": "s_submission_time_date",
+        "type": "LocalDate",
+        "name": "Submission Time Date",
+        "description": "The date part of Submission Time"
+      },
+      {
+        "fieldName": "s_submission_time_time",
+        "type": "LocalTime",
+        "name": "Submission Time Time",
+        "description": "The time part of Submission Time"
+      },
+      {
         "fieldName": "s_last_updated_time",
         "type": "Instant",
         "name": "Last Updated Time",
         "description": ""
+      },
+      {
+        "fieldName": "s_last_updated_time_date",
+        "type": "LocalDate",
+        "name": "Last Updated Time Date",
+        "description": "The date part of Last Updated Time"
+      },
+      {
+        "fieldName": "s_last_updated_time_time",
+        "type": "LocalTime",
+        "name": "Last Updated Time Time",
+        "description": "The time part of Last Updated Time"
       },
       {
         "fieldName": "s_keywords",
@@ -178,13 +214,13 @@
         "fieldName": "s_is_accepted",
         "type": "boolean",
         "name": "Is Accepted",
-        "description": "Accept\/Reject decision"
+        "description": "Accept/Reject decision"
       },
       {
         "fieldName": "s_is_notified",
         "type": "boolean",
         "name": "Is Notified",
-        "description": "Acceptance\/rejection mail sent to authors or not?"
+        "description": "Acceptance/rejection mail sent to authors or not?"
       },
       {
         "fieldName": "s_is_reviews_sent",

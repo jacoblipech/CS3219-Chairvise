@@ -4,11 +4,10 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Exportable(name = "Submission Record", nameInDB = "submission_record")
 @Entity
@@ -47,9 +46,25 @@ public class SubmissionRecord {
     @Exportable(name = "Submission Time")
     private Instant s_submission_time;
 
+    @Exportable(name = "Submission Time Date", description = "The date part of Submission Time")
+    @Transient
+    private transient LocalDate s_submission_time_date;
+
+    @Exportable(name = "Submission Time Time", description = "The time part of Submission Time")
+    @Transient
+    private transient LocalTime s_submission_time_time;
+
     //  time last updated
     @Exportable(name = "Last Updated Time")
     private Instant s_last_updated_time;
+
+    @Exportable(name = "Last Updated Time Date", description = "The date part of Last Updated Time")
+    @Transient
+    private transient LocalDate s_last_updated_time_date;
+
+    @Exportable(name = "Last Updated Time Time", description = "The time part of Last Updated Time")
+    @Transient
+    private transient LocalTime s_last_updated_time_time;
 
     // keywords associated with submissions as put by the authors
     @Exportable(name = "Keywords")

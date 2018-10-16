@@ -7,7 +7,10 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Exportable(name = "Review Record", nameInDB = "review_record")
 @Entity
@@ -48,6 +51,14 @@ public class ReviewRecord {
 
     @Exportable(name = "Review Submission Time")
     private Instant r_review_submission_time;
+
+    @Exportable(name = "Review Submission Time Date", description = "The date part of Review Submission Time")
+    @Transient
+    private transient LocalDate r_review_submission_time_date;
+
+    @Exportable(name = "Review Submission Time Time", description = "The time part of Review Submission Time")
+    @Transient
+    private transient LocalTime r_review_submission_time_time;
 
     @Exportable(name = "Has Recommended for the Best Paper")
     private boolean r_has_recommended_for_best_paper;

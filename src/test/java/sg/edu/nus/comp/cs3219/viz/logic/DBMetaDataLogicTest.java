@@ -6,7 +6,6 @@ import com.google.gson.reflect.TypeToken;
 import org.junit.Assert;
 import org.junit.Test;
 import sg.edu.nus.comp.cs3219.viz.common.datatransfer.DBEntityMetaData;
-import sg.edu.nus.comp.cs3219.viz.testhelper.DataBundle;
 import sg.edu.nus.comp.cs3219.viz.testhelper.TestProperties;
 
 import java.lang.reflect.Type;
