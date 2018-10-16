@@ -3,6 +3,7 @@ package sg.edu.nus.comp.cs3219.viz.logic;
 import sg.edu.nus.comp.cs3219.viz.common.datatransfer.AccessLevel;
 import sg.edu.nus.comp.cs3219.viz.common.datatransfer.UserInfo;
 import sg.edu.nus.comp.cs3219.viz.common.entity.Presentation;
+import sg.edu.nus.comp.cs3219.viz.common.entity.PresentationAccessControl;
 import sg.edu.nus.comp.cs3219.viz.common.exception.UnauthorisedException;
 import sg.edu.nus.comp.cs3219.viz.common.util.Const;
 import sg.edu.nus.comp.cs3219.viz.storage.repository.PresentationAccessControlRepository;
@@ -98,6 +99,15 @@ public class GateKeeper {
         }
 
         if (!presentationAccessControlRepository.existsByPresentationAndUserIdentifierEqualsAndAccessLevelEquals(presentation, currentUser.getUserEmail(), accessLevel)) {
+
+            // Check presentation file's ACL to verify access level of non-owners
+            for (PresentationAccessControl accessControl : presentation.getAccessControlList()) {
+                // If the user can write, he/she can also read the file
+                if (accessControl.getUserIdentifier().equals(currentUser.getUserEmail()) &&
+                        (accessControl.getAccessLevel() == accessLevel || accessControl.getAccessLevel() == AccessLevel.CAN_WRITE) ) {
+                    return;
+                }
+            }
             throw new UnauthorisedException();
         }
     }
