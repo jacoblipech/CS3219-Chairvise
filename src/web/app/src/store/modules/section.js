@@ -23,10 +23,14 @@ export default {
       state.sectionListStatus.apiErrorMsg = msg;
     },
 
+    clearSectionList(state) {
+      state.sectionList = []
+    },
+
     addSectionDetail(state, payload) {
       state.sectionList.push(Object.assign({
         status: {
-          isLoading: true,
+          isLoading: false,
           isApiError: false,
           apiErrorMsg: '',
           apiErrorMsgDetail: '',
@@ -82,6 +86,7 @@ export default {
 
       await axios.get('/api/presentations/' + presentationId + '/sections')
         .then(response => {
+          commit('clearSectionList');
           response.data.forEach(s => {
             commit('addSectionDetail', s)
           });
@@ -145,12 +150,12 @@ export default {
         })
     },
 
-    async deleteSection({commit}, {id, presentationId}) {
+    async deleteSectionDetail({commit}, {id, presentationId}) {
       commit('setSectionDetailLoading', {id, isLoading: true});
 
       await axios.delete(`/api/presentations/${presentationId}/sections/${id}`)
         .then(() => {
-          commit('deleteSection', id)
+          commit('deleteSectionDetail', id)
         })
         .catch(e => {
           commit('setSectionDetailApiError', {id, msg: e.toString(), msgDetail: JSON.stringify(e.response)});

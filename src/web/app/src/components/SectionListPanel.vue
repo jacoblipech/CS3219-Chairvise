@@ -91,7 +91,7 @@ export default {
     },
 
     addNewSection() {
-      this.$store.dispatch('addSection', {
+      this.$store.dispatch('addSectionDetail', {
         presentationId: this.presentationId,
         selectedNewSection: this.selectedNewSection,
         dataSet: this.$store.state.userInfo.userEmail,

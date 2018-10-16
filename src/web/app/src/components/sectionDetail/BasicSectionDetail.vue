@@ -25,6 +25,7 @@
       >
       </el-alert>
       <slot v-else></slot>
+      <div v-if="!isEditing" class="description">{{ editForm.description }}</div>
       <div v-if="isEditing">
         <el-form-item label="Field to Analysis" prop="selections">
           <el-select v-model="editForm.selections" multiple placeholder="Please select">
@@ -76,6 +77,16 @@
           </el-select>&nbsp;
           <el-input v-model="filter.value" placeholder="Value" style="width: 200px"></el-input>&nbsp;
           <el-button type="danger" icon="el-icon-delete" circle @click="removeFilter(filter)"></el-button>
+        </el-form-item>
+
+        <el-form-item label="Description for the section">
+          <el-input
+            type="textarea"
+            autosize
+            :autosize="{ minRows: 4 }"
+            placeholder="Please enter description (Leave empty to hide the description part)"
+            v-model="editForm.description">
+          </el-input>
         </el-form-item>
 
         <slot name="extraFormItems"></slot>
@@ -291,6 +302,12 @@
     text-align: center;
     margin-bottom: 10px;
     margin-top: 10px;
+  }
+
+  .description {
+    margin-top: 20px;
+    padding-left: 50px;
+    padding-right: 50px;
   }
 
   .noDataToDisplay {

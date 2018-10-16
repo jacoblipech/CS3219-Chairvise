@@ -1,5 +1,5 @@
 <template>
-<el-row>
+<el-row class="sectionDetail">
   <div v-if="sectionDetail.type === WORD_CLOUD">
     <word-cloud-section-detail :sectionDetail="sectionDetail" :presentationId="presentationId"/>
   </div>
@@ -35,4 +35,10 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  .sectionDetail {
+    margin-bottom: 30px;
+  }
+</style>
 
