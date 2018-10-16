@@ -1,7 +1,8 @@
 <template>
-<el-alert v-if="isError" :title="apiErrorMsg" type="error" show-icon />
-<el-form v-else label-position="right" ref="presentationForm" label-width="120px" :rules="rules" :model="presentationForm" v-loading="isLoading">
-  <el-form-item label="Name" :prop=" isInEditMode ? 'name' : ''">
+<el-alert v-if="isErrorList" v-on="isError" :title="apiErrorMsgList" type="error" show-icon />
+  <el-form v-else label-position="right" ref="presentationForm" label-width="120px" :rules="rules" :model="presentationForm" v-loading="isLoading">
+    <el-alert v-if="isErrorForm" :title="apiErrorMsgForm" type="error" show-icon />
+    <el-form-item label="Name" :prop=" isInEditMode ? 'name' : ''">
     <div v-if="!isInEditMode">{{ presentationForm.name }}</div>
     <el-input v-model="presentationFormName" v-if="isInEditMode"/>
   </el-form-item>
@@ -10,20 +11,20 @@
     <el-button type="success" size="small" class="share_button_left_margin" icon="el-icon-view" @click="dialogFormVisible = true">SHARE</el-button>
   </el-form-item>
   <el-dialog title="Share with other users:" :visible.sync="dialogFormVisible">
-    <el-form :model="shareForm">
-      <el-form-item label="Email addresses:" :label-width="shareFormLabelWidth">
-        <el-input v-model="shareForm.email" autocomplete="off"></el-input>
+    <el-form>
+      <el-form-item label="Email address:" :label-width="shareFormLabelWidth">
+        <el-input v-model="shareFormEmail" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item label="Permissions:" :label-width="shareFormLabelWidth">
-        <el-select v-model="shareForm.permission" placeholder="Select the permission">
-          <el-option label="View" value="view"></el-option>
-          <el-option label="Edit" value="edit"></el-option>
+        <el-select v-model="shareFormAccessLevel" placeholder="Select the permission">
+          <el-option label="View" value=AccessLevel.CAN_READ></el-option>
+          <el-option label="Edit" value=AccessLevel.CAN_WRITE></el-option>
         </el-select>
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="dialogFormVisible = false">Cancel</el-button>
-      <el-button type="primary" @click="dialogFormVisible = false">Confirm</el-button>
+      <el-button type="primary" @click="dialogFormVisible = false, submitShareForm()">Confirm</el-button>
     </span>
   </el-dialog>
   <el-form-item label="Description">
@@ -60,6 +61,7 @@ export default {
         name: this.presentationFormName,
         creatorIdentifier: this.presentationFormCreatorIdentifier,
         description: this.presentationFormDescription,
+        mappingList: this.presentationFormMappingList,
       }
     },
     presentationFormName: {
@@ -76,6 +78,9 @@ export default {
     presentationFormCreatorIdentifier() {
       return this.$store.state.presentation.presentationForm.creatorIdentifier
     },
+    presentationFormMappingList() {
+      return this.$store.state.presentation.presentationForm.mappingList
+    },
     presentationFormDescription: {
       get() {
         return this.$store.state.presentation.presentationForm.description
@@ -83,6 +88,28 @@ export default {
       set(value) {
         this.$store.commit('setPresentationFormField', {
           field: 'description',
+          value
+        })
+      },
+    },
+    shareFormEmail: {
+        get() {
+            return this.$store.state.presentation.shareForm.email
+        },
+        set(value) {
+            this.$store.commit('setShareFormField', {
+                field: 'email',
+                value
+            })
+        },
+    },
+    shareFormAccessLevel: {
+      get() {
+        return this.$store.state.presentation.shareForm.accessLevel
+      },
+      set(value) {
+        this.$store.commit('setShareFormField', {
+          field: 'accessLevel',
           value
         })
       },
@@ -96,21 +123,23 @@ export default {
     isLoading() {
       return this.$store.state.presentation.presentationFormStatus.isLoading
     },
-    isError() {
+    isErrorList() {
       return this.$store.state.presentation.presentationListStatus.isApiError
     },
-    apiErrorMsg() {
+    apiErrorMsgList() {
       return this.$store.state.presentation.presentationListStatus.apiErrorMsg
-    }
+    },
+    isErrorForm() {
+        return this.$store.state.presentation.presentationFormStatus.isApiError
+    },
+    apiErrorMsgForm() {
+        return this.$store.state.presentation.presentationFormStatus.apiErrorMsg
+    },
   },
   data() {
     return {
       isEditing: false,
       dialogFormVisible: false,
-      shareForm: {
-          email: '',
-          permissions: '',
-      },
       shareFormLabelWidth: '120px',
       rules: {
         name: [
@@ -150,6 +179,13 @@ export default {
               })
         }
       });
+    },
+    submitShareForm() {
+      this.$store.commit('setPresentationFormAccessControlList', this.$store.state.presentation.shareForm)
+      this.$store.dispatch('sharePresentation')
+          .then(() => {
+            this.isEditing = false
+          })
     },
     updatePresentationForm() {
       this.$refs['presentationForm'].clearValidate();
