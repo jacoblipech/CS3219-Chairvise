@@ -1,0 +1,203 @@
+[
+  {
+    "tableName": "author_record",
+    "name": "Author Record",
+    "description": "",
+    "fieldMetaDataList": [
+      {
+        "fieldName": "a_submission_id",
+        "type": "String",
+        "name": "Submission Id",
+        "description": ""
+      },
+      {
+        "fieldName": "a_first_name",
+        "type": "String",
+        "name": "First Name",
+        "description": ""
+      },
+      {
+        "fieldName": "a_last_name",
+        "type": "String",
+        "name": "Last Name",
+        "description": ""
+      },
+      {
+        "fieldName": "a_email",
+        "type": "String",
+        "name": "Email",
+        "description": ""
+      },
+      {
+        "fieldName": "a_country",
+        "type": "String",
+        "name": "Country",
+        "description": ""
+      },
+      {
+        "fieldName": "a_organisation",
+        "type": "String",
+        "name": "Organisation",
+        "description": ""
+      },
+      {
+        "fieldName": "a_webPage",
+        "type": "String",
+        "name": "Web Page",
+        "description": ""
+      },
+      {
+        "fieldName": "a_personId",
+        "type": "String",
+        "name": "Person Id",
+        "description": "Author's unique id in user submitted csv file"
+      },
+      {
+        "fieldName": "a_is_corresponding",
+        "type": "boolean",
+        "name": "Is Corresponding",
+        "description": "Is the author corresponding author for the submission"
+      }
+    ]
+  },
+  {
+    "tableName": "review_record",
+    "name": "Review Record",
+    "description": "",
+    "fieldMetaDataList": [
+      {
+        "fieldName": "r_submission_id",
+        "type": "String",
+        "name": "Submission Id",
+        "description": ""
+      },
+      {
+        "fieldName": "r_review_id",
+        "type": "String",
+        "name": "Review Id",
+        "description": ""
+      },
+      {
+        "fieldName": "r_num_review_assignment",
+        "type": "int",
+        "name": "Num Review Assignment",
+        "description": "Each reviewer is given a number for each track he\/she is reviewing"
+      },
+      {
+        "fieldName": "r_reviewer_name",
+        "type": "String",
+        "name": "Reviewer Name",
+        "description": ""
+      },
+      {
+        "fieldName": "r_expertise_level",
+        "type": "String",
+        "name": "Expertise Level",
+        "description": "Reviewer selects a field 1-5 to indicate expertise while submitting the review."
+      },
+      {
+        "fieldName": "r_review_comment",
+        "type": "String",
+        "name": "Review Comment",
+        "description": ""
+      },
+      {
+        "fieldName": "r_overall_evaluation_score",
+        "type": "double",
+        "name": "Overall Evaluation Score",
+        "description": ""
+      },
+      {
+        "fieldName": "r_review_submission_time",
+        "type": "Instant",
+        "name": "Review Submission Time",
+        "description": ""
+      },
+      {
+        "fieldName": "r_has_recommended_for_best_paper",
+        "type": "boolean",
+        "name": "Has Recommended for the Best Paper",
+        "description": ""
+      }
+    ]
+  },
+  {
+    "tableName": "submission_record",
+    "name": "Submission Record",
+    "description": "",
+    "fieldMetaDataList": [
+      {
+        "fieldName": "s_submission_id",
+        "type": "String",
+        "name": "Submission Id",
+        "description": ""
+      },
+      {
+        "fieldName": "s_track_id",
+        "type": "String",
+        "name": "Track Id",
+        "description": "Track the submission is submitted to"
+      },
+      {
+        "fieldName": "s_track_name",
+        "type": "String",
+        "name": "Track Name",
+        "description": ""
+      },
+      {
+        "fieldName": "s_title",
+        "type": "String",
+        "name": "Title",
+        "description": ""
+      },
+      {
+        "fieldName": "s_authors",
+        "type": "String",
+        "name": "Authors",
+        "description": ""
+      },
+      {
+        "fieldName": "s_submission_time",
+        "type": "Instant",
+        "name": "Submission Time",
+        "description": ""
+      },
+      {
+        "fieldName": "s_last_updated_time",
+        "type": "Instant",
+        "name": "Last Updated Time",
+        "description": ""
+      },
+      {
+        "fieldName": "s_keywords",
+        "type": "String",
+        "name": "Keywords",
+        "description": ""
+      },
+      {
+        "fieldName": "s_is_accepted",
+        "type": "boolean",
+        "name": "Is Accepted",
+        "description": "Accept\/Reject decision"
+      },
+      {
+        "fieldName": "s_is_notified",
+        "type": "boolean",
+        "name": "Is Notified",
+        "description": "Acceptance\/rejection mail sent to authors or not?"
+      },
+      {
+        "fieldName": "s_is_reviews_sent",
+        "type": "boolean",
+        "name": "Is Reviews Sent",
+        "description": "Review sent in the mails or not?"
+      },
+      {
+        "fieldName": "s_submission_abstract",
+        "type": "String",
+        "name": "Submission Abstract",
+        "description": "Abstract of the submission"
+      }
+    ]
+  }
+]
