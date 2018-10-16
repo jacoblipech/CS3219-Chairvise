@@ -4,10 +4,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import sg.edu.nus.comp.cs3219.viz.common.datatransfer.AnalysisRequest;
 import sg.edu.nus.comp.cs3219.viz.common.entity.record.AuthorRecord;
+import sg.edu.nus.comp.cs3219.viz.common.entity.record.Exportable;
 import sg.edu.nus.comp.cs3219.viz.common.entity.record.ReviewRecord;
 import sg.edu.nus.comp.cs3219.viz.common.entity.record.SubmissionRecord;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,10 +32,12 @@ public class AnalysisLogic {
     /**
      * Generates a map from field name to type so SQL query can be correctly generated.
      */
-    private static void populateMapForClass(Class classToExamine) {
-        for(Field field : classToExamine.getDeclaredFields()) {
-            DATABASE_FIELD_NAME_TO_TYPE_MAP.put(field.getName(), field.getType());
-        }
+    private static void populateMapForClass(Class<?> classToExamine) {
+        Arrays.stream(classToExamine.getDeclaredFields())
+                .filter(f -> f.getAnnotation(Exportable.class) != null)
+                .forEach(field -> {
+                    DATABASE_FIELD_NAME_TO_TYPE_MAP.put(field.getName(), field.getType());
+                });
     }
 
     private JdbcTemplate jdbcTemplate;

@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+@Exportable(name = "Author Record", nameInDB = "author_record")
 @Entity
 public class AuthorRecord extends BaseEntity {
 
@@ -21,24 +22,33 @@ public class AuthorRecord extends BaseEntity {
     // each record will be imported by each user, dataSet is used to distinguished records submitted by different user
     private String dataSet;
 
+    @Exportable(name = "Submission Id")
     private String a_submission_id;
 
+    @Exportable(name = "First Name")
     private String a_first_name;
 
+    @Exportable(name = "Last Name")
     private String a_last_name;
 
+    @Exportable(name = "Email")
     private String a_email;
 
+    @Exportable(name = "Country")
     private String a_country;
 
+    @Exportable(name = "Organisation")
     private String a_organisation;
 
+    @Exportable(name = "Web Page")
     private String a_webPage;
 
     // author's unique id in user submitted csv file
+    @Exportable(name = "Person Id", description = "Author's unique id in user submitted csv file")
     private String a_personId;
 
     // is the author corresponding author for the submission
+    @Exportable(name = "Is Corresponding", description = "Is the author corresponding author for the submission")
     private boolean a_is_corresponding;
 
     public Long getA_id() {

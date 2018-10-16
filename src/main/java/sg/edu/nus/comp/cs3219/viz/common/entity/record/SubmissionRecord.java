@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.time.Instant;
 
+@Exportable(name = "Submission Record", nameInDB = "submission_record")
 @Entity
 public class SubmissionRecord {
 
@@ -22,42 +23,54 @@ public class SubmissionRecord {
     // each record will be imported by each user, dataSet is used to distinguished records submitted by different user
     private String dataSet;
 
+    @Exportable(name = "Submission Id")
     private String s_submission_id;
 
     // Track the submission is submitted to; like a full paper or just a poster
+    @Exportable(name = "Track Id", description = "Track the submission is submitted to")
     private String s_track_id;
 
     // Name for the track referred in col2 (string)
+    @Exportable(name = "Track Name")
     private String s_track_name;
 
     // Title of the submission
+    @Exportable(name = "Title")
     private String s_title;
 
     // authors of the associated submission
     // TODO use many-to-many relationship
+    @Exportable(name = "Authors")
     private String s_authors;
 
     // time submitted
+    @Exportable(name = "Submission Time")
     private Instant s_submission_time;
 
     //  time last updated
+    @Exportable(name = "Last Updated Time")
     private Instant s_last_updated_time;
 
     // keywords associated with submissions as put by the authors
+    @Exportable(name = "Keywords")
     @Column(columnDefinition="TEXT")
     private String s_keywords;
 
     // accept/reject decision
+    @Exportable(name = "Is Accepted", description = "Accept/Reject decision")
     private boolean s_is_accepted;
 
     // acceptance/rejection mail sent to authors or not?
+    @Exportable(name = "Is Notified", description = "Acceptance/rejection mail sent to authors or not?")
     private boolean s_is_notified;
 
     // review sent in the mails or not?
+    @Exportable(name = "Is Reviews Sent", description = "Review sent in the mails or not?")
     private boolean s_is_reviews_sent;
 
     // abstract of the submission.
     @Column(columnDefinition="TEXT")
+    @Exportable(name = "Submission Abstract", description = "Abstract of the submission")
     private String s_submission_abstract;
 
     public Long getS_id() {

@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.time.Instant;
 
+@Exportable(name = "Review Record", nameInDB = "review_record")
 @Entity
 public class ReviewRecord {
 
@@ -21,25 +22,34 @@ public class ReviewRecord {
     // each record will be imported by each user, dataSet is used to distinguished records submitted by different user
     private String dataSet;
 
+    @Exportable(name = "Submission Id")
     private String r_submission_id;
 
+    @Exportable(name = "Review Id")
     private String r_review_id;
 
     // (Each reviewer is given a number for each track he/she is reviewing.
     // For example Animesh reviewed 2 different tracks but 3 papers in total- one from Track 1 and two papers from Track 2. He therefore has 2 uniques numbers assigned
+    @Exportable(name = "Num Review Assignment", description = "Each reviewer is given a number for each track he/she is reviewing")
     private int r_num_review_assignment;
 
+    @Exportable(name = "Reviewer Name")
     private String r_reviewer_name;
 
     // Reviewer selects a field 1-5 to indicate expertise while submitting the review. For example 5: expert, 1: passing knowledge
+    @Exportable(name = "Expertise Level", description = "Reviewer selects a field 1-5 to indicate expertise while submitting the review.")
     private String r_expertise_level;
 
+    @Exportable(name = "Review Comment")
     private String r_review_comment;
 
+    @Exportable(name = "Overall Evaluation Score")
     private double r_overall_evaluation_score;
 
+    @Exportable(name = "Review Submission Time")
     private Instant r_review_submission_time;
 
+    @Exportable(name = "Has Recommended for the Best Paper")
     private boolean r_has_recommended_for_best_paper;
 
     public Long getR_id() {
