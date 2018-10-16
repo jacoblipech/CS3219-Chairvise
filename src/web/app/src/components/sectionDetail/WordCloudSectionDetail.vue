@@ -4,6 +4,7 @@
       <div class="title" v-if="!isEditing">
         {{ sectionDetail.title }}
         <el-button type="primary" plain @click="changeEditMode(true)">Edit</el-button>
+        <el-button type="danger" icon="el-icon-delete" circle @click="deleteSection"></el-button>
       </div>
       <div class="title" v-else>
         <el-input v-model="editForm.title"></el-input>
@@ -99,6 +100,10 @@
     props: {
       sectionDetail: {
         type: Object,
+        required: true
+      },
+      presentationId: {
+        type: String,
         required: true
       }
     },
@@ -210,18 +215,36 @@
 
       removeFilter(filter) {
         let index = this.editForm.filters.indexOf(filter);
-        if (index !== -1) {
-          this.editForm.filters.splice(index, 1)
-        }
+        this.editForm.filters.splice(index, 1)
       },
 
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('submit!');
+            this.$store.dispatch('saveSection', {
+              id: this.sectionDetail.id,
+              presentationId: this.presentationId,
+              title: this.editForm.title,
+              description: '',
+              dataSet: this.sectionDetail.dataSet,
+              selections: this.editForm.selections.map(s => ({field: s})),
+              involvedRecords: this.editForm.involvedRecords.map(s => ({name: s})),
+              filters: this.editForm.filters.map(f => Object.assign({}, f)),
+              joiners: [],
+            }).then(() => {
+              this.isEditing = false;
+              this.sendAnalysisRequest();
+            })
           } else {
             return false;
           }
+        });
+      },
+
+      deleteSection() {
+        this.$store.dispatch('deleteSection', {
+          presentationId: this.presentationId,
+          id: this.sectionDetail.id
         });
       },
 
@@ -303,6 +326,8 @@
   .title {
     font-size: 20px;
     text-align: center;
+    margin-bottom: 10px;
+    margin-top: 10px;
   }
 
   .noDataToDisplay {

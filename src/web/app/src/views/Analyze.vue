@@ -12,7 +12,7 @@
         </el-aside>
         <el-main>
           <presentation-brief :id="id"/>
-          <section-list-panel />
+          <section-list-panel :presentationId="id"/>
         </el-main>
       </el-container>
     </div>

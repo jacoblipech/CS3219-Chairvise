@@ -35,6 +35,7 @@ public class PresentationSection {
 
     private String title;
 
+    @Column(columnDefinition="TEXT")
     private String description;
 
     private String type;
@@ -44,15 +45,19 @@ public class PresentationSection {
     // The following field does not worth to be stored as relation in RDBMS
     // we store them as serialized json string
 
+    @Column(columnDefinition="TEXT")
     private String selections;
     //private List<Selection> selections = new ArrayList<>();
 
+    @Column(columnDefinition="TEXT")
     private String involvedRecords;
     //private List<Record> involvedRecords = new ArrayList<>();
 
+    @Column(columnDefinition="TEXT")
     private String filters;
     //private List<Filter> filters = new ArrayList<>();
 
+    @Column(columnDefinition="TEXT")
     private String joiners;
     //private List<Joiner> joiners = new ArrayList<>();
 
