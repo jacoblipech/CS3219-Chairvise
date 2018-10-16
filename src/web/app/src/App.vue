@@ -42,3 +42,12 @@ export default {
   },
 }
 </script>
+
+<style>
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,500');
+
+body {
+  font-family: 'Montserrat', sans-serif;
+}
+</style>
+

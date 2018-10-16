@@ -1,7 +1,6 @@
 <template>
     <el-row class="map-container">
-        <el-col :span="3"></el-col>
-        <el-col :span="10" class="map-area">
+        <el-col :span="10" :offset="3" class="map-area">
             
             <div class="db-tags">
                 <h3>Database fields</h3>
@@ -27,8 +26,8 @@
                 </transition-group>
             </div>
         </el-col>
-        <el-col :span="2"></el-col>
-        <el-col :span="6" class="map-result">
+        <el-col :span="1"></el-col>
+        <el-col :span="7" class="map-result">
             <h3>Mapping</h3>
             <transition-group name="map-group" tag="div">
                 <div class="pair-tag" v-for="(item, idx) in mappedPairs"
@@ -134,10 +133,6 @@ export default {
   }
 }
 
-.map-container {
-    font-family: 'Montserrat', sans-serif;
-}
-
 .map-container h3 {
     letter-spacing: .5px;
 }
@@ -181,6 +176,10 @@ export default {
 .map-container {
     display: flex;
     flex-direction: row;
+}
+
+.db-tags {
+    min-height: 90px;
 }
 
 .tag {
