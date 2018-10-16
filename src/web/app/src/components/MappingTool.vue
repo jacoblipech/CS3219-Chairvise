@@ -1,14 +1,14 @@
 <template>
-  <el-row class="map-container">
-    <el-col :span="10" :offset="3" class="map-area">
+  <el-row :gutter="20" class="map-container">
+    <el-col :span="10" :offset="1" class="map-area">
       <div class="db-tags">
         <h3>Database fields</h3>
         <transition-group name="tags-group" tag="div">
-          <div class="tag" v-for="(item, idx) in dbList"
+          <div class="tag" v-for="(item, idx) in dbList.fieldMetaDataList"
                v-bind:key="idx"
                v-bind:class="[ idx == selectedDBTag ? 'active' : '', mappedDBTag.includes(idx) ? 'hidden' : '' ]"
                v-on:click="dbTagClicked(idx)">
-            {{ item }}
+            {{ item.fieldName }}
           </div>
         </transition-group>
       </div>
@@ -25,13 +25,23 @@
         </transition-group>
       </div>
     </el-col>
-    <el-col :span="1"></el-col>
-    <el-col :span="7" class="map-result">
+    <el-col :span="12" class="map-result">
       <h3>Mapping</h3>
       <transition-group name="map-group" tag="div">
-        <div class="pair-tag" v-for="(item, idx) in mappedPairs"
-             v-bind:key="idx">
-          <span>{{ dbList[item[0]] }} <i class="el-icon-caret-right"></i> {{ importList[item[1]] }}</span><i class="el-icon-close" v-on:click="removeMapClicked(idx)"></i>
+        <div class="pair-tag" v-for="(item, index) in mappedPairs" v-bind:key="index">
+					<el-tag>{{ dbList.fieldMetaDataList[item[0]].type }}</el-tag>
+          <span class="pair-info">
+						{{ dbList.fieldMetaDataList[item[0]].fieldName }} 
+						<i class="el-icon-caret-right"></i> 
+						{{ importList[item[1]] }}
+					</span>
+					<el-input placeholder="format" 
+							v-model="dataTypes[index].detail" 
+							v-if="dbList.fieldMetaDataList[item[0]].type == 'LocalDate'
+								|| dbList.fieldMetaDataList[item[0]].type == 'LocalTime'
+								|| dbList.fieldMetaDataList[item[0]].type == 'boolean'">
+					</el-input>
+					<i class="el-icon-close" v-on:click="removeMapClicked(index)"></i>
         </div>
       </transition-group>
       <transition name="fade" mode="out-in">
@@ -40,7 +50,6 @@
         </div>
       </transition>
     </el-col>
-    <el-col :span="3"></el-col>
   </el-row>
 </template>
 
@@ -48,22 +57,7 @@
 export default {
   name: "MappingTool",
   props: {
-    dbList: {
-      type: Array,
-      default: function() {
-        return [
-          "submission #",
-          "first name",
-          "last name",
-          "email",
-          "country",
-          "organization",
-          "web page",
-          "person",
-          "corresponding"
-        ];
-      }
-    },
+    dbList: Object,
     importList: {
       type: Array,
       default: function() {
@@ -76,7 +70,9 @@ export default {
       selectedDBTag: -1,
       selectedImportTag: -1,
       mappedDBTag: [],
-      mappedImportTag: []
+			mappedImportTag: [],
+			options: [{ "label": "Bool" }, { "label": "Int" }, { "label": "Float" }, { "label": "String" }, { "label": "Date"}],
+			dataTypes: []
     };
   },
   computed: {
@@ -84,10 +80,10 @@ export default {
       var temp = this.mappedImportTag;
       var result = this.mappedDBTag.map(function(e, i) {
         return [e, temp[i]];
-      });
+			});
       return result;
     }
-  },
+	},
   methods: {
     dbTagClicked: function(idx) {
       if (idx == this.selectedDBTag) {
@@ -99,7 +95,10 @@ export default {
         this.mappedDBTag.push(this.selectedDBTag);
         this.mappedImportTag.push(this.selectedImportTag);
         this.selectedDBTag = -1;
-        this.selectedImportTag = -1;
+				this.selectedImportTag = -1;
+				var newTypeObject = {};
+				newTypeObject[this.dataTypes.length] = { detail: "" };
+				this.dataTypes.push(newTypeObject);
       }
     },
     importTagClicked: function(idx) {
@@ -112,15 +111,20 @@ export default {
         this.mappedDBTag.push(this.selectedDBTag);
         this.mappedImportTag.push(this.selectedImportTag);
         this.selectedDBTag = -1;
-        this.selectedImportTag = -1;
+				this.selectedImportTag = -1;
+				var newTypeObject = {};
+				newTypeObject[this.dataTypes.length] = { detail: "" };
+				this.dataTypes.push(newTypeObject);
       }
     },
     removeMapClicked: function(idx) {
       this.mappedDBTag.splice(idx, 1);
-      this.mappedImportTag.splice(idx, 1);
+			this.mappedImportTag.splice(idx, 1);
+			this.dataTypes.splice(idx, 1);
     },
     uploadMapping: function() {
-      console.log(this.mappedPairs);
+			console.log(this.mappedPairs);
+			console.log(this.dataTypes)
     }
   },
   mounted() {},
@@ -247,9 +251,6 @@ export default {
 }
 
 .pair-tag {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
   margin: 5px 5px;
   padding: 15px 14px;
   letter-spacing: 0.5px;
@@ -257,8 +258,10 @@ export default {
   color: #565656;
 }
 
-.pair-tag span {
+.pair-tag .pair-info {
+	margin-left: 10px;
   transition: 1s ease;
+	font-size: 14px;
 }
 
 .pair-tag .el-icon-close {
@@ -272,8 +275,12 @@ export default {
   top: 2px;
 }
 
+.pair-tag .el-icon-close {
+	float: right;
+	margin-top: 13px;
+}
+
 .pair-tag .el-icon-close:hover {
-  margin-top: 2px;
   color: crimson;
   transition: 0.3s;
 }
@@ -284,5 +291,16 @@ export default {
   position: absolute;
   top: 65px;
   margin-left: 10px;
+}
+
+.el-tag {
+	margin-left: 0px;
+	width: 70px;
+	text-align: center;
+}
+
+.el-input {
+	margin-left: 10px;
+	width: 150px;
 }
 </style>

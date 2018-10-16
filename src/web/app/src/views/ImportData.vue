@@ -8,7 +8,7 @@
       &nbsp;<el-button type="warning" plain size="mini" @click="navigateToHomePage">Return to the Home Page</el-button>
     </el-alert>
     <div v-if="isAdmin">
-      <mapping-tool v-if="uploaded" :importList="importedTitles" ref="mapTool"></mapping-tool>
+      <mapping-tool v-if="uploaded" :importList="importedTitles" :dbList="dbSchemas[0]" ref="mapTool"></mapping-tool>
       <el-row v-if="uploaded" class="button-row">
         <el-col :offset="3">
           <el-button class="back-button" type="info" v-on:click="backClicked">back</el-button>
@@ -47,12 +47,18 @@ export default {
       uploaded: false
     };
   },
+  mounted() {
+    this.$store.dispatch('fetchDBMetaDataEntities');
+  },
   computed: {
     isAdmin: function() {
       return this.$store.state.userInfo.isAdmin;
     },
     isAppLoading: function() {
       return this.$store.state.isPageLoading || this.$store.state.isDataProcessing;
+    },
+    dbSchemas: function() {
+      return this.$store.state.dbMetaData.entities;
     }
   },
   methods: {
