@@ -1,5 +1,5 @@
 <template>
-  <el-row class="addRowRightAlign" v-if="presentationId === ID_NEW_PRESENTATION">
+  <el-row class="addRowRightAlign" v-if="isNewPresentation">
     <el-alert
       title="Please create presentation before adding sections"
       type="info">
@@ -53,12 +53,13 @@ export default {
     return {
       predefinedSections: sectionOptions,
       selectedNewSection: '',
-
-      // constant
-      ID_NEW_PRESENTATION: ID_NEW_PRESENTATION
     }
   },
   computed: {
+    isNewPresentation() {
+      return this.presentationId === ID_NEW_PRESENTATION
+    },
+
     sectionList() {
       return this.$store.state.section.sectionList
     },
@@ -84,7 +85,9 @@ export default {
   },
   methods: {
     fetchSectionList() {
-      this.$store.dispatch('fetchSectionList', this.presentationId)
+      if (!this.isNewPresentation) {
+        this.$store.dispatch('fetchSectionList', this.presentationId)
+      }
     },
 
     addNewSection() {

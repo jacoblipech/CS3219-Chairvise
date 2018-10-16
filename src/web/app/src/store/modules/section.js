@@ -23,7 +23,7 @@ export default {
       state.sectionListStatus.apiErrorMsg = msg;
     },
 
-    addSection(state, payload) {
+    addSectionDetail(state, payload) {
       state.sectionList.push(Object.assign({
         status: {
           isLoading: true,
@@ -34,12 +34,12 @@ export default {
       }, payload))
     },
 
-    deleteSection(state, payload) {
+    deleteSectionDetail(state, payload) {
       let index = state.sectionList.findIndex(s => s.id === payload);
       state.sectionList.splice(index, 1)
     },
 
-    updateSection(state, {id, title, description, dataSet, selections, involvedRecords, filters, joiners}) {
+    updateSectionDetail(state, {id, title, description, dataSet, selections, involvedRecords, filters, joiners}) {
       let section = findSectionDetailById(state.sectionList, id);
 
       section.title = title;
@@ -83,7 +83,7 @@ export default {
       await axios.get('/api/presentations/' + presentationId + '/sections')
         .then(response => {
           response.data.forEach(s => {
-            commit('addSection', s)
+            commit('addSectionDetail', s)
           });
         })
         .catch(e => {
@@ -94,7 +94,7 @@ export default {
         })
     },
 
-    async addSection({commit}, {presentationId, selectedNewSection, dataSet}) {
+    async addSectionDetail({commit}, {presentationId, selectedNewSection, dataSet}) {
       commit('setSectionListLoading', true);
 
       let newSection = PredefinedQueries[selectedNewSection].data;
@@ -102,7 +102,7 @@ export default {
 
       await axios.post(`/api/presentations/${presentationId}/sections`, newSection)
         .then(response => {
-          commit('addSection', response.data)
+          commit('addSectionDetail', response.data)
         })
         .catch(e => {
           commit('setSectionListApiError', e.toString())
@@ -112,7 +112,7 @@ export default {
         })
     },
 
-    async saveSection({commit}, {id, presentationId, title, description, dataSet, selections, involvedRecords, filters, joiners}) {
+    async saveSectionDetail({commit}, {id, presentationId, title, description, dataSet, selections, involvedRecords, filters, joiners}) {
       commit('setSectionDetailLoading', {id, isLoading: true});
 
       await axios.put(`/api/presentations/${presentationId}/sections/${id}`, {
@@ -126,7 +126,7 @@ export default {
       })
         .then(response => {
           let section = response.data;
-          commit('updateSection', {
+          commit('updateSectionDetail', {
             id: section.id,
             title: section.title,
             description: section.description,
