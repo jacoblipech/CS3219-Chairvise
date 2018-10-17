@@ -8,4 +8,6 @@ import java.util.List;
 public interface SubmissionRecordRepository extends JpaRepository<SubmissionRecord, Long> {
 
     List<SubmissionRecord> findByDataSetEquals(String dataSet);
+
+    void deleteAllByDataSetEquals(String dataSet);
 }
