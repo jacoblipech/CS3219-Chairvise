@@ -39,12 +39,7 @@ export default {
     },
 
     deleteFromPresentationList(state, payload) {
-      let index;
-      for (index =0; index < state.presentationList.length; index++) {
-          if (payload === state.presentationList[index].id) {
-              break;
-          }
-      }
+      const index = state.presentationList.findIndex(presentation => presentation.id === payload );
       state.presentationList.splice(index, 1)
     },
 

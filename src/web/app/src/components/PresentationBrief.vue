@@ -134,7 +134,13 @@ export default {
     deleteForm() {
       this.$store.dispatch('deletePresentation', this.id)
         .then(() => {
-          this.isEditing = false
+          this.$router.replace({
+              name: 'analyze',
+              params: {
+                  id: "__NEW__"
+              }
+          });
+          this.isEditing = false;
         })
     },
     updatePresentationForm() {
