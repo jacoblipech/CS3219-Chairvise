@@ -36,20 +36,19 @@
       <h3>Mapping</h3>
       <transition-group name="map-group" tag="div">
         <div class="pair-tag" v-for="(item, index) in mappedPairs" v-bind:key="index">
-					<el-tag>{{ dbList.fieldMetaDataList[item[0]].type }}</el-tag>
+					<el-tag size="medium">{{ dbList.fieldMetaDataList[item[0]].type }}</el-tag>
           <p class="pair-info">
 						{{ dbList.fieldMetaDataList[item[0]].fieldName }} 
 						<i class="el-icon-caret-right"></i> 
 						{{ importList[item[1]] }}
-					</p>
-					<el-input placeholder="format" size="small"
+					</p><i class="el-icon-close" v-on:click="removeMapClicked(index)"></i><br>
+					<el-input placeholder="format" size="mini"
 							v-model="dataTypes[index].detail" 
 							v-if="dbList.fieldMetaDataList[item[0]].type == 'LocalDate'
 								|| dbList.fieldMetaDataList[item[0]].type == 'LocalTime'
 								|| dbList.fieldMetaDataList[item[0]].type == 'boolean'
-                || dbList.fieldMetaDataList[item[0]].type == 'Instant'">
+                || dbList.fieldMetaDataList[item[0]].type == 'Date'">
 					</el-input>
-					<i class="el-icon-close" v-on:click="removeMapClicked(index)"></i>
         </div>
       </transition-group>
       <transition name="fade" mode="out-in">
@@ -86,9 +85,29 @@ export default {
       return result;
     },
     importList: function() {
-      return this.$store.state.dataMapping.data.uploadedLabel;
+      if (this.$store.state.dataMapping.data.hasLabel) {
+        return this.$store.state.dataMapping.data.uploadedLabel;  
+      }
+      var lst = [];
+      for (var i = 0; i < this.$store.state.dataMapping.data.uploadedLabel.length; i++) {
+        lst.push("Column " + (i + 1));
+      }
+      return lst
+    },
+    errors: function() {
+      return this.$store.state.dataMapping.error;
     }
-	},
+  },
+  watch: {
+    errors (newValue) {
+      if (newValue.length > 0) {
+        this.$notify.error({
+          title: 'Error',
+          message: newValue.join("\n")
+        });
+      }
+    }
+  },
   methods: {
     dbTagClicked: function(idx) {
       if (idx == this.selectedDBTag) {
@@ -135,9 +154,9 @@ export default {
       this.$store.commit("clearMapping");
     },
     uploadClicked: function() {
-      this.$store.commit("setMapping", this.mappedPairs);
-      console.log(this.mappedPairs)
-      console.log(this.dataTypes)
+      var map = this.mappedPairs.slice();
+      var types = this.dataTypes.slice();
+      this.$store.commit("setMapping", { "map": map, "types": types });
     }
   },
   mounted() {},
@@ -233,6 +252,10 @@ export default {
   z-index: 1;
   transition: opacity 0.2s, transform 0.3s, background-color 0.2s;
   border-radius: 5px;
+  max-width: 400px;
+  text-overflow: ellipsis;
+  overflow: hidden; 
+  white-space: nowrap;
   /* box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12); */
 }
 
@@ -282,7 +305,7 @@ export default {
 }
 
 .pair-tag .el-icon-close {
-  margin-top: 8px;
+  margin-top: 4px;
   cursor: pointer;
   transition: 0.3s;
   float: right;
@@ -308,13 +331,16 @@ export default {
 
 .el-tag {
 	margin-left: 0px;
+  padding: 0px;
 	width: 70px;
 	text-align: center;
+  font-size: 9px;
 }
 
 .el-input {
 	margin-left: 78px;
-	width: 150px;
+  margin-top: 8px;
+	width: 170px;
 }
 
 .button-row {

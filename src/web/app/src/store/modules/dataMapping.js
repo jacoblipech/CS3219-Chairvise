@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { processRawCSVString, processMapping } from '../helpers/processor.js'
+import { processMapping } from '../helpers/processor.js'
 
 export default {
   state: {
@@ -13,16 +13,17 @@ export default {
 			uploadedData: [],
 			uploadedLabel: [],
 			mappingResult: [],
+			dataDetail: [],
 			tableType: null,
 			hasLabel: null
-		}
+		},
+		error: []
   },
 
   mutations: {
-    setUploadedFile(state, uploadedFileString) {
-			var processed = processRawCSVString(uploadedFileString);
-			state.data.uploadedLabel = processed[0];
-			state.data.uploadedData = processed[1];
+    setUploadedFile(state, data) {
+			state.data.uploadedLabel = data[0];
+			state.data.uploadedData = data;
     	state.fileUploaded = true;
 		},
 		
@@ -62,15 +63,27 @@ export default {
 			state.hasLabelSpecified = false;
 		},
 		
-		setMapping(state, mapping) {
-			state.data.mapping = mapping;
+		setMapping(state, payload) {
+			state.error = [];
+			state.data.mappingResult = payload.map;
+			state.data.dataDetail = payload.types;
 			state.mappingFinished = true;
-			processMapping(mapping, state.data.uploadedData, state.data.dbSchema);
+			try {
+				processMapping(payload.map, payload.types, state.data.uploadedData, state.data.dbSchema);
+			} catch (err) {
+				state.error.push(err);
+				state.mappingFinished = false;
+				state.data.mappingResult = [];
+				state.data.dataDetail = [];
+				state.data.dataDetail = null;
+			}
 		},
 		
 		clearMapping(state) {
 			state.data.mappingResult = [];
+			state.data.dataDetail = [];
 			state.mappingFinished = false;
+			state.data.dataDetail = null;
 		}
   },
 

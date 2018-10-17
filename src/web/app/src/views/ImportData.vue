@@ -37,6 +37,7 @@
 
 <script>
 import MappingTool from "@/components/MappingTool.vue";
+import Papa from 'papaparse';
 
 export default {
   name: "ImportData",
@@ -89,12 +90,12 @@ export default {
     },
     fileUploaded: function(file) {
       this.$store.commit("setDataProcessingStatus", true);
-      var fileReader = new FileReader();
-      fileReader.readAsText(file.raw);
-      fileReader.onloadend = function() {
-        this.$store.commit("setUploadedFile", fileReader.result);
-        this.$store.commit("setDataProcessingStatus", false);
-      }.bind(this);
+      Papa.parse(file.raw, {
+        complete: function(result) {
+          this.$store.commit("setUploadedFile", result.data);
+          this.$store.commit("setDataProcessingStatus", false);
+        }.bind(this)
+      });
     }
   },
   components: {

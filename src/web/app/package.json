@@ -11,6 +11,8 @@
   "dependencies": {
     "axios": "^0.18.0",
     "element-ui": "^2.4.5",
+    "moment": "^2.22.2",
+    "papaparse": "^4.6.1",
     "vue": "^2.5.17",
     "vue-router": "^3.0.1",
     "vuewordcloud": "^18.7.11",
