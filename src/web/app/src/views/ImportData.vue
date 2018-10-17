@@ -8,8 +8,8 @@
       &nbsp;<el-button type="warning" plain size="mini" @click="navigateToHomePage">Return to the Home Page</el-button>
     </el-alert>
     <div v-if="isAdmin">
-      <mapping-tool v-if="uploaded" :importList="importedTitles" :dbList="dbSchemas[0]" ref="mapTool"></mapping-tool>
-      <el-row v-if="uploaded" class="button-row">
+      <mapping-tool v-if="readyForMapping" :importList="importedTitles" :dbList="dbSchemas[tableType]" ref="mapTool"></mapping-tool>
+      <el-row v-if="readyForMapping" class="button-row">
         <el-col :offset="3">
           <el-button class="back-button" type="info" v-on:click="backClicked">back</el-button>
           <el-button class="back-button" type="success" v-on:click="uploadClicked">upload</el-button>
@@ -25,6 +25,13 @@
             <div class="el-upload__text">Drop file here or <em>click to upload</em></div>
             <div class="el-upload__tip" slot="tip">Please upload .csv files with filed names.</div>
         </el-upload>
+        <el-select v-if="uploaded" v-model="tableType" placeholder="Table Type">
+          <el-option v-for="(schema, idx) in dbSchemas"
+              :key="schema.tableName"
+              :label="schema.tableName.replace('_', ' ')"
+              :value="idx">
+          </el-option>
+        </el-select>
       </div>
     </div>
   </div>
@@ -44,11 +51,20 @@ export default {
         "title",
         "authors"
       ],
-      uploaded: false
+      uploaded: false,
+      tableTypeSelected: false,
+      tableType: null
     };
   },
   mounted() {
     this.$store.dispatch('fetchDBMetaDataEntities');
+  },
+  watch: {
+    tableType: function(newType) {
+      if (newType != null) {
+        this.tableTypeSelected = true;
+      }
+    }
   },
   computed: {
     isAdmin: function() {
@@ -59,6 +75,9 @@ export default {
     },
     dbSchemas: function() {
       return this.$store.state.dbMetaData.entities;
+    },
+    readyForMapping: function() {
+      return this.uploaded && this.tableTypeSelected;
     }
   },
   methods: {
@@ -81,6 +100,8 @@ export default {
     backClicked: function() {
       this.uploaded = false;
       this.importedTitles = [];
+      this.tableType = null;
+      this.tableTypeSelected = false;
     },
     uploadClicked: function() {
       this.$refs.mapTool.uploadMapping();
@@ -95,11 +116,12 @@ export default {
 <style scoped>
 .upload-box {
   width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
   text-align: center;
   padding-top: 100px;
+}
+
+.upload-box .el-select {
+  margin-top: 20px;
 }
 
 .button-row {

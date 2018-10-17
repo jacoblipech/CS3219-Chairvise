@@ -70,8 +70,8 @@ export default {
       selectedDBTag: -1,
       selectedImportTag: -1,
       mappedDBTag: [],
-			mappedImportTag: [],
-			options: [{ "label": "Bool" }, { "label": "Int" }, { "label": "Float" }, { "label": "String" }, { "label": "Date"}],
+      mappedImportTag: [],
+      tableType: "",
 			dataTypes: []
     };
   },
@@ -210,8 +210,7 @@ export default {
   background-color: #ffffff;
   border: 1px solid #007bff;
   color: #007bff;
-  letter-spacing: 0.5px;
-  font-size: 15px;
+  font-size: 14px;
   cursor: pointer;
   opacity: 1;
   z-index: 1;
