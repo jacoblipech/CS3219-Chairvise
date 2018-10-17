@@ -8,13 +8,7 @@
       &nbsp;<el-button type="warning" plain size="mini" @click="navigateToHomePage">Return to the Home Page</el-button>
     </el-alert>
     <div v-if="isAdmin">
-      <mapping-tool v-if="readyForMapping" :importList="importedTitles" :dbList="dbSchemas[tableType]" ref="mapTool"></mapping-tool>
-      <el-row v-if="readyForMapping" class="button-row">
-        <el-col :offset="3">
-          <el-button class="back-button" type="info" v-on:click="backClicked">back</el-button>
-          <el-button class="back-button" type="success" v-on:click="uploadClicked">upload</el-button>
-        </el-col>
-      </el-row>
+      <mapping-tool v-if="readyForMapping" :dbList="dbSchemas[tableType]" ref="mapTool"></mapping-tool>
       <div v-else class="upload-box">
         <el-upload drag action=""
           :auto-upload="false"
@@ -32,6 +26,10 @@
               :value="idx">
           </el-option>
         </el-select>
+        <el-select v-if="uploaded" v-model="hasLabel" placeholder="Has label?">
+          <el-option :key="'Yes'" :label="'Yes'" :value="true"></el-option>
+          <el-option :key="'No'" :label="'No'" :value="false"></el-option>
+        </el-select>
       </div>
     </div>
   </div>
@@ -44,27 +42,10 @@ export default {
   name: "ImportData",
   data() {
     return {
-      importedTitles: [
-        "number",
-        "track number",
-        "track name",
-        "title",
-        "authors"
-      ],
-      uploaded: false,
-      tableTypeSelected: false,
-      tableType: null
     };
   },
   mounted() {
     this.$store.dispatch('fetchDBMetaDataEntities');
-  },
-  watch: {
-    tableType: function(newType) {
-      if (newType != null) {
-        this.tableTypeSelected = true;
-      }
-    }
   },
   computed: {
     isAdmin: function() {
@@ -76,8 +57,30 @@ export default {
     dbSchemas: function() {
       return this.$store.state.dbMetaData.entities;
     },
+    tableType: {
+      get: function() {
+        return this.$store.state.dataMapping.data.tableType;
+      },
+      set: function(newValue) {
+        this.$store.commit("setTableType", newValue);
+        this.$store.commit("setDBSchema", this.dbSchemas[newValue]);
+      }
+    },
+    hasLabel: {
+      get: function() {
+        return this.$store.state.dataMapping.data.hasLabel;
+      },
+      set: function(newValue) {
+        this.$store.commit("setHasLabel", newValue);
+      }
+    },
     readyForMapping: function() {
-      return this.uploaded && this.tableTypeSelected;
+      return this.$store.state.dataMapping.fileUploaded 
+        && this.$store.state.dataMapping.tableTypeSelected
+        && this.$store.state.dataMapping.hasLabelSpecified;
+    },
+    uploaded: function() {
+      return this.$store.state.dataMapping.fileUploaded;
     }
   },
   methods: {
@@ -89,22 +92,9 @@ export default {
       var fileReader = new FileReader();
       fileReader.readAsText(file.raw);
       fileReader.onloadend = function() {
-        var firstLine = fileReader.result.split("\n")[0];
-        this.importedTitles = firstLine.split(",").map(function(item) {
-          return item.trim().replace(/['"]+/g, "");
-        });
-        this.uploaded = true;
+        this.$store.commit("setUploadedFile", fileReader.result);
         this.$store.commit("setDataProcessingStatus", false);
       }.bind(this);
-    },
-    backClicked: function() {
-      this.uploaded = false;
-      this.importedTitles = [];
-      this.tableType = null;
-      this.tableTypeSelected = false;
-    },
-    uploadClicked: function() {
-      this.$refs.mapTool.uploadMapping();
     }
   },
   components: {
@@ -122,6 +112,7 @@ export default {
 
 .upload-box .el-select {
   margin-top: 20px;
+  margin-left: 15px;
 }
 
 .button-row {

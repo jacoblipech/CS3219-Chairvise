@@ -24,22 +24,30 @@
           </div>
         </transition-group>
       </div>
+
+      <el-row class="button-row">
+        <el-col>
+          <el-button class="back-button" type="info" v-on:click="backClicked">back</el-button>
+          <el-button class="back-button" type="success" v-on:click="uploadClicked">upload</el-button>
+        </el-col>
+      </el-row>
     </el-col>
     <el-col :span="12" class="map-result">
       <h3>Mapping</h3>
       <transition-group name="map-group" tag="div">
         <div class="pair-tag" v-for="(item, index) in mappedPairs" v-bind:key="index">
 					<el-tag>{{ dbList.fieldMetaDataList[item[0]].type }}</el-tag>
-          <span class="pair-info">
+          <p class="pair-info">
 						{{ dbList.fieldMetaDataList[item[0]].fieldName }} 
 						<i class="el-icon-caret-right"></i> 
 						{{ importList[item[1]] }}
-					</span>
-					<el-input placeholder="format" 
+					</p>
+					<el-input placeholder="format" size="small"
 							v-model="dataTypes[index].detail" 
 							v-if="dbList.fieldMetaDataList[item[0]].type == 'LocalDate'
 								|| dbList.fieldMetaDataList[item[0]].type == 'LocalTime'
-								|| dbList.fieldMetaDataList[item[0]].type == 'boolean'">
+								|| dbList.fieldMetaDataList[item[0]].type == 'boolean'
+                || dbList.fieldMetaDataList[item[0]].type == 'Instant'">
 					</el-input>
 					<i class="el-icon-close" v-on:click="removeMapClicked(index)"></i>
         </div>
@@ -57,13 +65,7 @@
 export default {
   name: "MappingTool",
   props: {
-    dbList: Object,
-    importList: {
-      type: Array,
-      default: function() {
-        return [];
-      }
-    }
+    dbList: Object
   },
   data() {
     return {
@@ -71,8 +73,8 @@ export default {
       selectedImportTag: -1,
       mappedDBTag: [],
       mappedImportTag: [],
-      tableType: "",
-			dataTypes: []
+      dataTypes: [],
+      tableType: ""
     };
   },
   computed: {
@@ -82,6 +84,9 @@ export default {
         return [e, temp[i]];
 			});
       return result;
+    },
+    importList: function() {
+      return this.$store.state.dataMapping.data.uploadedLabel;
     }
 	},
   methods: {
@@ -122,9 +127,17 @@ export default {
 			this.mappedImportTag.splice(idx, 1);
 			this.dataTypes.splice(idx, 1);
     },
-    uploadMapping: function() {
-			console.log(this.mappedPairs);
-			console.log(this.dataTypes)
+    backClicked: function() {
+      this.$store.commit("clearDBSchema");
+      this.$store.commit("clearUploadedFile");
+      this.$store.commit("clearTableType");
+      this.$store.commit("clearHasLabel");
+      this.$store.commit("clearMapping");
+    },
+    uploadClicked: function() {
+      this.$store.commit("setMapping", this.mappedPairs);
+      console.log(this.mappedPairs)
+      console.log(this.dataTypes)
     }
   },
   mounted() {},
@@ -202,6 +215,10 @@ export default {
   min-height: 90px;
 }
 
+.import-tags {
+  min-height: 90px;
+}
+
 .tag {
   display: inline-block;
   height: 20px;
@@ -261,22 +278,19 @@ export default {
 	margin-left: 10px;
   transition: 1s ease;
 	font-size: 14px;
+  display: inline;
 }
 
 .pair-tag .el-icon-close {
-  margin-top: 2px;
+  margin-top: 8px;
   cursor: pointer;
   transition: 0.3s;
+  float: right;
 }
 
 .pair-tag .el-icon-caret-right {
   position: relative;
   top: 2px;
-}
-
-.pair-tag .el-icon-close {
-	float: right;
-	margin-top: 13px;
 }
 
 .pair-tag .el-icon-close:hover {
@@ -299,7 +313,11 @@ export default {
 }
 
 .el-input {
-	margin-left: 10px;
+	margin-left: 78px;
 	width: 150px;
+}
+
+.button-row {
+  margin-top: 40px;
 }
 </style>
