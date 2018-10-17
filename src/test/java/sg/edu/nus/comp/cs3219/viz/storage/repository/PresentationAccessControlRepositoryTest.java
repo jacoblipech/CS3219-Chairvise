@@ -1,14 +1,10 @@
 package sg.edu.nus.comp.cs3219.viz.storage.repository;
 
-import sg.edu.nus.comp.cs3219.viz.BaseTestWithDBAccess;
-import sg.edu.nus.comp.cs3219.viz.common.datatransfer.AccessLevel;
-import sg.edu.nus.comp.cs3219.viz.common.entity.Presentation;
-
-import java.util.List;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import sg.edu.nus.comp.cs3219.viz.BaseTestWithDBAccess;
+import sg.edu.nus.comp.cs3219.viz.common.datatransfer.AccessLevel;
 
 public class PresentationAccessControlRepositoryTest extends BaseTestWithDBAccess {
 

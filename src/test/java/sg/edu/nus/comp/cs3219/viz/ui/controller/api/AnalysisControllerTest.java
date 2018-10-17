@@ -7,9 +7,10 @@ import sg.edu.nus.comp.cs3219.viz.BaseTestREST;
 import sg.edu.nus.comp.cs3219.viz.common.datatransfer.AnalysisRequest;
 import sg.edu.nus.comp.cs3219.viz.common.entity.PresentationSection;
 
-import static org.hamcrest.Matchers.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class AnalysisControllerTest extends BaseTestREST {
 

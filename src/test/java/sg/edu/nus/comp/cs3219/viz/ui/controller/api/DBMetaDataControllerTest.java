@@ -3,8 +3,6 @@ package sg.edu.nus.comp.cs3219.viz.ui.controller.api;
 import org.junit.Test;
 import sg.edu.nus.comp.cs3219.viz.BaseTestREST;
 
-import java.time.Instant;
-
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;

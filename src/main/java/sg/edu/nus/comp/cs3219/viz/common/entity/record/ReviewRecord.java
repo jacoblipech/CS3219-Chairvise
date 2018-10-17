@@ -9,7 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Transient;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;

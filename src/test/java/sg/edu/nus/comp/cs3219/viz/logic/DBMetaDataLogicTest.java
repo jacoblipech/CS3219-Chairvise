@@ -9,7 +9,6 @@ import sg.edu.nus.comp.cs3219.viz.testhelper.TestProperties;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.time.Instant;
 import java.util.List;
 
 public class DBMetaDataLogicTest {

@@ -41,13 +41,13 @@
         "description": ""
       },
       {
-        "fieldName": "a_webPage",
+        "fieldName": "a_web_page",
         "type": "String",
         "name": "Web Page",
         "description": ""
       },
       {
-        "fieldName": "a_personId",
+        "fieldName": "a_person_id",
         "type": "String",
         "name": "Person Id",
         "description": "Author's unique id in user submitted csv file"

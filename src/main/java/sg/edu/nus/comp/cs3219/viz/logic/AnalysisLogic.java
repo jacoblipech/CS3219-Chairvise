@@ -9,7 +9,6 @@ import sg.edu.nus.comp.cs3219.viz.common.entity.record.Exportable;
 import sg.edu.nus.comp.cs3219.viz.common.entity.record.ReviewRecord;
 import sg.edu.nus.comp.cs3219.viz.common.entity.record.SubmissionRecord;
 
-import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;

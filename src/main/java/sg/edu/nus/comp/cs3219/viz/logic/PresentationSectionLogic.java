@@ -1,7 +1,6 @@
 package sg.edu.nus.comp.cs3219.viz.logic;
 
 import org.springframework.stereotype.Component;
-import sg.edu.nus.comp.cs3219.viz.common.datatransfer.UserInfo;
 import sg.edu.nus.comp.cs3219.viz.common.entity.Presentation;
 import sg.edu.nus.comp.cs3219.viz.common.entity.PresentationSection;
 import sg.edu.nus.comp.cs3219.viz.storage.repository.PresentationSectionRepository;
