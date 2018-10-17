@@ -1,13 +1,14 @@
 package sg.edu.nus.comp.cs3219.viz.common.entity.record;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Date;
 
 @Exportable(name = "Submission Record", nameInDB = "submission_record")
 @Entity
@@ -44,7 +45,8 @@ public class SubmissionRecord {
 
     // time submitted
     @Exportable(name = "Submission Time")
-    private Instant s_submission_time;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
+    private Date s_submission_time;
 
     @Exportable(name = "Submission Time Date", description = "The date part of Submission Time")
     @Transient
@@ -56,7 +58,8 @@ public class SubmissionRecord {
 
     //  time last updated
     @Exportable(name = "Last Updated Time")
-    private Instant s_last_updated_time;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
+    private Date s_last_updated_time;
 
     @Exportable(name = "Last Updated Time Date", description = "The date part of Last Updated Time")
     @Transient
@@ -144,19 +147,19 @@ public class SubmissionRecord {
         this.s_authors = s_authors;
     }
 
-    public Instant getS_submission_time() {
+    public Date getS_submission_time() {
         return s_submission_time;
     }
 
-    public void setS_submission_time(Instant s_submission_time) {
+    public void setS_submission_time(Date s_submission_time) {
         this.s_submission_time = s_submission_time;
     }
 
-    public Instant getS_last_updated_time() {
+    public Date getS_last_updated_time() {
         return s_last_updated_time;
     }
 
-    public void setS_last_updated_time(Instant s_last_updated_time) {
+    public void setS_last_updated_time(Date s_last_updated_time) {
         this.s_last_updated_time = s_last_updated_time;
     }
 

@@ -1,5 +1,6 @@
 package sg.edu.nus.comp.cs3219.viz.common.entity.record;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.hibernate.annotations.GenericGenerator;
@@ -11,6 +12,7 @@ import javax.persistence.Transient;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Date;
 
 @Exportable(name = "Review Record", nameInDB = "review_record")
 @Entity
@@ -50,7 +52,8 @@ public class ReviewRecord {
     private double r_overall_evaluation_score;
 
     @Exportable(name = "Review Submission Time")
-    private Instant r_review_submission_time;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
+    private Date r_review_submission_time;
 
     @Exportable(name = "Review Submission Time Date", description = "The date part of Review Submission Time")
     @Transient
@@ -135,11 +138,11 @@ public class ReviewRecord {
         this.r_overall_evaluation_score = r_overall_evaluation_score;
     }
 
-    public Instant getR_review_submission_time() {
+    public Date getR_review_submission_time() {
         return r_review_submission_time;
     }
 
-    public void setR_review_submission_time(Instant r_review_submission_time) {
+    public void setR_review_submission_time(Date r_review_submission_time) {
         this.r_review_submission_time = r_review_submission_time;
     }
 

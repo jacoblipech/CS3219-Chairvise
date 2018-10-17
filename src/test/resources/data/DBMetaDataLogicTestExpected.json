@@ -109,7 +109,7 @@
       },
       {
         "fieldName": "r_review_submission_time",
-        "type": "Instant",
+        "type": "Date",
         "name": "Review Submission Time",
         "description": ""
       },
@@ -170,7 +170,7 @@
       },
       {
         "fieldName": "s_submission_time",
-        "type": "Instant",
+        "type": "Date",
         "name": "Submission Time",
         "description": ""
       },
@@ -188,7 +188,7 @@
       },
       {
         "fieldName": "s_last_updated_time",
-        "type": "Instant",
+        "type": "Date",
         "name": "Last Updated Time",
         "description": ""
       },
