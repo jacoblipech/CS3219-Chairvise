@@ -1,38 +1,76 @@
 <template>
-  <div :v-loading="isLoadingDBMetaData">
+  <el-row class="addRowRightAlign" v-if="isNewPresentation">
+    <el-alert
+      title="Please create presentation before adding sections"
+      type="info">
+    </el-alert>
+  </el-row>
+  <div v-loading="isLoadingDBMetaData || isLoadingSectionList" v-else>
     <el-row class="addRowRightAlign">
-      <el-select v-model="value" placeholder="Please select a section">
+      <el-select v-model="selectedNewSection" placeholder="Please select a section">
         <el-option
-          v-for="item in options"
+          v-for="item in predefinedSections"
           :key="item.value"
           :label="item.label"
           :value="item.value">
         </el-option>
       </el-select>
-      <el-button class="addButtonLeft" type="success">Add New Section</el-button>
+      <el-button class="addButtonLeft" type="success" @click="addNewSection">Add New Section</el-button>
     </el-row>
     <br/>
-    <abstract-section-detail v-for="section in sectionList" :sectionDetail="section" :key="section.id"/>
+    <el-alert
+      v-if="isSectionListApiError"
+      :title="sectionListApiErrorMsg"
+      type="error">
+    </el-alert>
+    <abstract-section-detail v-for="section in sectionList" :sectionDetail="section" :key="section.id" :presentationId="presentationId"/>
   </div>
 </template>
 
 <script>
-import {SECTION_TYPE_WORD_CLOUD} from "@/common/const";
 import AbstractSectionDetail from "@/components/AbstractSectionDetail.vue"
+import {ID_NEW_PRESENTATION} from "@/common/const";
+import PredefinedQueries from "@/store/data/predefinedQueries"
 
 export default {
+  props: {
+    presentationId: String,
+  },
+  watch: {
+    presentationId: 'fetchSectionList'
+  },
   data() {
+    let sectionOptions = [];
+    for (let key in PredefinedQueries) {
+      if (PredefinedQueries.hasOwnProperty(key)) {
+        sectionOptions.push({
+          value: key,
+          label: PredefinedQueries[key].name,
+        })
+      }
+    }
+
     return {
-      options: [{
-        value: 'Word Cloud for Submission Keyword',
-        label: SECTION_TYPE_WORD_CLOUD
-      }],
-      value: ''
+      predefinedSections: sectionOptions,
+      selectedNewSection: '',
     }
   },
   computed: {
+    isNewPresentation() {
+      return this.presentationId === ID_NEW_PRESENTATION
+    },
+
     sectionList() {
       return this.$store.state.section.sectionList
+    },
+    isLoadingSectionList() {
+      return this.$store.state.section.sectionListStatus.isLoading
+    },
+    isSectionListApiError() {
+      return this.$store.state.section.sectionListStatus.isApiError
+    },
+    sectionListApiErrorMsg() {
+      return this.$store.state.section.sectionListStatus.apiErrorMsg
     },
     isLoadingDBMetaData() {
       return this.$store.state.dbMetaData.entitiesStatus.isLoading
@@ -42,7 +80,25 @@ export default {
     AbstractSectionDetail
   },
   mounted() {
+    this.fetchSectionList();
     this.$store.dispatch('fetchDBMetaDataEntities');
+  },
+  methods: {
+    fetchSectionList() {
+      if (!this.isNewPresentation) {
+        this.$store.dispatch('fetchSectionList', this.presentationId)
+      }
+    },
+
+    addNewSection() {
+      this.$store.dispatch('addSectionDetail', {
+        presentationId: this.presentationId,
+        selectedNewSection: this.selectedNewSection,
+        dataSet: this.$store.state.userInfo.userEmail,
+      }).then(() => {
+        this.selectedNewSection = ''
+      })
+    }
   }
 }
 </script>

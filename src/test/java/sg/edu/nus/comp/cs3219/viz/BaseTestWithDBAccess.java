@@ -1,6 +1,6 @@
 package sg.edu.nus.comp.cs3219.viz;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -28,6 +28,9 @@ public abstract class BaseTestWithDBAccess {
     protected PresentationAccessControlRepository presentationAccessControlRepository;
 
     @Autowired
+    protected PresentationSectionRepository presentationSectionRepository;
+
+    @Autowired
     protected AuthorRecordRepository authorRecordRepository;
 
     @Autowired
@@ -43,6 +46,7 @@ public abstract class BaseTestWithDBAccess {
         dataBundle = loadDataBundle(getDataBundleName());
         presentationRepository.saveAll(dataBundle.presentations.values());
         presentationAccessControlRepository.saveAll(dataBundle.presentationAccessControls.values());
+        presentationSectionRepository.saveAll(dataBundle.presentationSections.values());
         authorRecordRepository.saveAll(dataBundle.authorRecords.values());
         reviewRecordRepository.saveAll(dataBundle.reviewRecords.values());
         submissionRecordRepository.saveAll(dataBundle.submissionRecords.values());
@@ -51,6 +55,7 @@ public abstract class BaseTestWithDBAccess {
     @After
     public void removeDataBundle() {
         presentationAccessControlRepository.deleteAll();
+        presentationSectionRepository.deleteAll();
         presentationRepository.deleteAll();
         authorRecordRepository.deleteAll();
         reviewRecordRepository.deleteAll();
@@ -61,7 +66,7 @@ public abstract class BaseTestWithDBAccess {
         try {
             String jsonString = new String(
                 Files.readAllBytes(Paths.get(TestProperties.TEST_DATA_FOLDER + pathToJsonFileParam)));
-            return new Gson().fromJson(jsonString, DataBundle.class);
+            return new ObjectMapper().readValue(jsonString, DataBundle.class);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

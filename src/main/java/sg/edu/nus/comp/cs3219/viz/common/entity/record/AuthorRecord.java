@@ -41,11 +41,11 @@ public class AuthorRecord extends BaseEntity {
     private String a_organisation;
 
     @Exportable(name = "Web Page")
-    private String a_webPage;
+    private String a_web_page;
 
     // author's unique id in user submitted csv file
     @Exportable(name = "Person Id", description = "Author's unique id in user submitted csv file")
-    private String a_personId;
+    private String a_person_id;
 
     // is the author corresponding author for the submission
     @Exportable(name = "Is Corresponding", description = "Is the author corresponding author for the submission")
@@ -115,20 +115,20 @@ public class AuthorRecord extends BaseEntity {
         this.a_organisation = a_organisation;
     }
 
-    public String getA_webPage() {
-        return a_webPage;
+    public String getA_web_page() {
+        return a_web_page;
     }
 
-    public void setA_webPage(String a_webPage) {
-        this.a_webPage = a_webPage;
+    public void setA_web_page(String a_web_page) {
+        this.a_web_page = a_web_page;
     }
 
-    public String getA_personId() {
-        return a_personId;
+    public String getA_person_id() {
+        return a_person_id;
     }
 
-    public void setA_personId(String a_personId) {
-        this.a_personId = a_personId;
+    public void setA_person_id(String a_person_id) {
+        this.a_person_id = a_person_id;
     }
 
     public boolean isA_is_corresponding() {

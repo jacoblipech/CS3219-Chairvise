@@ -8,10 +8,10 @@
       "s_is_notified": true,
       "s_is_reviews_sent": true,
       "s_keywords": "Data mining\nEconometrics\ncommodity futures\ncoffee trading\nstatistical analysis\nhemileia vastatrix",
-      "s_last_updated_time": {"seconds":1539438642,"nanos":835000000},
+      "s_last_updated_time": "2018-10-12 10:04:02",
       "s_submission_abstract": "More than two billion cups of coffee are consumed worldwide each day [14]. The livelihood of 120 million people depends on the coffee supply chain [33]. Coffee rust leads to production losses of over $500 million worldwide and may affect futures prices [1",
       "s_submission_id": "2",
-      "s_submission_time": {"seconds":1539438642,"nanos":835000000},
+      "s_submission_time": "2018-10-12 10:04:02",
       "s_title": "Quantitative Approach for Coffee Rust, Production and Futures",
       "s_track_id": "3",
       "s_track_name": "Posters and Demos"
@@ -24,10 +24,10 @@
       "s_is_notified": true,
       "s_is_reviews_sent": true,
       "s_keywords": "Data mining\nEconometrics\ncommodity futures\ncoffee trading\nstatistical analysis\nhemileia vastatrix",
-      "s_last_updated_time": {"seconds":1539438642,"nanos":835000000},
+      "s_last_updated_time": "2018-10-12 10:04:02",
       "s_submission_abstract": "More than two billion cups of coffee are consumed worldwide each day [14]. The livelihood of 120 million people depends on the coffee supply chain [33]. Coffee rust leads to production losses of over $500 million worldwide and may affect futures prices [1",
       "s_submission_id": "2",
-      "s_submission_time": {"seconds":1539438642,"nanos":835000000},
+      "s_submission_time": "2018-10-12 10:04:02",
       "s_title": "Quantitative Approach for Coffee Rust, Production and Futures",
       "s_track_id": "3",
       "s_track_name": "Posters and Demos"
@@ -40,10 +40,10 @@
       "s_is_notified": false,
       "s_is_reviews_sent": true,
       "s_keywords": "Data mining\nEconometrics\ncommodity futures\ncoffee trading\nstatistical analysis\nhemileia vastatrix",
-      "s_last_updated_time": {"seconds":1539438642,"nanos":835000000},
+      "s_last_updated_time": "2018-10-12 10:04:02",
       "s_submission_abstract": "More than two billion cups of coffee are consumed worldwide each day [14]. The livelihood of 120 million people depends on the coffee supply chain [33]. Coffee rust leads to production losses of over $500 million worldwide and may affect futures prices [1",
       "s_submission_id": "3",
-      "s_submission_time": {"seconds":1539438642,"nanos":835000000},
+      "s_submission_time": "2018-10-12 10:04:02",
       "s_title": "Quantitative Approach for Coffee Rust, Production and Futures",
       "s_track_id": "3",
       "s_track_name": "Posters and Demos"
@@ -100,7 +100,7 @@
       "r_overall_evaluation_score": -3,
       "r_review_comment": "(OVERALL EVALUATION) Incorrect format and unrelated content",
       "r_review_id": "1",
-      "r_review_submission_time": {"seconds":1539338642,"nanos":835000000},
+      "r_review_submission_time": "2018-10-12 10:04:02",
       "r_reviewer_name": "Juxxxx Bruxxxx",
       "r_submission_id": "2"
     },
@@ -113,7 +113,7 @@
       "r_overall_evaluation_score": -3,
       "r_review_comment": "(OVERALL EVALUATION) Incorrect format and unrelated content hahaha",
       "r_review_id": "2",
-      "r_review_submission_time": {"seconds":1539338642,"nanos":835000000},
+      "r_review_submission_time": "2018-10-12 10:04:02",
       "r_reviewer_name": "Juxxxx Bruxxxx",
       "r_submission_id": "2"
     },
@@ -126,7 +126,7 @@
       "r_overall_evaluation_score": -3,
       "r_review_comment": "(OVERALL EVALUATION) Incorrect format and unrelated content",
       "r_review_id": "1",
-      "r_review_submission_time": {"seconds":1539338642,"nanos":835000000},
+      "r_review_submission_time": "2018-10-12 10:04:02",
       "r_reviewer_name": "Juxxxx Bruxxxx",
       "r_submission_id": "2"
     }

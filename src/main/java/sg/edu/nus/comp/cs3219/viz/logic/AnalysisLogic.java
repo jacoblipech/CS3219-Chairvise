@@ -3,12 +3,12 @@ package sg.edu.nus.comp.cs3219.viz.logic;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import sg.edu.nus.comp.cs3219.viz.common.datatransfer.AnalysisRequest;
+import sg.edu.nus.comp.cs3219.viz.common.entity.PresentationSection;
 import sg.edu.nus.comp.cs3219.viz.common.entity.record.AuthorRecord;
 import sg.edu.nus.comp.cs3219.viz.common.entity.record.Exportable;
 import sg.edu.nus.comp.cs3219.viz.common.entity.record.ReviewRecord;
 import sg.edu.nus.comp.cs3219.viz.common.entity.record.SubmissionRecord;
 
-import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -55,14 +55,14 @@ public class AnalysisLogic {
 
     private String generateSQL(AnalysisRequest analysisRequest) {
         String selectionsStr = analysisRequest.getSelections().stream()
-                .map(AnalysisRequest.Selection::getField)
+                .map(PresentationSection.Selection::getField)
                 .collect(Collectors.joining(","));
         if (selectionsStr.isEmpty()) {
             selectionsStr = "*";
         }
 
         String tablesStr = analysisRequest.getInvolvedRecords().stream()
-                .map(AnalysisRequest.Record::getName)
+                .map(PresentationSection.Record::getName)
                 .collect(Collectors.joining(","));
 
         String joinersStr = analysisRequest.getJoiners().stream()

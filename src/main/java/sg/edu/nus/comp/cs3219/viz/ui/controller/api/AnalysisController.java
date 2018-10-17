@@ -8,7 +8,6 @@ import sg.edu.nus.comp.cs3219.viz.logic.AnalysisLogic;
 import sg.edu.nus.comp.cs3219.viz.logic.GateKeeper;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

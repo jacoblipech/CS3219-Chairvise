@@ -5,10 +5,12 @@ import org.junit.Test;
 import org.springframework.http.MediaType;
 import sg.edu.nus.comp.cs3219.viz.BaseTestREST;
 import sg.edu.nus.comp.cs3219.viz.common.datatransfer.AnalysisRequest;
+import sg.edu.nus.comp.cs3219.viz.common.entity.PresentationSection;
 
-import static org.hamcrest.Matchers.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class AnalysisControllerTest extends BaseTestREST {
 
@@ -25,7 +27,7 @@ public class AnalysisControllerTest extends BaseTestREST {
 
         analysisRequest.setDataSet("test@example.com");
 
-        AnalysisRequest.Record record = new AnalysisRequest.Record();
+        PresentationSection.Record record = new PresentationSection.Record();
         record.setName("submission_record");
         analysisRequest.getInvolvedRecords().add(record);
 
@@ -42,7 +44,7 @@ public class AnalysisControllerTest extends BaseTestREST {
 
         AnalysisRequest analysisRequest = new AnalysisRequest();
 
-        AnalysisRequest.Record record = new AnalysisRequest.Record();
+        PresentationSection.Record record = new PresentationSection.Record();
         record.setName("submission_record");
         analysisRequest.getInvolvedRecords().add(record);
 
@@ -78,20 +80,20 @@ public class AnalysisControllerTest extends BaseTestREST {
 
         analysisRequest.setDataSet("test@example.com");
 
-        AnalysisRequest.Record record = new AnalysisRequest.Record();
+        PresentationSection.Record record = new PresentationSection.Record();
         record.setName("submission_record");
         analysisRequest.getInvolvedRecords().add(record);
-        record = new AnalysisRequest.Record();
+        record = new PresentationSection.Record();
         record.setName("review_record");
         analysisRequest.getInvolvedRecords().add(record);
-        record = new AnalysisRequest.Record();
+        record = new PresentationSection.Record();
         record.setName("author_record");
         analysisRequest.getInvolvedRecords().add(record);
 
-        AnalysisRequest.Joiner joiner = new AnalysisRequest.Joiner();
+        PresentationSection.Joiner joiner = new PresentationSection.Joiner();
         joiner.setLeft("s_submission_id");
         joiner.setRight("r_submission_id");
-        joiner = new AnalysisRequest.Joiner();
+        joiner = new PresentationSection.Joiner();
         joiner.setLeft("s_submission_id");
         joiner.setRight("a_submission_id");
 

@@ -1,7 +1,7 @@
 <template>
-<el-row>
+<el-row class="sectionDetail">
   <div v-if="sectionDetail.type === WORD_CLOUD">
-    <word-cloud-section-detail :sectionDetail="sectionDetail" />
+    <word-cloud-section-detail :sectionDetail="sectionDetail" :presentationId="presentationId"/>
   </div>
   <div v-else>
     Not A/B/C
@@ -18,6 +18,10 @@ export default {
     sectionDetail: {
       type: Object,
       required: true
+    },
+    presentationId: {
+      type: String,
+      required: true
     }
   },
   data() {
@@ -31,4 +35,10 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  .sectionDetail {
+    margin-bottom: 30px;
+  }
+</style>
 

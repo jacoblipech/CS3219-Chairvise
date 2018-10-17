@@ -1,10 +1,11 @@
 package sg.edu.nus.comp.cs3219.viz.ui.controller.api;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import org.junit.Test;
 import sg.edu.nus.comp.cs3219.viz.BaseTestREST;
 
-import org.junit.Test;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class AuthInfoControllerTest extends BaseTestREST {
 

@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import sg.edu.nus.comp.cs3219.viz.BaseTestWithDBAccess;
 import sg.edu.nus.comp.cs3219.viz.common.datatransfer.AnalysisRequest;
+import sg.edu.nus.comp.cs3219.viz.common.entity.PresentationSection;
 
 import java.util.List;
 import java.util.Map;
@@ -27,7 +28,7 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
 
         analysisRequest.setDataSet("test@example.com");
 
-        AnalysisRequest.Record submissionRecord = new AnalysisRequest.Record();
+        PresentationSection.Record submissionRecord = new PresentationSection.Record();
         submissionRecord.setName("submission_record");
         analysisRequest.getInvolvedRecords().add(submissionRecord);
 
@@ -44,11 +45,11 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
 
         analysisRequest.setDataSet("test@example.com");
 
-        AnalysisRequest.Record submissionRecord = new AnalysisRequest.Record();
+        PresentationSection.Record submissionRecord = new PresentationSection.Record();
         submissionRecord.setName("submission_record");
         analysisRequest.getInvolvedRecords().add(submissionRecord);
 
-        AnalysisRequest.Selection selection = new AnalysisRequest.Selection();
+        PresentationSection.Selection selection = new PresentationSection.Selection();
         selection.setField("s_authors");
         analysisRequest.getSelections().add(selection);
 
@@ -67,14 +68,14 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
 
         analysisRequest.setDataSet("test@example.com");
 
-        AnalysisRequest.Record submissionRecord = new AnalysisRequest.Record();
+        PresentationSection.Record submissionRecord = new PresentationSection.Record();
         submissionRecord.setName("submission_record");
         analysisRequest.getInvolvedRecords().add(submissionRecord);
 
-        AnalysisRequest.Selection selection = new AnalysisRequest.Selection();
+        PresentationSection.Selection selection = new PresentationSection.Selection();
         selection.setField("s_authors");
         analysisRequest.getSelections().add(selection);
-        selection = new AnalysisRequest.Selection();
+        selection = new PresentationSection.Selection();
         selection.setField("s_is_accepted");
         analysisRequest.getSelections().add(selection);
 
@@ -94,7 +95,7 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
 
         analysisRequest.setDataSet("test1@example.com");
 
-        AnalysisRequest.Record submissionRecord = new AnalysisRequest.Record();
+        PresentationSection.Record submissionRecord = new PresentationSection.Record();
         submissionRecord.setName("author_record");
         analysisRequest.getInvolvedRecords().add(submissionRecord);
 
@@ -111,7 +112,7 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
 
         analysisRequest.setDataSet("test@example.com");
 
-        AnalysisRequest.Record submissionRecord = new AnalysisRequest.Record();
+        PresentationSection.Record submissionRecord = new PresentationSection.Record();
         submissionRecord.setName("review_record");
         analysisRequest.getInvolvedRecords().add(submissionRecord);
 
@@ -128,11 +129,11 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
 
         analysisRequest.setDataSet("test1@example.com");
 
-        AnalysisRequest.Record submissionRecord = new AnalysisRequest.Record();
+        PresentationSection.Record submissionRecord = new PresentationSection.Record();
         submissionRecord.setName("submission_record");
         analysisRequest.getInvolvedRecords().add(submissionRecord);
 
-        AnalysisRequest.Filter filter = new AnalysisRequest.Filter();
+        PresentationSection.Filter filter = new PresentationSection.Filter();
         filter.setField("s_authors");
         filter.setComparator("=");
         filter.setValue("test");
@@ -163,11 +164,11 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
 
         analysisRequest.setDataSet("test1@example.com");
 
-        AnalysisRequest.Record submissionRecord = new AnalysisRequest.Record();
+        PresentationSection.Record submissionRecord = new PresentationSection.Record();
         submissionRecord.setName("submission_record");
         analysisRequest.getInvolvedRecords().add(submissionRecord);
 
-        AnalysisRequest.Filter filter = new AnalysisRequest.Filter();
+        PresentationSection.Filter filter = new PresentationSection.Filter();
         filter.setField("s_is_notified");
         filter.setComparator("=");
         filter.setValue("false");
@@ -192,11 +193,11 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
 
         analysisRequest.setDataSet("test@example.com");
 
-        AnalysisRequest.Record submissionRecord = new AnalysisRequest.Record();
+        PresentationSection.Record submissionRecord = new PresentationSection.Record();
         submissionRecord.setName("review_record");
         analysisRequest.getInvolvedRecords().add(submissionRecord);
 
-        AnalysisRequest.Filter filter = new AnalysisRequest.Filter();
+        PresentationSection.Filter filter = new PresentationSection.Filter();
         filter.setField("r_num_review_assignment");
         filter.setComparator("=");
         filter.setValue("47");
@@ -222,16 +223,16 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
 
         analysisRequest.setDataSet("test@example.com");
 
-        AnalysisRequest.Record submissionRecord = new AnalysisRequest.Record();
+        PresentationSection.Record submissionRecord = new PresentationSection.Record();
         submissionRecord.setName("review_record");
         analysisRequest.getInvolvedRecords().add(submissionRecord);
 
-        AnalysisRequest.Filter filter = new AnalysisRequest.Filter();
+        PresentationSection.Filter filter = new PresentationSection.Filter();
         filter.setField("r_num_review_assignment");
         filter.setComparator("=");
         filter.setValue("47");
         analysisRequest.getFilters().add(filter);
-        filter = new AnalysisRequest.Filter();
+        filter = new PresentationSection.Filter();
         filter.setField("r_expertise_level");
         filter.setComparator("=");
         filter.setValue("1");
@@ -250,20 +251,20 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
 
         analysisRequest.setDataSet("test@example.com");
 
-        AnalysisRequest.Record submissionRecord = new AnalysisRequest.Record();
+        PresentationSection.Record submissionRecord = new PresentationSection.Record();
         submissionRecord.setName("submission_record");
         analysisRequest.getInvolvedRecords().add(submissionRecord);
-        submissionRecord = new AnalysisRequest.Record();
+        submissionRecord = new PresentationSection.Record();
         submissionRecord.setName("review_record");
         analysisRequest.getInvolvedRecords().add(submissionRecord);
 
-        AnalysisRequest.Filter filter = new AnalysisRequest.Filter();
+        PresentationSection.Filter filter = new PresentationSection.Filter();
         filter.setField("s_submission_id");
         filter.setComparator("=");
         filter.setValue("2");
         analysisRequest.getFilters().add(filter);
 
-        AnalysisRequest.Joiner joiner = new AnalysisRequest.Joiner();
+        PresentationSection.Joiner joiner = new PresentationSection.Joiner();
         joiner.setLeft("s_submission_id");
         joiner.setRight("r_submission_id");
         analysisRequest.getJoiners().add(joiner);
@@ -282,14 +283,14 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
 
         analysisRequest.setDataSet("test1@example.com");
 
-        AnalysisRequest.Record submissionRecord = new AnalysisRequest.Record();
+        PresentationSection.Record submissionRecord = new PresentationSection.Record();
         submissionRecord.setName("submission_record");
         analysisRequest.getInvolvedRecords().add(submissionRecord);
-        submissionRecord = new AnalysisRequest.Record();
+        submissionRecord = new PresentationSection.Record();
         submissionRecord.setName("author_record");
         analysisRequest.getInvolvedRecords().add(submissionRecord);
 
-        AnalysisRequest.Joiner joiner = new AnalysisRequest.Joiner();
+        PresentationSection.Joiner joiner = new PresentationSection.Joiner();
         joiner.setLeft("s_submission_id");
         joiner.setRight("a_submission_id");
         analysisRequest.getJoiners().add(joiner);
