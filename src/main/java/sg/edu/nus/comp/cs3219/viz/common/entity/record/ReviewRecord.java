@@ -5,10 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
@@ -45,6 +42,7 @@ public class ReviewRecord {
     private double r_expertise_level;
 
     @Exportable(name = "Review Comment")
+    @Column(columnDefinition="TEXT")
     private String r_review_comment;
 
     @Exportable(name = "Overall Evaluation Score")

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.hibernate.annotations.GenericGenerator;
 import sg.edu.nus.comp.cs3219.viz.common.entity.BaseEntity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -41,6 +42,7 @@ public class AuthorRecord extends BaseEntity {
     private String a_organisation;
 
     @Exportable(name = "Web Page")
+    @Column(columnDefinition="TEXT")
     private String a_web_page;
 
     // author's unique id in user submitted csv file
