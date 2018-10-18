@@ -36,11 +36,13 @@ public class SubmissionRecord {
 
     // Title of the submission
     @Exportable(name = "Title")
+    @Column(columnDefinition="TEXT")
     private String s_title;
 
     // authors of the associated submission
     // TODO use many-to-many relationship
     @Exportable(name = "Authors")
+    @Column(columnDefinition="TEXT")
     private String s_authors;
 
     // time submitted
