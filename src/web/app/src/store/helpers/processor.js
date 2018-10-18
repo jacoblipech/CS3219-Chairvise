@@ -24,12 +24,19 @@ export function processMapping(mapping, detail, data, dbFields, hasLabel) {
 	for (var i = 0; i < mapping.length; i++) {
 		map[mapping[i][0]] = mapping[mapping[i][1]]
 	}
+	var dateField;
+	for (var idx in dbFields.fieldMetaDataList) {
+		if (dbFields.fieldMetaDataList[idx].type == "Date") {
+			dateField = dbFields.fieldMetaDataList[idx].fieldName
+		}
+	}
 	// for each row of data
 	for (var i = 0; i < data.length; i++) {
 		var row = data[i];
 		var dataObject = {};
 
-		var dateAdded = false;
+		var usingDate = false;
+		var isSeperateDate = false;
 		var localDate, localTime;
 		// for each mapped database fields
 		for (var idx in mapping) {
@@ -40,33 +47,34 @@ export function processMapping(mapping, detail, data, dbFields, hasLabel) {
 				if (rawData == "Invalid date") {
 					throw "invalid date format";
 				}
-				dateAdded = true;
+				usingDate = true;
+				isSeperateDate = false;
 			}
 
-			if (!dateAdded && fieldType == "LocalDate" && localTime == null) {
+			if (!usingDate && fieldType == "LocalDate" && localTime == null) {
 				localDate = rawData;
 				continue;
 			}
 
-			if (!dateAdded && fieldType == "LocalTime" && localDate == null) {
+			if (!usingDate && fieldType == "LocalTime" && localDate == null) {
 				localTime = rawData;
 				continue;
 			}
 
-			if (!dateAdded && fieldType == "LocalDate" && localTime != null) {
+			if (!usingDate && fieldType == "LocalDate" && localTime != null) {
 				rawData = moment(rawData + " " + localTime, "YYYY-M-D H:m").format("YYYY-MM-DD hh:mm:ss");
 				if (rawData == "Invalid date") {
 					throw "invalid date format";
 				}
-				dateAdded = true;
+				isSeperateDate = true;
 			}
 
-			if (!dateAdded && fieldType == "LocalTime" && localDate != null) {
+			if (!usingDate && fieldType == "LocalTime" && localDate != null) {
 				rawData = moment(localDate + " " + rawData, "YYYY-M-D H:m").format("YYYY-MM-DD hh:mm:ss");
 				if (rawData == "Invalid date") {
 					throw "invalid date format";
 				}
-				dateAdded = true;
+				isSeperateDate = true;
 			}
 
 			if (fieldType == "int") {
@@ -96,7 +104,12 @@ export function processMapping(mapping, detail, data, dbFields, hasLabel) {
 					throw "boolean format not supported";
 				}
 			}
-			dataObject[dbFields.fieldMetaDataList[mapping[idx][0]].fieldName] = rawData;
+			if (isSeperateDate) {
+				dataObject[dateField] = rawData;	
+			} else {
+				dataObject[dbFields.fieldMetaDataList[mapping[idx][0]].fieldName] = rawData;
+			}
+			isSeperateDate = false;
 		}
 		result.push(dataObject);
 	}

@@ -116,7 +116,19 @@ export default {
   actions: {
 		async uploadMapping({ commit, state }) {
 			commit("setUploadingStatus", true);
-			await axios.post("/api/record/submission", state.data.processedResult)
+			var endpoint;
+			switch (state.data.tableType) {
+			case 0:
+				endpoint = "author";
+				break;
+			case 1:
+				endpoint = "review";
+				break;
+			case 2:
+				endpoint = "submission";
+				break;
+			}
+			await axios.post("/api/record/" + endpoint, state.data.processedResult)
 				.then(response => {
 					console.log(response);
 					commit("setUploadingStatus", false);
