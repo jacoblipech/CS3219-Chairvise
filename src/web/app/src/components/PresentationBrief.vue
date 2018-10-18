@@ -19,6 +19,9 @@
       <el-button type="primary" @click="submitForm()" v-if="isInEditMode">Save</el-button>
       <el-button type="info" @click="changeEditMode(false)" v-if="isInEditMode && !isNewPresentation">Cancel</el-button>
     </el-form-item>
+    <el-form-item v-if="!isNewPresentation">
+      <el-button type="danger" @click="deleteForm()">Delete</el-button>
+    </el-form-item>
   </el-form>
 </el-row>
 </template>
@@ -129,6 +132,18 @@ export default {
               })
         }
       });
+    },
+    deleteForm() {
+      this.$store.dispatch('deletePresentation', this.id)
+        .then(() => {
+          this.$router.replace({
+              name: 'analyze',
+              params: {
+                  id: "__NEW__"
+              }
+          });
+          this.isEditing = false;
+        })
     },
     updatePresentationForm() {
       this.$refs['presentationForm'].clearValidate();

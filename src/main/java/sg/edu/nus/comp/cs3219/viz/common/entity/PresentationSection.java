@@ -1,8 +1,10 @@
 package sg.edu.nus.comp.cs3219.viz.common.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
@@ -12,7 +14,9 @@ import sg.edu.nus.comp.cs3219.viz.logic.AnalysisLogic;
 import javax.persistence.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 @Entity
@@ -61,15 +65,32 @@ public class PresentationSection {
     private String joiners;
     //private List<Joiner> joiners = new ArrayList<>();
 
-    public static class Selection {
-        private String field;
+    @Column(columnDefinition="TEXT")
+    private String groupers;
+    //private List<Grouper> joiners = new ArrayList<>();
 
-        public String getField() {
-            return field;
+    @Column(columnDefinition="TEXT")
+    private String extraData;
+
+    public static class Selection {
+        private String expression;
+
+        private String rename;
+
+        public String getExpression() {
+            return expression;
         }
 
-        public void setField(String field) {
-            this.field = field;
+        public void setExpression(String expression) {
+            this.expression = expression;
+        }
+
+        public String getRename() {
+            return rename;
+        }
+
+        public void setRename(String rename) {
+            this.rename = rename;
         }
     }
 
@@ -133,6 +154,18 @@ public class PresentationSection {
 
         public void setRight(String right) {
             this.right = right;
+        }
+    }
+
+    public static class Grouper {
+        private String field;
+
+        public String getField() {
+            return field;
+        }
+
+        public void setField(String field) {
+            this.field = field;
         }
     }
 
@@ -247,6 +280,40 @@ public class PresentationSection {
     public void setJoiners(List<Joiner> joiners) {
         try {
             this.joiners = objectMapper.writeValueAsString(joiners);
+        } catch (JsonProcessingException e) {
+            log.severe(e.getMessage());
+        }
+    }
+
+    public List<Grouper> getGroupers() {
+        try {
+            return objectMapper.readValue(groupers, new TypeReference<List<Joiner>>(){});
+        } catch (IOException e) {
+            log.severe(e.getMessage());
+            return new ArrayList<>();
+        }
+    }
+
+    public void setGroupers(List<Grouper> groupers) {
+        try {
+            this.groupers = objectMapper.writeValueAsString(groupers);
+        } catch (JsonProcessingException e) {
+            log.severe(e.getMessage());
+        }
+    }
+
+    public Map<String, Object> getExtraData() {
+        try {
+            return objectMapper.readValue(extraData, new TypeReference<Map<String, Object>>(){});
+        } catch (IOException e) {
+            log.severe(e.getMessage());
+            return new HashMap<>();
+        }
+    }
+
+    public void setExtraData(Map<String, Object> extraData) {
+        try {
+            this.extraData = objectMapper.writeValueAsString(extraData);
         } catch (JsonProcessingException e) {
             log.severe(e.getMessage());
         }

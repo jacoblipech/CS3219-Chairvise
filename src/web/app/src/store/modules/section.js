@@ -43,7 +43,7 @@ export default {
       state.sectionList.splice(index, 1)
     },
 
-    updateSectionDetail(state, {id, title, description, dataSet, selections, involvedRecords, filters, joiners}) {
+    updateSectionDetail(state, {id, title, description, dataSet, selections, involvedRecords, filters, joiners, extraData}) {
       let section = findSectionDetailById(state.sectionList, id);
 
       section.title = title;
@@ -53,6 +53,7 @@ export default {
       section.involvedRecords = involvedRecords;
       section.filters = filters;
       section.joiners = joiners;
+      section.extraData = extraData;
     },
 
     setSectionDetailLoading(state, {id, isLoading}) {
@@ -117,7 +118,7 @@ export default {
         })
     },
 
-    async saveSectionDetail({commit}, {id, presentationId, title, description, dataSet, selections, involvedRecords, filters, joiners}) {
+    async saveSectionDetail({commit}, {id, presentationId, title, description, dataSet, selections, involvedRecords, filters, joiners, extraData}) {
       commit('setSectionDetailLoading', {id, isLoading: true});
 
       await axios.put(`/api/presentations/${presentationId}/sections/${id}`, {
@@ -127,7 +128,8 @@ export default {
         selections,
         involvedRecords,
         filters,
-        joiners
+        joiners,
+        extraData
       })
         .then(response => {
           let section = response.data;
@@ -140,6 +142,7 @@ export default {
             involvedRecords: section.involvedRecords,
             filters: section.filters,
             joiners: section.joiners,
+            extraData: section.extraData
           })
         })
         .catch(e => {

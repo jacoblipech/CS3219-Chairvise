@@ -35,7 +35,8 @@
       "dataSet": "test@viz.test",
       "selections": [
         {
-          "field": "selection1"
+          "expression": "selection1",
+          "rename": "hi"
         }
       ],
       "involvedRecords": [
@@ -58,7 +59,25 @@
           "left": "record1",
           "right": "record2"
         }
-      ]
+      ],
+      "groupers": [
+        {
+          "field": "groupField1"
+        }
+      ],
+      "extraData": {
+        "listTest": [
+          "hello",
+          "hi",
+          {
+            "hello": "hi"
+          }
+        ],
+        "objectTest": {
+          "test": "value"
+        },
+        "primitiveTest": true
+      }
     },
     "presentationSection2": {
       "id": "2",
@@ -71,10 +90,12 @@
       "dataSet": "test@viz.test_UPDATED",
       "selections": [
         {
-          "field": "selection1_UPDATED"
+          "expression": "selection1_UPDATED",
+          "rename": ""
         },
         {
-          "field": "selection1_UPDATE2"
+          "expression": "selection1_UPDATE2",
+          "rename": ""
         }
       ],
       "involvedRecords": [
@@ -88,7 +109,15 @@
           "left": "record1_UPDATED",
           "right": "record2_UPDATED"
         }
-      ]
+      ],
+      "groupers": [
+        {
+          "field": "groupField2"
+        }
+      ],
+      "extraData": {
+        "test1": "test2"
+      }
     }
   }
 }

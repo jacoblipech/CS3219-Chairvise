@@ -3,12 +3,23 @@
                         :edit-form-selections-rule="editFormSelectionsRule"
                         :edit-form-involved-records-rule="editFormInvolvedRecordsRule"
                         :edit-form-filters-rule="editFormFiltersRule"
-                        @update-visualisation="updateVisualisation" @save-section-detail="saveSectionDetail" ref="basicSectionDetail">
+                        :extraFormItemsRules="extraFormItemsRules"
+                        @update-visualisation="updateVisualisation">
     <vue-word-cloud :words="words"
                     :animationDuration="animationDuration"
                     :color="colorComputer"
                     :font-family="fontFamily"
                     style="width: 100%;height: 200px"></vue-word-cloud>
+
+    <template slot="extraFormItems" slot-scope="slotProps">
+      <el-form-item label="Delimiter to Generate Word" prop="extraData.delimiters" v-if="slotProps.isInAdvancedMode">
+        <el-select multiple v-model="slotProps.extraData.delimiters">
+          <el-option label="\r" value="\r" />
+          <el-option label="\n" value="\n" />
+          <el-option label="Space" value="\s" />
+        </el-select>
+      </el-form-item>
+    </template>
   </basic-section-detail>
 </template>
 
@@ -32,10 +43,10 @@
       return {
         editFormSelectionsRule: {
           validator: (rule, value, callback) => {
-            if (value.length >= 2 || value.length < 1) {
-              return callback(new Error('There must be only one field to analysis'))
+            if (value.expression.length === 0) {
+              return callback(new Error('Please specify expression for the selection'))
             }
-            return callback();
+            callback();
           },
           trigger: 'blur',
         },
@@ -58,10 +69,24 @@
           trigger: 'blur',
         },
 
+        extraFormItemsRules: {
+          delimiters: [
+            {
+              validator: (rule, value, callback) => {
+                if (value.length === 0) {
+                  return callback(new Error('Please specify at least one delimiter'))
+                }
+                callback();
+              },
+              trigger: 'blur',
+            }
+          ],
+        },
+
         // word cloud related field
         animationDuration: 50,
         fontFamily: "Roboto",
-        words: []
+        words: [],
       }
     },
 
@@ -72,21 +97,14 @@
     },
 
     methods: {
-      saveSectionDetail(basicSectionDetail) {
-        this.$store.dispatch('saveSectionDetail', basicSectionDetail)
-          .then(() => {
-            this.$refs['basicSectionDetail'].changeEditMode(false);
-            this.$refs['basicSectionDetail'].sendAnalysisRequest();
-          })
-      },
-
-      updateVisualisation({result, selections}) {
-        let fieldName = selections[0].field;
+      updateVisualisation({result, selections, extraData}) {
+        let fieldName = selections[0].expression;
         let wordsCount = {};
+        let delimiterRegex = new RegExp(extraData.delimiters.join('|'),'g');
         // will only require at least one selection
         // count the occurrence of word
         result.forEach(r => {
-          r[fieldName].split(/[\r|\n]/).forEach(w => {
+          r[fieldName].split(delimiterRegex).forEach(w => {
             // skip empty string
             if (w.length === 0) {
               return
@@ -108,8 +126,6 @@
         }
       },
 
-
-
       // word cloud related
       colorComputer([, weight]) {
         return weight > 10 ? 'Red' : weight > 5 ? 'Blue' : 'Black'
@@ -122,21 +138,3 @@
     }
   }
 </script>
-
-<style scoped>
-  .title {
-    font-size: 20px;
-    text-align: center;
-    margin-bottom: 10px;
-    margin-top: 10px;
-  }
-
-  .noDataToDisplay {
-    margin-top: 10px;
-    margin-bottom: 10px;
-  }
-
-  .errorMessage {
-    margin-top: 10px;
-  }
-</style>

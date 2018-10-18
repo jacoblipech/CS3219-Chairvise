@@ -55,7 +55,7 @@ public class AnalysisLogic {
 
     private String generateSQL(AnalysisRequest analysisRequest) {
         String selectionsStr = analysisRequest.getSelections().stream()
-                .map(PresentationSection.Selection::getField)
+                .map(s -> s.getExpression() + String.format(" AS `%s`", s.getRename()))
                 .collect(Collectors.joining(","));
         if (selectionsStr.isEmpty()) {
             selectionsStr = "*";
@@ -77,6 +77,9 @@ public class AnalysisLogic {
                 .map(t -> String.format("%s.data_set = '%s'", t.getName(), analysisRequest.getDataSet()))
                 .collect(Collectors.joining(" AND "));
 
+        String groupersStr = analysisRequest.getGroupers().stream()
+                .map(PresentationSection.Grouper::getField)
+                .collect(Collectors.joining(","));
 
         String baseSQL = String.format("SELECT %s FROM %s WHERE %s",
                 selectionsStr, tablesStr, dataSetFilter);
@@ -87,6 +90,10 @@ public class AnalysisLogic {
 
         if (!filtersStr.isEmpty()) {
             baseSQL += String.format(" AND %s", filtersStr);
+        }
+
+        if (!groupersStr.isEmpty()) {
+            baseSQL += String.format(" GROUP BY %s", groupersStr);
         }
 
         return baseSQL;

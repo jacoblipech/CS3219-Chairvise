@@ -4,7 +4,7 @@ export default {
   state: {
     entities: [],
     entitiesStatus: {
-      isLoading: false,
+      isLoading: true,
       isApiError: false,
       apiErrorMsg: '',
     }

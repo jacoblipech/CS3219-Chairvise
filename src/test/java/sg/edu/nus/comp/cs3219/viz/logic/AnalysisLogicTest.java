@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import sg.edu.nus.comp.cs3219.viz.BaseTestWithDBAccess;
 import sg.edu.nus.comp.cs3219.viz.common.datatransfer.AnalysisRequest;
 import sg.edu.nus.comp.cs3219.viz.common.entity.PresentationSection;
+import sg.edu.nus.comp.cs3219.viz.common.entity.record.ReviewRecord;
 
 import java.util.List;
 import java.util.Map;
@@ -50,14 +51,17 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
         analysisRequest.getInvolvedRecords().add(submissionRecord);
 
         PresentationSection.Selection selection = new PresentationSection.Selection();
-        selection.setField("s_authors");
+        selection.setExpression("s_authors");
+        selection.setRename("authors");
         analysisRequest.getSelections().add(selection);
 
         List<Map<String, Object>> result = analysisLogic.analyse(analysisRequest);
 
         Assert.assertEquals(1, result.size());
         Assert.assertEquals(1, result.get(0).keySet().size());
-        Assert.assertEquals("Laxxx Kaxx", result.get(0).get("s_authors"));
+        // should rename
+        Assert.assertNull(result.get(0).get("s_authors"));
+        Assert.assertEquals("Laxxx Kaxx", result.get(0).get("authors"));
     }
 
     @Test
@@ -73,18 +77,22 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
         analysisRequest.getInvolvedRecords().add(submissionRecord);
 
         PresentationSection.Selection selection = new PresentationSection.Selection();
-        selection.setField("s_authors");
+        selection.setExpression("s_authors");
+        selection.setRename("authors");
         analysisRequest.getSelections().add(selection);
         selection = new PresentationSection.Selection();
-        selection.setField("s_is_accepted");
+        selection.setExpression("s_is_accepted");
+        selection.setRename("isAccepted");
         analysisRequest.getSelections().add(selection);
 
         List<Map<String, Object>> result = analysisLogic.analyse(analysisRequest);
 
         Assert.assertEquals(1, result.size());
         Assert.assertEquals(2, result.get(0).keySet().size());
-        Assert.assertEquals("Laxxx Kaxx", result.get(0).get("s_authors"));
-        Assert.assertEquals(false, result.get(0).get("s_is_accepted"));
+        Assert.assertNull(result.get(0).get("s_authors"));
+        Assert.assertEquals("Laxxx Kaxx", result.get(0).get("authors"));
+        Assert.assertNull(result.get(0).get("s_is_accepted"));
+        Assert.assertEquals(false, result.get(0).get("isAccepted"));
     }
 
     @Test
@@ -215,7 +223,7 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
                 0,
                 reviewRecordRepository.findByDataSetEquals("test@example.com").stream()
                         .filter(s -> s.getR_num_review_assignment() == 47)
-                        .filter(s -> s.getR_expertise_level().equals("1"))
+                        .filter(s -> s.getR_expertise_level() == 1)
                         .count()
         );
 
@@ -242,7 +250,7 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
 
         Assert.assertEquals(1, result.size());
         Assert.assertEquals(47, result.get(0).get("r_num_review_assignment"));
-        Assert.assertEquals("1", result.get(0).get("r_expertise_level"));
+        Assert.assertEquals(1.0, result.get(0).get("r_expertise_level"));
     }
 
     @Test
@@ -299,6 +307,34 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
 
         Assert.assertEquals(2, result.size());
         Assert.assertNotEquals(result.get(0).get("a_country"), result.get(1).get("a_country"));
+    }
+
+    @Test
+    public void testAnalyse_queryReviewWithAggregation_shouldQueryCorrectly() {
+        AnalysisRequest analysisRequest = new AnalysisRequest();
+
+        analysisRequest.setDataSet("test@example.com");
+
+        PresentationSection.Record reviewRecord = new PresentationSection.Record();
+        reviewRecord.setName("review_record");
+        analysisRequest.getInvolvedRecords().add(reviewRecord);
+
+        PresentationSection.Selection selection = new PresentationSection.Selection();
+        selection.setExpression("SUM(r_num_review_assignment)");
+        selection.setRename("totalSum");
+        analysisRequest.getSelections().add(selection);
+
+        PresentationSection.Grouper grouper = new PresentationSection.Grouper();
+        grouper.setField("r_submission_id");
+        analysisRequest.getGroupers().add(grouper);
+
+        List<Map<String, Object>> result = analysisLogic.analyse(analysisRequest);
+
+        long totalSum = reviewRecordRepository.findByDataSetEquals("test@example.com").stream()
+                .mapToLong(ReviewRecord::getR_num_review_assignment)
+                .sum();
+
+        Assert.assertEquals(totalSum, result.get(0).get("totalSum"));
     }
 
     @Test

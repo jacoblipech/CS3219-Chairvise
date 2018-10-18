@@ -20,6 +20,15 @@ public class AnalysisRequest {
 
     private List<PresentationSection.Joiner> joiners = new ArrayList<>();
 
+    private List<PresentationSection.Grouper> groupers = new ArrayList<>();
+
+    public List<PresentationSection.Grouper> getGroupers() {
+        return groupers;
+    }
+
+    public void setGroupers(List<PresentationSection.Grouper> groupers) {
+        this.groupers = groupers;
+    }
 
     public void setDataSet(String dataSet) {
         this.dataSet = dataSet;

@@ -1,6 +1,6 @@
 <template>
   <el-row v-loading="sectionDetail.status.isLoading">
-    <el-form status-icon ref="editForm" label-position="left" :model="editForm" label-width="140px" :rules="editFormRule">
+    <el-form status-icon ref="editForm" label-position="left" :model="editForm" label-width="170px" :rules="editFormRule">
       <div class="title" v-if="!isEditing">
         {{ sectionDetail.title }}
         <el-button type="primary" plain @click="changeEditMode(true)">Edit</el-button>
@@ -27,23 +27,24 @@
       <slot v-else></slot>
       <div v-if="!isEditing" class="description">{{ editForm.description }}</div>
       <div v-if="isEditing">
-        <el-form-item label="Field to Analysis" prop="selections">
-          <el-select v-model="editForm.selections" multiple placeholder="Please select">
-            <el-option-group
-              v-for="group in selectionsOptions"
-              :key="group.label"
-              :label="group.label">
-              <el-option
-                v-for="item in group.options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
-            </el-option-group>
-          </el-select>
+
+        <el-form-item label="Editing Mode">
+          <el-switch
+            v-model="isInAdvancedMode"
+            active-text="Advanced"
+            inactive-text="Basic">
+          </el-switch>
         </el-form-item>
 
-        <el-form-item label="Record Involved" prop="involvedRecords">
+        <el-form-item v-if="isInAdvancedMode" v-for="(selection, index) in editForm.selections" :label="'Selection ' + index"
+                      :key="'s' + index"
+                      :prop="'selections.' + index" :rules="[editFormSelectionsRule]">
+          <el-input v-model="selection.expression" placeholder="Expression" style="width: 300px"></el-input>&nbsp;
+          <el-input v-model="selection.rename" placeholder="Rename Field (Optional)" style="width: 200px"></el-input>&nbsp;
+          <el-button type="danger" icon="el-icon-delete" circle @click="removeSelection(selection)"></el-button>
+        </el-form-item>
+
+        <el-form-item label="Record Involved" prop="involvedRecords" v-if="isInAdvancedMode">
           <el-select v-model="editForm.involvedRecords" multiple placeholder="Please select">
             <el-option
               v-for="option in involvedRecordsOptions"
@@ -55,9 +56,9 @@
         </el-form-item>
 
         <el-form-item v-for="(filter, index) in editForm.filters" :label="'Filter ' + index"
-                      :key="index"
+                      :key="'f' + index"
                       :prop="'filters.' + index" :rules="[editFormFiltersRule]">
-          <el-select placeholder="Filed" v-model="filter.field">
+          <el-select placeholder="Field" v-model="filter.field">
             <el-option-group
               v-for="group in filtersFieldOptions"
               :key="group.label"
@@ -82,20 +83,20 @@
         <el-form-item label="Description for the section">
           <el-input
             type="textarea"
-            autosize
             :autosize="{ minRows: 4 }"
             placeholder="Please enter description (Leave empty to hide the description part)"
             v-model="editForm.description">
           </el-input>
         </el-form-item>
 
-        <slot name="extraFormItems"></slot>
+        <slot name="extraFormItems" :extraData="editForm.extraData" :isInAdvancedMode="isInAdvancedMode"></slot>
 
         <el-form-item>
           <el-button type="primary" @click="previewAnalysisResult('editForm')" plain>Preview</el-button>
           <el-button type="success" @click="saveSectionDetail('editForm')">Save</el-button>
           <el-button @click="cancelEditing">Cancel</el-button>
           <el-button type="success" plain @click="addFilter">Add filter</el-button>
+          <el-button type="success" plain @click="addSelection" v-if="isInAdvancedMode">Add selection</el-button>
         </el-form-item>
       </div>
     </el-form>
@@ -116,6 +117,10 @@
       hasData: {
         type: Boolean,
         required: true
+      },
+      extraFormItemsRules: {
+        type: Object,
+        required: false
       },
       editFormSelectionsRule: {
         type: Object,
@@ -143,39 +148,31 @@
 
     data() {
       return {
+        isInAdvancedMode: false,
         isEditing: false,
 
         editForm: {
           title: '',
           description: '',
+          dataSet: '',
           selections: [],
           involvedRecords: [],
           filters: [],
           joiners: [],
+          extraData: {}
         },
 
         editFormRule: {
-          selections: [
-            this.editFormSelectionsRule
-          ],
           involvedRecords: [
             this.editFormInvolvedRecordsRule
-          ]
+          ],
+          extraData: this.extraFormItemsRules
         },
 
       }
     },
 
     computed: {
-      selectionsOptions() {
-        return this.$store.state.dbMetaData.entities.map(entity => ({
-          label: entity.name,
-          options: entity.fieldMetaDataList.map(field => ({
-            label: field.name,
-            value: field.fieldName
-          }))
-        }))
-      },
       involvedRecordsOptions() {
         return this.$store.state.dbMetaData.entities.map(entity => ({
           label: entity.name,
@@ -183,10 +180,18 @@
         }))
       },
       filtersFieldOptions() {
-        return this.selectionsOptions;
+        return this.$store.state.dbMetaData.entities
+          .filter(entity => this.editForm.involvedRecords.includes(entity.tableName))
+          .map(entity => ({
+            label: entity.name,
+            options: entity.fieldMetaDataList.map(field => ({
+              label: field.name,
+              value: field.fieldName
+            }))
+          }))
       },
       joinersFieldOptions() {
-        return this.selectionsOptions;
+        return this.filtersFieldOptions;
       }
     },
 
@@ -198,16 +203,29 @@
       cancelEditing() {
         this.isEditing = false;
         this.syncDataWithProps();
-        this.$emit('cancel-editing')
       },
 
       syncDataWithProps() {
         this.editForm.title = this.sectionDetail.title;
         this.editForm.description = this.sectionDetail.description;
-        this.editForm.selections = this.sectionDetail.selections.map(s => s.field);
+        this.editForm.dataSet = this.sectionDetail.dataSet;
+        this.editForm.selections = JSON.parse(JSON.stringify(this.sectionDetail.selections)); // deep copy
         this.editForm.involvedRecords = this.sectionDetail.involvedRecords.map(r => r.name);
         this.editForm.filters = this.sectionDetail.filters.map(f => Object.assign({}, f));
         this.editForm.joiners = this.sectionDetail.joiners.map(f => Object.assign({}, f));
+        this.editForm.extraData = JSON.parse(JSON.stringify(this.sectionDetail.extraData)) // deep copy
+      },
+
+      addSelection() {
+        this.editForm.selections.push({
+          expression: '',
+          rename: '',
+        })
+      },
+
+      removeSelection(selection) {
+        let index = this.editForm.selections.indexOf(selection);
+        this.editForm.selections.splice(index, 1)
       },
 
       addFilter() {
@@ -226,18 +244,23 @@
       saveSectionDetail(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            // TODO gradually add more options
-            this.$emit('save-section-detail', {
+            this.$store.dispatch('saveSectionDetail', {
               id: this.sectionDetail.id,
               presentationId: this.presentationId,
               title: this.editForm.title,
               description: this.editForm.description,
               dataSet: this.sectionDetail.dataSet,
-              selections: this.editForm.selections.map(s => ({field: s})),
+              selections: this.editForm.selections,
               involvedRecords: this.editForm.involvedRecords.map(s => ({name: s})),
               filters: this.editForm.filters.map(f => Object.assign({}, f)),
               joiners: this.editForm.joiners.map(j => Object.assign({}, j)),
-            });
+              extraData: this.editForm.extraData
+            })
+              .then(() => {
+                this.isEditing = false;
+                this.sendAnalysisRequest();
+              });
+            return true;
           } else {
             return false;
           }
@@ -260,9 +283,7 @@
           this.$store.dispatch('sendPreviewAnalysisRequest', {
             id: this.sectionDetail.id,
             dataSet: this.sectionDetail.dataSet,
-            selections: [{
-              field: this.editForm.selections[0]
-            }],
+            selections: this.editForm.selections,
             involvedRecords: [{
               name: this.editForm.involvedRecords[0]
             }],
@@ -270,11 +291,12 @@
           })
             .then(() => {
               this.$emit('update-visualisation', {
-                selections: this.editForm.selections.map(s => ({field: s})),
+                selections: this.editForm.selections,
                 involvedRecords: this.editForm.involvedRecords.map(s => ({name: s})),
                 filters: this.editForm.filters.map(f => Object.assign({}, f)),
                 joiners: this.editForm.joiners.map(j => Object.assign({}, j)),
                 result: this.sectionDetail.previewResult,
+                extraData: this.editForm.extraData
               });
             })
         });
@@ -289,6 +311,7 @@
               filters: this.sectionDetail.filters,
               joiners: this.sectionDetail.joiners,
               result: this.sectionDetail.result,
+              extraData: this.sectionDetail.extraData
             });
           })
       },
