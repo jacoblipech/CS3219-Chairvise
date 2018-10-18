@@ -1,6 +1,7 @@
 package sg.edu.nus.comp.cs3219.viz.logic;
 
 import org.springframework.stereotype.Component;
+import javax.transaction.Transactional;
 import sg.edu.nus.comp.cs3219.viz.common.entity.record.AuthorRecord;
 import sg.edu.nus.comp.cs3219.viz.common.entity.record.ReviewRecord;
 import sg.edu.nus.comp.cs3219.viz.common.entity.record.SubmissionRecord;
@@ -29,6 +30,7 @@ public class RecordLogic {
         this.reviewRecordRepository = reviewRecordRepository;
     }
 
+    @Transactional
     public void removeAndPersistAuthorRecordForDataSet(String dataSet, List<AuthorRecord> authorRecordList) {
         authorRecordRepository.deleteAllByDataSetEquals(dataSet);
         authorRecordRepository.saveAll(authorRecordList.stream().peek(r -> {
@@ -40,6 +42,7 @@ public class RecordLogic {
         }).collect(Collectors.toList()));
     }
 
+    @Transactional
     public void removeAndPersistReviewRecordForDataSet(String dataSet, List<ReviewRecord> reviewRecordList) {
         reviewRecordRepository.deleteAllByDataSetEquals(dataSet);
         reviewRecordRepository.saveAll(reviewRecordList.stream().peek(r -> {
@@ -51,6 +54,7 @@ public class RecordLogic {
         }).collect(Collectors.toList()));
     }
 
+    @Transactional
     public void removeAndPersistSubmissionRecordForDataSet(String dataSet, List<SubmissionRecord> submissionRecordList) {
         submissionRecordRepository.deleteAllByDataSetEquals(dataSet);
         submissionRecordRepository.saveAll(submissionRecordList.stream().peek(r -> {
