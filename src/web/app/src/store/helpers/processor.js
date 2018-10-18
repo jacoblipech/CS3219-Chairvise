@@ -11,8 +11,11 @@ export function processRawCSVString(csvFile) {
 	});
 }
 
-export function processMapping(mapping, detail, data, dbFields) {
+export function processMapping(mapping, detail, data, dbFields, hasLabel) {
 	var checkDateResult = dateCheck(mapping, dbFields);
+	if (hasLabel) {
+		data = data.slice(1);
+	}
 	if (checkDateResult != null) {
 		throw checkDateResult;
 	}
@@ -27,52 +30,51 @@ export function processMapping(mapping, detail, data, dbFields) {
 		var dataObject = {};
 
 		var dateAdded = false;
-		var localDate, localTime, localDateFormat, localTimeFormat;
+		var localDate, localTime;
 		// for each mapped database fields
 		for (var idx in mapping) {
 			var rawData = row[mapping[idx][1]];
 			var fieldType = dbFields.fieldMetaDataList[mapping[idx][0]].type;
 			if (fieldType == "Date") {
-				var format = detail[idx].detail;
-				if (!moment(rawData, format, true).isValid()) {
-					throw "format not match";
+				rawData = moment(rawData, "YYYY-M-D H:m").format("YYYY-MM-DD hh:mm:ss");
+				if (rawData == "Invalid date") {
+					throw "invalid date format";
 				}
-				rawData = moment(rawData, format).format("YYYY-MM-DD hh:mm:ss");
 				dateAdded = true;
 			}
 
 			if (!dateAdded && fieldType == "LocalDate" && localTime == null) {
-				localDateFormat = detail[idx].detail;
 				localDate = rawData;
 				continue;
 			}
 
 			if (!dateAdded && fieldType == "LocalTime" && localDate == null) {
-				localTimeFormat = detail[idx].detail;
 				localTime = rawData;
 				continue;
 			}
 
 			if (!dateAdded && fieldType == "LocalDate" && localTime != null) {
-				var format = detail[idx].detail + " " + localTimeFormat;
-				console.log(format);
-				console.log(rawData + " " + localTime);
-				if (!moment(rawData + " " + localTime, format, true).isValid()) {
-					throw "format not match";
+				rawData = moment(rawData + " " + localTime, "YYYY-M-D H:m").format("YYYY-MM-DD hh:mm:ss");
+				if (rawData == "Invalid date") {
+					throw "invalid date format";
 				}
-				rawData = moment(rawData + " " + localTime, format).format("YYYY-MM-DD hh:mm:ss");
 				dateAdded = true;
 			}
 
 			if (!dateAdded && fieldType == "LocalTime" && localDate != null) {
-				var format = localDateFormat + " " + detail[idx].detail;
-				console.log(format);
-				console.log(localDate + " " + rawData)
-				if (!moment(localDate + " " + rawData, format, true).isValid()) {
-					throw "format not match";
+				rawData = moment(localDate + " " + rawData, "YYYY-M-D H:m").format("YYYY-MM-DD hh:mm:ss");
+				if (rawData == "Invalid date") {
+					throw "invalid date format";
 				}
-				rawData = moment(localDate + " " + rawData, format).format("YYYY-MM-DD hh:mm:ss");
 				dateAdded = true;
+			}
+
+			if (fieldType == "int") {
+				rawData = parseInt(rawData);
+			}
+
+			if (fieldType == "double") {
+				rawData = parseFloat(rawData);
 			}
 
 			if (fieldType == "boolean") {
@@ -87,15 +89,18 @@ export function processMapping(mapping, detail, data, dbFields) {
 				case "ok":
 					rawData = rawData == "ok" ? true : false;
 					break;
+				case "accept":
+					rawData = rawData == "accept" ? true : false;
+					break;
 				default:
-					throw "format not supported";
+					throw "boolean format not supported";
 				}
 			}
 			dataObject[dbFields.fieldMetaDataList[mapping[idx][0]].fieldName] = rawData;
 		}
 		result.push(dataObject);
 	}
-	console.log(result);
+	return result;
 }
 
 export function dateCheck(mapping, dbFields) {

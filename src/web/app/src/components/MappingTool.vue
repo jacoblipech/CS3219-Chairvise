@@ -8,7 +8,7 @@
                v-bind:key="idx"
                v-bind:class="[ idx == selectedDBTag ? 'active' : '', mappedDBTag.includes(idx) ? 'hidden' : '' ]"
                v-on:click="dbTagClicked(idx)">
-            {{ item.fieldName }}
+            {{ item.name }}
           </div>
         </transition-group>
       </div>
@@ -38,16 +38,13 @@
         <div class="pair-tag" v-for="(item, index) in mappedPairs" v-bind:key="index">
 					<el-tag size="medium">{{ dbList.fieldMetaDataList[item[0]].type }}</el-tag>
           <p class="pair-info">
-						{{ dbList.fieldMetaDataList[item[0]].fieldName }} 
+						{{ dbList.fieldMetaDataList[item[0]].name }} 
 						<i class="el-icon-caret-right"></i> 
 						{{ importList[item[1]] }}
 					</p><i class="el-icon-close" v-on:click="removeMapClicked(index)"></i><br>
-					<el-input placeholder="format" size="mini"
+					<el-input placeholder="true value format (e.g. yes)" size="mini"
 							v-model="dataTypes[index].detail" 
-							v-if="dbList.fieldMetaDataList[item[0]].type == 'LocalDate'
-								|| dbList.fieldMetaDataList[item[0]].type == 'LocalTime'
-								|| dbList.fieldMetaDataList[item[0]].type == 'boolean'
-                || dbList.fieldMetaDataList[item[0]].type == 'Date'">
+							v-if="dbList.fieldMetaDataList[item[0]].type == 'boolean'">
 					</el-input>
         </div>
       </transition-group>
@@ -57,6 +54,25 @@
         </div>
       </transition>
     </el-col>
+    <el-dialog
+      title="Confirm"
+      :visible.sync="submitCheck"
+      width="30%" center>
+      <span>After submission, your will not be abled to modify your mapping. Are you sure that the columns are correctly mapped?</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button v-on:click="submitCheck = false">Cancel</el-button>
+        <el-button type="primary" v-on:click="submitMapping">Confirm</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog
+      title="Success"
+      :visible.sync="uploadSuccess"
+      width="30%" center>
+      <span>Upload success!</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" v-on:click="closeSuccess">Sure</el-button>
+      </span>
+    </el-dialog>
   </el-row>
 </template>
 
@@ -73,6 +89,7 @@ export default {
       mappedDBTag: [],
       mappedImportTag: [],
       dataTypes: [],
+      submitCheck: false,
       tableType: ""
     };
   },
@@ -96,6 +113,9 @@ export default {
     },
     errors: function() {
       return this.$store.state.dataMapping.error;
+    },
+    uploadSuccess: function() {
+      return this.$store.state.dataMapping.uploadSuccess;
     }
   },
   watch: {
@@ -154,9 +174,25 @@ export default {
       this.$store.commit("clearMapping");
     },
     uploadClicked: function() {
-      var map = this.mappedPairs.slice();
-      var types = this.dataTypes.slice();
+      var map = JSON.parse(JSON.stringify(this.mappedPairs));
+      var types = JSON.parse(JSON.stringify(this.dataTypes));
       this.$store.commit("setMapping", { "map": map, "types": types });
+      if (this.errors.length == 0) {
+        this.submitCheck = true;
+      }
+    },
+    submitMapping: function() {
+      this.submitCheck = false;
+      this.$store.dispatch("uploadMapping");
+    },
+    closeSuccess: function() {
+      this.$store.commit("setUploadSuccess", false);
+      this.$store.commit("clearDBSchema");
+      this.$store.commit("clearUploadedFile");
+      this.$store.commit("clearTableType");
+      this.$store.commit("clearHasLabel");
+      this.$store.commit("clearMapping");
+      this.$store.commit("Error");
     }
   },
   mounted() {},
@@ -340,7 +376,7 @@ export default {
 .el-input {
 	margin-left: 78px;
   margin-top: 8px;
-	width: 170px;
+	width: 185px;
 }
 
 .button-row {

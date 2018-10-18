@@ -36,6 +36,7 @@ export default {
     isAppLoading() {
       return this.$store.state.isPageLoading 
         || this.$store.state.isDataProcessing 
+        || this.$store.state.dataMapping.uploading
         || this.$store.state.dbMetaData.entitiesStatus.isLoading
     },
     isFetchUserInfoError() {
