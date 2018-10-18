@@ -28,15 +28,23 @@
       <div v-if="!isEditing" class="description">{{ editForm.description }}</div>
       <div v-if="isEditing">
 
-        <el-form-item v-for="(selection, index) in editForm.selections" :label="'Selection ' + index"
-                      :key="index"
+        <el-form-item label="Editing Mode">
+          <el-switch
+            v-model="isInAdvancedMode"
+            active-text="Advanced"
+            inactive-text="Basic">
+          </el-switch>
+        </el-form-item>
+
+        <el-form-item v-if="isInAdvancedMode" v-for="(selection, index) in editForm.selections" :label="'Selection ' + index"
+                      :key="'s' + index"
                       :prop="'selections.' + index" :rules="[editFormSelectionsRule]">
           <el-input v-model="selection.expression" placeholder="Expression" style="width: 300px"></el-input>&nbsp;
           <el-input v-model="selection.rename" placeholder="Rename Field (Optional)" style="width: 200px"></el-input>&nbsp;
           <el-button type="danger" icon="el-icon-delete" circle @click="removeSelection(selection)"></el-button>
         </el-form-item>
 
-        <el-form-item label="Record Involved" prop="involvedRecords">
+        <el-form-item label="Record Involved" prop="involvedRecords" v-if="isInAdvancedMode">
           <el-select v-model="editForm.involvedRecords" multiple placeholder="Please select">
             <el-option
               v-for="option in involvedRecordsOptions"
@@ -48,7 +56,7 @@
         </el-form-item>
 
         <el-form-item v-for="(filter, index) in editForm.filters" :label="'Filter ' + index"
-                      :key="index"
+                      :key="'f' + index"
                       :prop="'filters.' + index" :rules="[editFormFiltersRule]">
           <el-select placeholder="Field" v-model="filter.field">
             <el-option-group
@@ -81,14 +89,14 @@
           </el-input>
         </el-form-item>
 
-        <slot name="extraFormItems" :extraData="editForm.extraData"></slot>
+        <slot name="extraFormItems" :extraData="editForm.extraData" :isInAdvancedMode="isInAdvancedMode"></slot>
 
         <el-form-item>
           <el-button type="primary" @click="previewAnalysisResult('editForm')" plain>Preview</el-button>
           <el-button type="success" @click="saveSectionDetail('editForm')">Save</el-button>
           <el-button @click="cancelEditing">Cancel</el-button>
           <el-button type="success" plain @click="addFilter">Add filter</el-button>
-          <el-button type="success" plain @click="addSelection">Add selection</el-button>
+          <el-button type="success" plain @click="addSelection" v-if="isInAdvancedMode">Add selection</el-button>
         </el-form-item>
       </div>
     </el-form>
@@ -140,6 +148,7 @@
 
     data() {
       return {
+        isInAdvancedMode: false,
         isEditing: false,
 
         editForm: {
@@ -171,13 +180,15 @@
         }))
       },
       filtersFieldOptions() {
-        return this.$store.state.dbMetaData.entities.map(entity => ({
-          label: entity.name,
-          options: entity.fieldMetaDataList.map(field => ({
-            label: field.name,
-            value: field.fieldName
+        return this.$store.state.dbMetaData.entities
+          .filter(entity => this.editForm.involvedRecords.includes(entity.tableName))
+          .map(entity => ({
+            label: entity.name,
+            options: entity.fieldMetaDataList.map(field => ({
+              label: field.name,
+              value: field.fieldName
+            }))
           }))
-        }))
       },
       joinersFieldOptions() {
         return this.filtersFieldOptions;

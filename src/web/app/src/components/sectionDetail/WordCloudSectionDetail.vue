@@ -12,7 +12,7 @@
                     style="width: 100%;height: 200px"></vue-word-cloud>
 
     <template slot="extraFormItems" slot-scope="slotProps">
-      <el-form-item label="Delimiter to Generate Word" prop="extraData.delimiters">
+      <el-form-item label="Delimiter to Generate Word" prop="extraData.delimiters" v-if="slotProps.isInAdvancedMode">
         <el-select multiple v-model="slotProps.extraData.delimiters">
           <el-option label="\r" value="\r" />
           <el-option label="\n" value="\n" />
