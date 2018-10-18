@@ -60,6 +60,11 @@
           "right": "record2"
         }
       ],
+      "groupers": [
+        {
+          "field": "groupField1"
+        }
+      ],
       "extraData": {
         "listTest": [
           "hello",
@@ -103,6 +108,11 @@
         {
           "left": "record1_UPDATED",
           "right": "record2_UPDATED"
+        }
+      ],
+      "groupers": [
+        {
+          "field": "groupField2"
         }
       ],
       "extraData": {

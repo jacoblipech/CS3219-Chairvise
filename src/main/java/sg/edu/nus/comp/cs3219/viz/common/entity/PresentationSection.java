@@ -66,6 +66,10 @@ public class PresentationSection {
     //private List<Joiner> joiners = new ArrayList<>();
 
     @Column(columnDefinition="TEXT")
+    private String groupers;
+    //private List<Grouper> joiners = new ArrayList<>();
+
+    @Column(columnDefinition="TEXT")
     private String extraData;
 
     public static class Selection {
@@ -150,6 +154,18 @@ public class PresentationSection {
 
         public void setRight(String right) {
             this.right = right;
+        }
+    }
+
+    public static class Grouper {
+        private String field;
+
+        public String getField() {
+            return field;
+        }
+
+        public void setField(String field) {
+            this.field = field;
         }
     }
 
@@ -264,6 +280,23 @@ public class PresentationSection {
     public void setJoiners(List<Joiner> joiners) {
         try {
             this.joiners = objectMapper.writeValueAsString(joiners);
+        } catch (JsonProcessingException e) {
+            log.severe(e.getMessage());
+        }
+    }
+
+    public List<Grouper> getGroupers() {
+        try {
+            return objectMapper.readValue(groupers, new TypeReference<List<Joiner>>(){});
+        } catch (IOException e) {
+            log.severe(e.getMessage());
+            return new ArrayList<>();
+        }
+    }
+
+    public void setGroupers(List<Grouper> groupers) {
+        try {
+            this.groupers = objectMapper.writeValueAsString(groupers);
         } catch (JsonProcessingException e) {
             log.severe(e.getMessage());
         }

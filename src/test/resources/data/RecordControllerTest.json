@@ -36,7 +36,7 @@
     "review1S1": {
       "r_id": 1,
       "dataSet": "test@example.com",
-      "r_expertise_level": "1",
+      "r_expertise_level": 1,
       "r_has_recommended_for_best_paper": false,
       "r_num_review_assignment": 48,
       "r_overall_evaluation_score": -3,

@@ -91,7 +91,7 @@
       },
       {
         "fieldName": "r_expertise_level",
-        "type": "String",
+        "type": "double",
         "name": "Expertise Level",
         "description": "Reviewer selects a field 1-5 to indicate expertise while submitting the review."
       },

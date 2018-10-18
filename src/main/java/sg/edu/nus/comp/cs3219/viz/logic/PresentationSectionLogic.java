@@ -33,6 +33,7 @@ public class PresentationSectionLogic {
         newPresentationSection.setInvolvedRecords(presentationSection.getInvolvedRecords());
         newPresentationSection.setFilters(presentationSection.getFilters());
         newPresentationSection.setJoiners(presentationSection.getJoiners());
+        newPresentationSection.setGroupers(presentationSection.getGroupers());
         newPresentationSection.setExtraData(presentationSection.getExtraData());
 
         return presentationSectionRepository.save(newPresentationSection);
@@ -50,6 +51,7 @@ public class PresentationSectionLogic {
         oldPresentationSection.setInvolvedRecords(newPresentationSection.getInvolvedRecords());
         oldPresentationSection.setFilters(newPresentationSection.getFilters());
         oldPresentationSection.setJoiners(newPresentationSection.getJoiners());
+        oldPresentationSection.setGroupers(newPresentationSection.getGroupers());
         oldPresentationSection.setExtraData(newPresentationSection.getExtraData());
 
         return presentationSectionRepository.save(oldPresentationSection);

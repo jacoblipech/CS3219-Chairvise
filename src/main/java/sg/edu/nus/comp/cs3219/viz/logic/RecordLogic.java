@@ -8,7 +8,7 @@ import sg.edu.nus.comp.cs3219.viz.storage.repository.AuthorRecordRepository;
 import sg.edu.nus.comp.cs3219.viz.storage.repository.ReviewRecordRepository;
 import sg.edu.nus.comp.cs3219.viz.storage.repository.SubmissionRecordRepository;
 
-import java.util.Collections;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,6 +29,7 @@ public class RecordLogic {
         this.reviewRecordRepository = reviewRecordRepository;
     }
 
+    @Transactional
     public void removeAndPersistAuthorRecordForDataSet(String dataSet, List<AuthorRecord> authorRecordList) {
         authorRecordRepository.deleteAllByDataSetEquals(dataSet);
         authorRecordRepository.saveAll(authorRecordList.stream().peek(r -> {
@@ -40,6 +41,7 @@ public class RecordLogic {
         }).collect(Collectors.toList()));
     }
 
+    @Transactional
     public void removeAndPersistReviewRecordForDataSet(String dataSet, List<ReviewRecord> reviewRecordList) {
         reviewRecordRepository.deleteAllByDataSetEquals(dataSet);
         reviewRecordRepository.saveAll(reviewRecordList.stream().peek(r -> {
@@ -51,6 +53,7 @@ public class RecordLogic {
         }).collect(Collectors.toList()));
     }
 
+    @Transactional
     public void removeAndPersistSubmissionRecordForDataSet(String dataSet, List<SubmissionRecord> submissionRecordList) {
         submissionRecordRepository.deleteAllByDataSetEquals(dataSet);
         submissionRecordRepository.saveAll(submissionRecordList.stream().peek(r -> {

@@ -42,7 +42,7 @@ public class ReviewRecord {
 
     // Reviewer selects a field 1-5 to indicate expertise while submitting the review. For example 5: expert, 1: passing knowledge
     @Exportable(name = "Expertise Level", description = "Reviewer selects a field 1-5 to indicate expertise while submitting the review.")
-    private String r_expertise_level;
+    private double r_expertise_level;
 
     @Exportable(name = "Review Comment")
     private String r_review_comment;
@@ -113,11 +113,11 @@ public class ReviewRecord {
         this.r_reviewer_name = r_reviewer_name;
     }
 
-    public String getR_expertise_level() {
+    public double getR_expertise_level() {
         return r_expertise_level;
     }
 
-    public void setR_expertise_level(String r_expertise_level) {
+    public void setR_expertise_level(double r_expertise_level) {
         this.r_expertise_level = r_expertise_level;
     }
 
