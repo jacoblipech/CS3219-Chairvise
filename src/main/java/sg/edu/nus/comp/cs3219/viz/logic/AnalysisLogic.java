@@ -55,7 +55,13 @@ public class AnalysisLogic {
 
     private String generateSQL(AnalysisRequest analysisRequest) {
         String selectionsStr = analysisRequest.getSelections().stream()
-                .map(PresentationSection.Selection::getField)
+                .map(s -> {
+                    String selection = s.getExpression();
+                    if (!s.getRename().isEmpty()) {
+                        selection += String.format(" AS `%s`", s.getRename());
+                    }
+                    return selection;
+                })
                 .collect(Collectors.joining(","));
         if (selectionsStr.isEmpty()) {
             selectionsStr = "*";

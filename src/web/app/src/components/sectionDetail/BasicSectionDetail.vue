@@ -27,20 +27,13 @@
       <slot v-else></slot>
       <div v-if="!isEditing" class="description">{{ editForm.description }}</div>
       <div v-if="isEditing">
-        <el-form-item label="Field to Analysis" prop="selections">
-          <el-select v-model="editForm.selections" multiple placeholder="Please select">
-            <el-option-group
-              v-for="group in selectionsOptions"
-              :key="group.label"
-              :label="group.label">
-              <el-option
-                v-for="item in group.options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
-            </el-option-group>
-          </el-select>
+
+        <el-form-item v-for="(selection, index) in editForm.selections" :label="'Selection ' + index"
+                      :key="index"
+                      :prop="'selections.' + index" :rules="[editFormSelectionsRule]">
+          <el-input v-model="selection.expression" placeholder="Expression" style="width: 300px"></el-input>&nbsp;
+          <el-input v-model="selection.rename" placeholder="Rename Field (Optional)" style="width: 200px"></el-input>&nbsp;
+          <el-button type="danger" icon="el-icon-delete" circle @click="removeSelection(selection)"></el-button>
         </el-form-item>
 
         <el-form-item label="Record Involved" prop="involvedRecords">
@@ -57,7 +50,7 @@
         <el-form-item v-for="(filter, index) in editForm.filters" :label="'Filter ' + index"
                       :key="index"
                       :prop="'filters.' + index" :rules="[editFormFiltersRule]">
-          <el-select placeholder="Filed" v-model="filter.field">
+          <el-select placeholder="Field" v-model="filter.field">
             <el-option-group
               v-for="group in filtersFieldOptions"
               :key="group.label"
@@ -95,6 +88,7 @@
           <el-button type="success" @click="saveSectionDetail('editForm')">Save</el-button>
           <el-button @click="cancelEditing">Cancel</el-button>
           <el-button type="success" plain @click="addFilter">Add filter</el-button>
+          <el-button type="success" plain @click="addSelection">Add selection</el-button>
         </el-form-item>
       </div>
     </el-form>
@@ -160,9 +154,6 @@
         },
 
         editFormRule: {
-          selections: [
-            this.editFormSelectionsRule
-          ],
           involvedRecords: [
             this.editFormInvolvedRecordsRule
           ],
@@ -173,7 +164,13 @@
     },
 
     computed: {
-      selectionsOptions() {
+      involvedRecordsOptions() {
+        return this.$store.state.dbMetaData.entities.map(entity => ({
+          label: entity.name,
+          value: entity.tableName
+        }))
+      },
+      filtersFieldOptions() {
         return this.$store.state.dbMetaData.entities.map(entity => ({
           label: entity.name,
           options: entity.fieldMetaDataList.map(field => ({
@@ -182,17 +179,8 @@
           }))
         }))
       },
-      involvedRecordsOptions() {
-        return this.$store.state.dbMetaData.entities.map(entity => ({
-          label: entity.name,
-          value: entity.tableName
-        }))
-      },
-      filtersFieldOptions() {
-        return this.selectionsOptions;
-      },
       joinersFieldOptions() {
-        return this.selectionsOptions;
+        return this.filtersFieldOptions;
       }
     },
 
@@ -210,11 +198,23 @@
         this.editForm.title = this.sectionDetail.title;
         this.editForm.description = this.sectionDetail.description;
         this.editForm.dataSet = this.sectionDetail.dataSet;
-        this.editForm.selections = this.sectionDetail.selections.map(s => s.field);
+        this.editForm.selections = JSON.parse(JSON.stringify(this.sectionDetail.selections)); // deep copy
         this.editForm.involvedRecords = this.sectionDetail.involvedRecords.map(r => r.name);
         this.editForm.filters = this.sectionDetail.filters.map(f => Object.assign({}, f));
         this.editForm.joiners = this.sectionDetail.joiners.map(f => Object.assign({}, f));
         this.editForm.extraData = JSON.parse(JSON.stringify(this.sectionDetail.extraData)) // deep copy
+      },
+
+      addSelection() {
+        this.editForm.selections.push({
+          expression: '',
+          rename: '',
+        })
+      },
+
+      removeSelection(selection) {
+        let index = this.editForm.selections.indexOf(selection);
+        this.editForm.selections.splice(index, 1)
       },
 
       addFilter() {
@@ -239,7 +239,7 @@
               title: this.editForm.title,
               description: this.editForm.description,
               dataSet: this.sectionDetail.dataSet,
-              selections: this.editForm.selections.map(s => ({field: s})),
+              selections: this.editForm.selections,
               involvedRecords: this.editForm.involvedRecords.map(s => ({name: s})),
               filters: this.editForm.filters.map(f => Object.assign({}, f)),
               joiners: this.editForm.joiners.map(j => Object.assign({}, j)),
@@ -272,9 +272,7 @@
           this.$store.dispatch('sendPreviewAnalysisRequest', {
             id: this.sectionDetail.id,
             dataSet: this.sectionDetail.dataSet,
-            selections: [{
-              field: this.editForm.selections[0]
-            }],
+            selections: this.editForm.selections,
             involvedRecords: [{
               name: this.editForm.involvedRecords[0]
             }],
@@ -282,7 +280,7 @@
           })
             .then(() => {
               this.$emit('update-visualisation', {
-                selections: this.editForm.selections.map(s => ({field: s})),
+                selections: this.editForm.selections,
                 involvedRecords: this.editForm.involvedRecords.map(s => ({name: s})),
                 filters: this.editForm.filters.map(f => Object.assign({}, f)),
                 joiners: this.editForm.joiners.map(j => Object.assign({}, j)),

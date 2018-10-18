@@ -50,14 +50,17 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
         analysisRequest.getInvolvedRecords().add(submissionRecord);
 
         PresentationSection.Selection selection = new PresentationSection.Selection();
-        selection.setField("s_authors");
+        selection.setExpression("s_authors");
+        selection.setRename("authors");
         analysisRequest.getSelections().add(selection);
 
         List<Map<String, Object>> result = analysisLogic.analyse(analysisRequest);
 
         Assert.assertEquals(1, result.size());
         Assert.assertEquals(1, result.get(0).keySet().size());
-        Assert.assertEquals("Laxxx Kaxx", result.get(0).get("s_authors"));
+        // should rename
+        Assert.assertNull(result.get(0).get("s_authors"));
+        Assert.assertEquals("Laxxx Kaxx", result.get(0).get("authors"));
     }
 
     @Test
@@ -73,10 +76,12 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
         analysisRequest.getInvolvedRecords().add(submissionRecord);
 
         PresentationSection.Selection selection = new PresentationSection.Selection();
-        selection.setField("s_authors");
+        selection.setExpression("s_authors");
+        selection.setRename("");
         analysisRequest.getSelections().add(selection);
         selection = new PresentationSection.Selection();
-        selection.setField("s_is_accepted");
+        selection.setExpression("s_is_accepted");
+        selection.setRename("");
         analysisRequest.getSelections().add(selection);
 
         List<Map<String, Object>> result = analysisLogic.analyse(analysisRequest);

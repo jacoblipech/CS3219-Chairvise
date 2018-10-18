@@ -69,14 +69,24 @@ public class PresentationSection {
     private String extraData;
 
     public static class Selection {
-        private String field;
+        private String expression;
 
-        public String getField() {
-            return field;
+        private String rename;
+
+        public String getExpression() {
+            return expression;
         }
 
-        public void setField(String field) {
-            this.field = field;
+        public void setExpression(String expression) {
+            this.expression = expression;
+        }
+
+        public String getRename() {
+            return rename;
+        }
+
+        public void setRename(String rename) {
+            this.rename = rename;
         }
     }
 

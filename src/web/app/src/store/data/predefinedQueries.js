@@ -7,7 +7,8 @@ export default {
       dataSet: '${WILL_BE_REPLACED}',
       selections: [
         {
-          field: 's_keywords'
+          expression: 's_keywords',
+          rename: ''
         }
       ],
       involvedRecords: [

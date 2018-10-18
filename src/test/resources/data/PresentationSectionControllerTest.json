@@ -35,7 +35,8 @@
       "dataSet": "test@viz.test",
       "selections": [
         {
-          "field": "selection1"
+          "expression": "selection1",
+          "rename": "hi"
         }
       ],
       "involvedRecords": [
@@ -84,10 +85,12 @@
       "dataSet": "test@viz.test_UPDATED",
       "selections": [
         {
-          "field": "selection1_UPDATED"
+          "expression": "selection1_UPDATED",
+          "rename": ""
         },
         {
-          "field": "selection1_UPDATE2"
+          "expression": "selection1_UPDATE2",
+          "rename": ""
         }
       ],
       "involvedRecords": [

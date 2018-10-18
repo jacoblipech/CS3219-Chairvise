@@ -43,10 +43,10 @@
       return {
         editFormSelectionsRule: {
           validator: (rule, value, callback) => {
-            if (value.length >= 2 || value.length < 1) {
-              return callback(new Error('There must be only one field to analysis'))
+            if (value.expression.length === 0) {
+              return callback(new Error('Please specify expression for the selection'))
             }
-            return callback();
+            callback();
           },
           trigger: 'blur',
         },
@@ -98,7 +98,7 @@
 
     methods: {
       updateVisualisation({result, selections, extraData}) {
-        let fieldName = selections[0].field;
+        let fieldName = selections[0].expression;
         let wordsCount = {};
         let delimiterRegex = new RegExp(extraData.delimiters.join('|'),'g');
         // will only require at least one selection
