@@ -54,6 +54,8 @@
         </div>
       </transition>
     </el-col>
+
+    <!-- dialogs -->
     <el-dialog
       title="Confirm"
       :visible.sync="submitCheck"
@@ -68,7 +70,7 @@
       title="Success"
       :visible.sync="uploadSuccess"
       width="30%" center>
-      <span>Upload success!</span>
+      <span>You have successfully imported data using the column mapping!</span>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" v-on:click="closeSuccess">Sure</el-button>
       </span>
@@ -192,7 +194,7 @@ export default {
       this.$store.commit("clearTableType");
       this.$store.commit("clearHasLabel");
       this.$store.commit("clearMapping");
-      this.$store.commit("Error");
+      this.$store.commit("clearError");
     }
   },
   mounted() {},
