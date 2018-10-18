@@ -1,25 +1,12 @@
 package sg.edu.nus.comp.cs3219.viz.common.entity;
 
-import sg.edu.nus.comp.cs3219.viz.common.datatransfer.AccessLevel;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-
-import org.hibernate.annotations.GenericGenerator;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import org.hibernate.annotations.GenericGenerator;
+import sg.edu.nus.comp.cs3219.viz.common.datatransfer.AccessLevel;
+
+import javax.persistence.*;
 
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames={"presentation_id", "user_identifier", "access_level"}))
@@ -33,6 +20,7 @@ public class PresentationAccessControl extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="presentation_id")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Presentation presentation;
 
     @Column(name = "user_identifier")
@@ -47,7 +35,6 @@ public class PresentationAccessControl extends BaseEntity {
         return id;
     }
 
-    @JsonIgnore
     public Presentation getPresentation() {
         return presentation;
     }

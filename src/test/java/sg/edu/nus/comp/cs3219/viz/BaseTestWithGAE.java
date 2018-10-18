@@ -1,9 +1,8 @@
 package sg.edu.nus.comp.cs3219.viz;
 
-import sg.edu.nus.comp.cs3219.viz.testhelper.GaeSimulation;
-
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import sg.edu.nus.comp.cs3219.viz.testhelper.GaeSimulation;
 
 public abstract class BaseTestWithGAE extends BaseTestWithDBAccess {
 

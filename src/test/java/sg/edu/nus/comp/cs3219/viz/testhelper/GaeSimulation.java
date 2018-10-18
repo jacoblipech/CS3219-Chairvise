@@ -1,17 +1,12 @@
 package sg.edu.nus.comp.cs3219.viz.testhelper;
 
+import com.google.appengine.tools.development.testing.*;
 import sg.edu.nus.comp.cs3219.viz.common.util.Const;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.google.appengine.tools.development.testing.LocalMailServiceTestConfig;
-import com.google.appengine.tools.development.testing.LocalModulesServiceTestConfig;
-import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
-import com.google.appengine.tools.development.testing.LocalTaskQueueTestConfig;
-import com.google.appengine.tools.development.testing.LocalUserServiceTestConfig;
 
 /**
  * Provides a Singleton in-memory simulation of the GAE for unit testing.
