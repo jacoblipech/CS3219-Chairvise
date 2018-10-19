@@ -55,6 +55,38 @@
           </el-select>
         </el-form-item>
 
+        <el-form-item v-if="isInAdvancedMode" v-for="(joiner, index) in editForm.joiners" :label="'Joiner ' + index"
+                      :key="'j' + index"
+                      :prop="'joiners.' + index" :rules="editFormJoinersRule">
+          On <el-select placeholder="Left" v-model="joiner.left">
+            <el-option-group
+              v-for="group in joinersFieldOptions"
+              :key="group.label"
+              :label="group.label">
+              <el-option
+                v-for="item in group.options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-option-group>
+          </el-select> Equals
+          <el-select placeholder="Right" v-model="joiner.right">
+            <el-option-group
+              v-for="group in joinersFieldOptions"
+              :key="group.label"
+              :label="group.label">
+              <el-option
+                v-for="item in group.options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-option-group>
+          </el-select>&nbsp;
+          <el-button type="danger" icon="el-icon-delete" circle @click="removeJoiner(joiner)"></el-button>
+        </el-form-item>
+
         <el-form-item v-for="(filter, index) in editForm.filters" :label="'Filter ' + index"
                       :key="'f' + index"
                       :prop="'filters.' + index" :rules="editFormFiltersRule">
@@ -110,8 +142,8 @@
                       :prop="'sorters.' + index" :rules="editFormSortersRule">
           <el-input v-model="sorter.field" placeholder="Field to Sort" style="width: 300px"></el-input>&nbsp;
           <el-select v-model="sorter.order" style="width: 80px" placeholder="Order">
-            <el-option label="DESC" value="Big to Small" />
-            <el-option label="ASC" value="Small to Big" />
+            <el-option label="Big to Small" value="DESC" />
+            <el-option label="Small to Big" value="ASC" />
           </el-select>&nbsp;
           <el-button type="danger" icon="el-icon-delete" circle @click="removeSorter(sorter)"></el-button>
         </el-form-item>
@@ -123,6 +155,7 @@
           <el-button type="success" @click="saveSectionDetail('editForm')">Save</el-button>
           <el-button @click="cancelEditing">Cancel</el-button>
           <el-button type="success" plain @click="addSelection" v-if="isInAdvancedMode">Add selection</el-button>
+          <el-button type="success" plain @click="addJoiner" v-if="isInAdvancedMode">Add joiner</el-button>
           <el-button type="success" plain @click="addFilter">Add filter</el-button>
           <el-button type="success" plain @click="addSorter" v-if="isInAdvancedMode">Add sorting</el-button>
         </el-form-item>
@@ -249,6 +282,7 @@
       cancelEditing() {
         this.isEditing = false;
         this.syncDataWithProps();
+        this.sendAnalysisRequest();
       },
 
       syncDataWithProps() {
@@ -274,6 +308,18 @@
       removeSelection(selection) {
         let index = this.editForm.selections.indexOf(selection);
         this.editForm.selections.splice(index, 1)
+      },
+
+      addJoiner() {
+        this.editForm.joiners.push({
+          left: '',
+          right: '',
+        })
+      },
+
+      removeJoiner(joiner) {
+        let index = this.editForm.joiners.indexOf(joiner);
+        this.editForm.joiners.splice(index, 1)
       },
 
       addFilter() {
