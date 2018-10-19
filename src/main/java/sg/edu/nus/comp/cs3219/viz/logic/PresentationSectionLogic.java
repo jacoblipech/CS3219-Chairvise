@@ -34,6 +34,7 @@ public class PresentationSectionLogic {
         newPresentationSection.setFilters(presentationSection.getFilters());
         newPresentationSection.setJoiners(presentationSection.getJoiners());
         newPresentationSection.setGroupers(presentationSection.getGroupers());
+        newPresentationSection.setSorters(presentationSection.getSorters());
         newPresentationSection.setExtraData(presentationSection.getExtraData());
 
         return presentationSectionRepository.save(newPresentationSection);
@@ -52,6 +53,7 @@ public class PresentationSectionLogic {
         oldPresentationSection.setFilters(newPresentationSection.getFilters());
         oldPresentationSection.setJoiners(newPresentationSection.getJoiners());
         oldPresentationSection.setGroupers(newPresentationSection.getGroupers());
+        oldPresentationSection.setSorters(newPresentationSection.getSorters());
         oldPresentationSection.setExtraData(newPresentationSection.getExtraData());
 
         return presentationSectionRepository.save(oldPresentationSection);

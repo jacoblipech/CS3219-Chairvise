@@ -29,6 +29,8 @@ export default {
 
     addSectionDetail(state, payload) {
       state.sectionList.push(Object.assign({
+        result: [],
+        previewResult: [],
         status: {
           isLoading: false,
           isApiError: false,
@@ -43,7 +45,7 @@ export default {
       state.sectionList.splice(index, 1)
     },
 
-    updateSectionDetail(state, {id, title, description, dataSet, selections, involvedRecords, filters, joiners, extraData}) {
+    updateSectionDetail(state, {id, title, description, dataSet, selections, involvedRecords, filters, joiners, groupers, sorters, extraData}) {
       let section = findSectionDetailById(state.sectionList, id);
 
       section.title = title;
@@ -53,6 +55,8 @@ export default {
       section.involvedRecords = involvedRecords;
       section.filters = filters;
       section.joiners = joiners;
+      section.groupers = groupers;
+      section.sorters = sorters;
       section.extraData = extraData;
     },
 
@@ -118,7 +122,7 @@ export default {
         })
     },
 
-    async saveSectionDetail({commit}, {id, presentationId, title, description, dataSet, selections, involvedRecords, filters, joiners, extraData}) {
+    async saveSectionDetail({commit}, {id, presentationId, title, description, dataSet, selections, involvedRecords, filters, joiners, groupers, sorters, extraData}) {
       commit('setSectionDetailLoading', {id, isLoading: true});
 
       await axios.put(`/api/presentations/${presentationId}/sections/${id}`, {
@@ -129,6 +133,8 @@ export default {
         involvedRecords,
         filters,
         joiners,
+        groupers,
+        sorters,
         extraData
       })
         .then(response => {
@@ -142,6 +148,8 @@ export default {
             involvedRecords: section.involvedRecords,
             filters: section.filters,
             joiners: section.joiners,
+            groupers: section.groupers,
+            sorters: section.sorters,
             extraData: section.extraData
           })
         })
@@ -166,7 +174,7 @@ export default {
         })
     },
 
-    async sendPreviewAnalysisRequest({commit}, {id, dataSet, selections, involvedRecords, filters, joiners}) {
+    async sendPreviewAnalysisRequest({commit}, {id, dataSet, selections, involvedRecords, filters, joiners, groupers, sorters}) {
       commit('setSectionDetailLoading', {id, isLoading: true});
 
       await axios.post('/api/analysis', {
@@ -175,6 +183,8 @@ export default {
         involvedRecords,
         filters,
         joiners,
+        groupers,
+        sorters
       })
         .then(response => {
           commit('updateSectionAnalysisPreviewResult', {id, result: response.data});
@@ -197,6 +207,8 @@ export default {
         involvedRecords: sectionToAnalysis.involvedRecords,
         filters: sectionToAnalysis.filters,
         joiners: sectionToAnalysis.joiners,
+        groupers: sectionToAnalysis.groupers,
+        sorters: sectionToAnalysis.sorters
       })
         .then(response => {
           commit('updateSectionAnalysisResult', {id: sectionToAnalysis.id, result: response.data});

@@ -81,6 +81,10 @@ public class AnalysisLogic {
                 .map(PresentationSection.Grouper::getField)
                 .collect(Collectors.joining(","));
 
+        String sortersStr = analysisRequest.getSorters().stream()
+                .map(s -> String.format("%s %s", s.getField(), s.getOrder()))
+                .collect(Collectors.joining(","));
+
         String baseSQL = String.format("SELECT %s FROM %s WHERE %s",
                 selectionsStr, tablesStr, dataSetFilter);
 
@@ -94,6 +98,10 @@ public class AnalysisLogic {
 
         if (!groupersStr.isEmpty()) {
             baseSQL += String.format(" GROUP BY %s", groupersStr);
+        }
+
+        if (!sortersStr.isEmpty()) {
+            baseSQL += String.format(" ORDER BY %s", sortersStr);
         }
 
         return baseSQL;

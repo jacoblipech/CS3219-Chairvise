@@ -22,13 +22,7 @@ public class AnalysisRequest {
 
     private List<PresentationSection.Grouper> groupers = new ArrayList<>();
 
-    public List<PresentationSection.Grouper> getGroupers() {
-        return groupers;
-    }
-
-    public void setGroupers(List<PresentationSection.Grouper> groupers) {
-        this.groupers = groupers;
-    }
+    private List<PresentationSection.Sorter> sorters = new ArrayList<>();
 
     public void setDataSet(String dataSet) {
         this.dataSet = dataSet;
@@ -68,5 +62,21 @@ public class AnalysisRequest {
 
     public void setJoiners(List<PresentationSection.Joiner> joiners) {
         this.joiners = joiners;
+    }
+
+    public List<PresentationSection.Grouper> getGroupers() {
+        return groupers;
+    }
+
+    public void setGroupers(List<PresentationSection.Grouper> groupers) {
+        this.groupers = groupers;
+    }
+
+    public List<PresentationSection.Sorter> getSorters() {
+        return sorters;
+    }
+
+    public void setSorters(List<PresentationSection.Sorter> sorters) {
+        this.sorters = sorters;
     }
 }

@@ -70,6 +70,10 @@ public class PresentationSection {
     //private List<Grouper> joiners = new ArrayList<>();
 
     @Column(columnDefinition="TEXT")
+    private String sorters;
+    //private List<Sorter> joiners = new ArrayList<>();
+
+    @Column(columnDefinition="TEXT")
     private String extraData;
 
     public static class Selection {
@@ -166,6 +170,28 @@ public class PresentationSection {
 
         public void setField(String field) {
             this.field = field;
+        }
+    }
+
+    public static class Sorter {
+        private String field;
+
+        private String order;
+
+        public String getField() {
+            return field;
+        }
+
+        public void setField(String field) {
+            this.field = field;
+        }
+
+        public String getOrder() {
+            return order;
+        }
+
+        public void setOrder(String order) {
+            this.order = order;
         }
     }
 
@@ -287,7 +313,7 @@ public class PresentationSection {
 
     public List<Grouper> getGroupers() {
         try {
-            return objectMapper.readValue(groupers, new TypeReference<List<Joiner>>(){});
+            return objectMapper.readValue(groupers, new TypeReference<List<Grouper>>(){});
         } catch (IOException e) {
             log.severe(e.getMessage());
             return new ArrayList<>();
@@ -297,6 +323,23 @@ public class PresentationSection {
     public void setGroupers(List<Grouper> groupers) {
         try {
             this.groupers = objectMapper.writeValueAsString(groupers);
+        } catch (JsonProcessingException e) {
+            log.severe(e.getMessage());
+        }
+    }
+
+    public List<Sorter> getSorters() {
+        try {
+            return objectMapper.readValue(sorters, new TypeReference<List<Sorter>>(){});
+        } catch (IOException e) {
+            log.severe(e.getMessage());
+            return new ArrayList<>();
+        }
+    }
+
+    public void setSorters(List<Sorter> sorters) {
+        try {
+            this.sorters = objectMapper.writeValueAsString(sorters);
         } catch (JsonProcessingException e) {
             log.severe(e.getMessage());
         }

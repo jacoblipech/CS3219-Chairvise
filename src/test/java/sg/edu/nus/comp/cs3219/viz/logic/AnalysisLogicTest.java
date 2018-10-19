@@ -310,6 +310,27 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
     }
 
     @Test
+    public void testAnalyse_queryReviewWithSorting_shouldQueryCorrectly() {
+        AnalysisRequest analysisRequest = new AnalysisRequest();
+
+        analysisRequest.setDataSet("test@example.com");
+
+        PresentationSection.Record reviewRecord = new PresentationSection.Record();
+        reviewRecord.setName("review_record");
+        analysisRequest.getInvolvedRecords().add(reviewRecord);
+
+        PresentationSection.Sorter sorter = new PresentationSection.Sorter();
+        sorter.setField("r_overall_evaluation_score");
+        sorter.setOrder("DESC");
+        analysisRequest.getSorters().add(sorter);
+
+        List<Map<String, Object>> result = analysisLogic.analyse(analysisRequest);
+
+        Assert.assertEquals(-2.1, result.get(0).get("r_overall_evaluation_score"));
+        Assert.assertEquals(-3.0, result.get(1).get("r_overall_evaluation_score"));
+    }
+
+    @Test
     public void testAnalyse_queryReviewWithAggregation_shouldQueryCorrectly() {
         AnalysisRequest analysisRequest = new AnalysisRequest();
 
@@ -342,6 +363,7 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
         Assert.assertEquals("true", analysisLogic.wrapValue("a_is_corresponding", "true"));
         Assert.assertEquals("21", analysisLogic.wrapValue("r_num_review_assignment", "21"));
         Assert.assertEquals("21.0", analysisLogic.wrapValue("r_overall_evaluation_score", "21.0"));
+        Assert.assertEquals("22.0", analysisLogic.wrapValue("r_expertise_level", "22.0"));
         Assert.assertEquals("'NUS'", analysisLogic.wrapValue("a_organisation", "NUS"));
     }
 
