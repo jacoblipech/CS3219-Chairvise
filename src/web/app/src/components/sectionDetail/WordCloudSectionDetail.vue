@@ -101,7 +101,7 @@
       updateVisualisation({result, selections, extraData}) {
         let fieldName = selections[0].rename;
         let wordsCount = {};
-        let delimiterRegex = new RegExp(extraData.delimiters.join('|'),'g');
+        let delimiterRegex = new RegExp(extraData.delimiters.join('|'), 'g');
         // will only require at least one selection
         // count the occurrence of word
         result.forEach(r => {

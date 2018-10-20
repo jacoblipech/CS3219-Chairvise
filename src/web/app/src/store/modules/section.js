@@ -89,7 +89,7 @@ export default {
     async fetchSectionList({commit}, presentationId) {
       commit('setSectionListLoading', true);
 
-      await axios.get('/api/presentations/' + presentationId + '/sections')
+      await axios.get(`/api/presentations/${presentationId}/sections`)
         .then(response => {
           commit('clearSectionList');
           response.data.forEach(s => {
