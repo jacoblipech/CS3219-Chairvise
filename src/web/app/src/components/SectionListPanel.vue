@@ -40,22 +40,24 @@ export default {
     presentationId: 'fetchSectionList'
   },
   data() {
-    let sectionOptions = [];
-    for (let key in PredefinedQueries) {
-      if (PredefinedQueries.hasOwnProperty(key)) {
-        sectionOptions.push({
-          value: key,
-          label: PredefinedQueries[key].name,
-        })
-      }
-    }
-
     return {
-      predefinedSections: sectionOptions,
       selectedNewSection: '',
     }
   },
   computed: {
+    predefinedSections() {
+      let sectionOptions = [];
+      for (let key in PredefinedQueries) {
+        if (PredefinedQueries.hasOwnProperty(key)) {
+          sectionOptions.push({
+            value: key,
+            label: PredefinedQueries[key].name,
+          })
+        }
+      }
+      return sectionOptions;
+    },
+
     isNewPresentation() {
       return this.presentationId === ID_NEW_PRESENTATION
     },
