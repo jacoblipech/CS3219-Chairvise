@@ -25,11 +25,11 @@ export default {
       }
     }
   },
-  "submission_rank": {
-    name: "Submission Rank",
+  "submission_rank_author": {
+    name: "Submission Rank Author",
     data: {
       type: 'bar_chart',
-      title: 'Submission Rank',
+      title: 'Submission Rank Author',
       dataSet: '${WILL_BE_REPLACED}',
       selections: [
         {
@@ -81,6 +81,88 @@ export default {
         yAxisFieldName: 'submission_count',
 
         // specific to category type
+        numOfResultToDisplay: 10,
+      }
+    }
+  },
+  "submission_rank_country": {
+    name: "Submission Rank Country",
+    data: {
+      type: 'pie_chart',
+      title: 'Submission Rank Country',
+      dataSet: '${WILL_BE_REPLACED}',
+      selections: [
+        {
+          expression: 'COUNT(*)',
+          rename: 'submission_count'
+        },
+        {
+          expression: "a_country",
+          rename: 'a_country'
+        }
+      ],
+      involvedRecords: [
+        {
+          name: 'author_record'
+        }
+      ],
+      filters: [],
+      joiners: [],
+      groupers: [
+        {
+          field: "a_country"
+        }
+      ],
+      sorters: [
+        {
+          field: 'submission_count',
+          order: 'DESC',
+        }
+      ],
+      extraData: {
+        categoryFieldName: 'a_country',
+        valueFieldName: 'submission_count',
+        numOfResultToDisplay: 10,
+      }
+    }
+  },
+  "submission_rank_organization": {
+    name: "Submission Rank Organization",
+    data: {
+      type: 'pie_chart',
+      title: 'Submission Rank Organization',
+      dataSet: '${WILL_BE_REPLACED}',
+      selections: [
+        {
+          expression: 'COUNT(*)',
+          rename: 'submission_count'
+        },
+        {
+          expression: "a_organisation",
+          rename: 'a_organisation'
+        }
+      ],
+      involvedRecords: [
+        {
+          name: 'author_record'
+        }
+      ],
+      filters: [],
+      joiners: [],
+      groupers: [
+        {
+          field: "a_organisation"
+        }
+      ],
+      sorters: [
+        {
+          field: 'submission_count',
+          order: 'DESC',
+        }
+      ],
+      extraData: {
+        categoryFieldName: 'a_organisation',
+        valueFieldName: 'submission_count',
         numOfResultToDisplay: 10,
       }
     }
