@@ -24,36 +24,36 @@ public class AnalysisRequest {
 
     private List<PresentationSection.Sorter> sorters = new ArrayList<>();
 
-    public void setDataSet(String dataSet) {
-        this.dataSet = dataSet;
-    }
-
-    public void setSelections(List<PresentationSection.Selection> selections) {
-        this.selections = selections;
-    }
-
-    public void setInvolvedRecords(List<PresentationSection.Record> involvedRecords) {
-        this.involvedRecords = involvedRecords;
-    }
-
-    public void setFilters(List<PresentationSection.Filter> filters) {
-        this.filters = filters;
-    }
-
     public String getDataSet() {
         return dataSet;
+    }
+
+    public void setDataSet(String dataSet) {
+        this.dataSet = dataSet;
     }
 
     public List<PresentationSection.Selection> getSelections() {
         return selections;
     }
 
+    public void setSelections(List<PresentationSection.Selection> selections) {
+        this.selections = selections;
+    }
+
     public List<PresentationSection.Record> getInvolvedRecords() {
         return involvedRecords;
     }
 
+    public void setInvolvedRecords(List<PresentationSection.Record> involvedRecords) {
+        this.involvedRecords = involvedRecords;
+    }
+
     public List<PresentationSection.Filter> getFilters() {
         return filters;
+    }
+
+    public void setFilters(List<PresentationSection.Filter> filters) {
+        this.filters = filters;
     }
 
     public List<PresentationSection.Joiner> getJoiners() {
