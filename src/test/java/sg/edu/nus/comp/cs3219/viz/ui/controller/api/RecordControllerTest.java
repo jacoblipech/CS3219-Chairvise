@@ -64,7 +64,7 @@ public class RecordControllerTest extends BaseTestREST {
         Assert.assertEquals(1,
                 authorRecordRepository.findByDataSetEquals("test@example.com").size());
         Assert.assertFalse(
-                authorRecordRepository.findById(dataBundle.authorRecords.get("authorS1").getA_id()).isPresent());
+                authorRecordRepository.findById(dataBundle.authorRecords.get("authorS1").getId()).isPresent());
     }
 
     @Test
@@ -80,7 +80,7 @@ public class RecordControllerTest extends BaseTestREST {
         Assert.assertEquals(1,
                 reviewRecordRepository.findByDataSetEquals("test@example.com").size());
         Assert.assertFalse(
-                reviewRecordRepository.findById(dataBundle.reviewRecords.get("review1S1").getR_id()).isPresent());
+                reviewRecordRepository.findById(dataBundle.reviewRecords.get("review1S1").getId()).isPresent());
     }
 
     @Test
@@ -96,7 +96,7 @@ public class RecordControllerTest extends BaseTestREST {
         Assert.assertEquals(1,
                 submissionRecordRepository.findByDataSetEquals("test@example.com").size());
         Assert.assertFalse(
-                submissionRecordRepository.findById(dataBundle.submissionRecords.get("s1").getS_id()).isPresent());
+                submissionRecordRepository.findById(dataBundle.submissionRecords.get("s1").getId()).isPresent());
     }
 
     @Test

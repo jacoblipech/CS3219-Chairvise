@@ -158,13 +158,13 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
         Assert.assertNotEquals(
                 0,
                 submissionRecordRepository.findByDataSetEquals("test1@example.com").stream()
-                        .filter(s -> s.isS_is_notified() == true)
+                        .filter(s -> s.isNotified() == true)
                         .count()
         );
         Assert.assertNotEquals(
                 0,
                 submissionRecordRepository.findByDataSetEquals("test1@example.com").stream()
-                        .filter(s -> s.isS_is_notified() == false)
+                        .filter(s -> s.isNotified() == false)
                         .count()
         );
 
@@ -193,7 +193,7 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
         Assert.assertNotEquals(
                 0,
                 reviewRecordRepository.findByDataSetEquals("test@example.com").stream()
-                        .filter(s -> s.getR_num_review_assignment() == 47)
+                        .filter(s -> s.getNumReviewAssignment() == 47)
                         .count()
         );
 
@@ -222,8 +222,8 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
         Assert.assertNotEquals(
                 0,
                 reviewRecordRepository.findByDataSetEquals("test@example.com").stream()
-                        .filter(s -> s.getR_num_review_assignment() == 47)
-                        .filter(s -> s.getR_expertise_level() == 1)
+                        .filter(s -> s.getNumReviewAssignment() == 47)
+                        .filter(s -> s.getExpertiseLevel() == 1)
                         .count()
         );
 
@@ -352,7 +352,7 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
         List<Map<String, Object>> result = analysisLogic.analyse(analysisRequest);
 
         long totalSum = reviewRecordRepository.findByDataSetEquals("test@example.com").stream()
-                .mapToLong(ReviewRecord::getR_num_review_assignment)
+                .mapToLong(ReviewRecord::getNumReviewAssignment)
                 .sum();
 
         Assert.assertEquals(totalSum, result.get(0).get("totalSum"));

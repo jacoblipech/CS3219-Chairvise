@@ -37,7 +37,7 @@ public class DBMetaDataLogic {
                 .map(f -> {
                     Exportable exportable = f.getAnnotation(Exportable.class);
                     DBFieldMetaData fieldMetaData = new DBFieldMetaData();
-                    fieldMetaData.setFieldName(exportable.nameInDB().isEmpty() ? f.getName() : exportable.nameInDB());
+                    fieldMetaData.setFieldName(exportable.nameInDB());
                     fieldMetaData.setName(exportable.name());
                     fieldMetaData.setType(f.getType().getSimpleName());
                     fieldMetaData.setDescription(exportable.description());

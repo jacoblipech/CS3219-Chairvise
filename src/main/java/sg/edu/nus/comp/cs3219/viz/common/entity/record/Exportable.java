@@ -16,6 +16,6 @@ public @interface Exportable {
 
     String description() default "";
 
-    String nameInDB() default "";
+    String nameInDB();
 
 }

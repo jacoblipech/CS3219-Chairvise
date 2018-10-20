@@ -34,7 +34,7 @@ public class RecordLogic {
         authorRecordRepository.deleteAllByDataSetEquals(dataSet);
         authorRecordRepository.saveAll(authorRecordList.stream().peek(r -> {
             // should not set ID when creating records
-            r.setA_id(null);
+            r.setId(null);
             // should set dataSet
             r.setDataSet(dataSet);
             // the other field can be arbitrary
@@ -46,7 +46,7 @@ public class RecordLogic {
         reviewRecordRepository.deleteAllByDataSetEquals(dataSet);
         reviewRecordRepository.saveAll(reviewRecordList.stream().peek(r -> {
             // should not set ID when creating records
-            r.setR_id(null);
+            r.setId(null);
             // should set dataSet
             r.setDataSet(dataSet);
             // the other field can be arbitrary
@@ -58,7 +58,7 @@ public class RecordLogic {
         submissionRecordRepository.deleteAllByDataSetEquals(dataSet);
         submissionRecordRepository.saveAll(submissionRecordList.stream().peek(r -> {
             // should not set ID when creating records
-            r.setS_id(null);
+            r.setId(null);
             // should set dataSet
             r.setDataSet(dataSet);
             // the other field can be arbitrary

@@ -36,7 +36,7 @@ public class AnalysisLogic {
         Arrays.stream(classToExamine.getDeclaredFields())
                 .filter(f -> f.getAnnotation(Exportable.class) != null)
                 .forEach(field -> {
-                    DATABASE_FIELD_NAME_TO_TYPE_MAP.put(field.getName(), field.getType());
+                    DATABASE_FIELD_NAME_TO_TYPE_MAP.put(field.getAnnotation(Exportable.class).nameInDB(), field.getType());
                 });
     }
 
