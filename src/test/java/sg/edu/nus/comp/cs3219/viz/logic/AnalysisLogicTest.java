@@ -223,7 +223,8 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
                 0,
                 reviewRecordRepository.findByDataSetEquals("test@example.com").stream()
                         .filter(s -> s.getNumReviewAssignment() == 47)
-                        .filter(s -> s.getExpertiseLevel() == 1)
+                        .filter(s -> s.isHasRecommendedForBestPaper() == false)
+                        .filter(s -> s.getReviewerName().equals("Juxxxx Bruxxxx"))
                         .count()
         );
 
@@ -241,16 +242,21 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
         filter.setValue("47");
         analysisRequest.getFilters().add(filter);
         filter = new PresentationSection.Filter();
-        filter.setField("r_expertise_level");
+        filter.setField("r_has_recommended_for_best_paper");
         filter.setComparator("=");
-        filter.setValue("1");
+        filter.setValue("false");
+        filter = new PresentationSection.Filter();
+        filter.setField("r_reviewer_name");
+        filter.setComparator("=");
+        filter.setValue("Juxxxx Bruxxxx");
         analysisRequest.getFilters().add(filter);
 
         List<Map<String, Object>> result = analysisLogic.analyse(analysisRequest);
 
         Assert.assertEquals(1, result.size());
         Assert.assertEquals(47, result.get(0).get("r_num_review_assignment"));
-        Assert.assertEquals(1.0, result.get(0).get("r_expertise_level"));
+        Assert.assertEquals(false, result.get(0).get("r_has_recommended_for_best_paper"));
+        Assert.assertEquals("Juxxxx Bruxxxx", result.get(0).get("r_reviewer_Name"));
     }
 
     @Test
