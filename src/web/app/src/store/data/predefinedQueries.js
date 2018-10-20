@@ -192,5 +192,66 @@ export default {
         }
       }
     }
+  },
+  "review_weighted_evaluation_score_stats_summary": {
+    name: "Review Weighted Evaluation Score Statistic Summary",
+    data: {
+      type: 'stats',
+      title: 'Review Weighted Evaluation Score Statistic Summary',
+      dataSet: '${WILL_BE_REPLACED}',
+      selections: [
+        {
+          expression: 'SUM(r_expertise_level * r_overall_evaluation_score) / SUM(r_expertise_level)',
+          rename: 'weighted_score'
+        },
+      ],
+      involvedRecords: [
+        {
+          name: 'review_record'
+        }
+      ],
+      filters: [],
+      joiners: [],
+      groupers: [{
+        field: 'r_submission_id'
+      }],
+      sorters: [],
+      extraData: {
+        types: ['min', 'max', 'avg', 'std'],
+      }
+    }
+  },
+  "review_expertise_level_stats_summary": {
+    name: "Reviewer Expertise Level Statistic Summary",
+    data: {
+      type: 'stats',
+      title: 'Reviewer Expertise Level Statistic Summary',
+      dataSet: '${WILL_BE_REPLACED}',
+      selections: [
+        {
+          expression: 'r_expertise_level',
+          rename: 'r_expertise_level'
+        },
+      ],
+      involvedRecords: [
+        {
+          name: 'review_record'
+        }
+      ],
+      filters: [],
+      joiners: [],
+      groupers: [
+        {
+          field: 'r_expertise_level'
+        },
+        {
+          field: 'r_reviewer_name'
+        }
+      ],
+      sorters: [],
+      extraData: {
+        types: ['min', 'max', 'avg', 'std'],
+      }
+    }
   }
 }

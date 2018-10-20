@@ -7,3 +7,4 @@ export const ID_NEW_PRESENTATION = "__NEW__";
 
 export const SECTION_TYPE_WORD_CLOUD = 'word_cloud';
 export const SECTION_TYPE_BAR_CHART = 'bar_chart';
+export const SECTION_TYPE_STATS = 'stats';
