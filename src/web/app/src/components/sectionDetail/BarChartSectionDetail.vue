@@ -74,7 +74,7 @@
             if (value.length >= 2 || value.length < 1) {
               return callback(new Error('There must be only one record involved'))
             }
-            return callback();
+            callback();
           },
           trigger: 'change',
         }],
