@@ -17,7 +17,7 @@
     <el-form-item>
       <el-button type="primary" @click="changeEditMode(true)" v-if="!isInEditMode">Edit</el-button>
       <el-button type="primary" @click="submitForm()" v-if="isInEditMode">Save</el-button>
-      <el-button type="info" @click="cancelEditMode()" v-if="isInEditMode && !isNewPresentation">Cancel</el-button>
+      <el-button type="info" @click="changeEditMode(false)" v-if="isInEditMode && !isNewPresentation">Cancel</el-button>
     </el-form-item>
     <el-form-item v-if="!isNewPresentation">
       <el-button type="danger" @click="deleteForm()">Delete</el-button>
@@ -104,11 +104,10 @@ export default {
   },
   methods: {
     changeEditMode(isEditing) {
-      this.isEditing = isEditing
-    },
-    cancelEditMode() {
-      this.$store.dispatch('getPresentation', this.id);
-      this.isEditing = false;
+      if (isEditing === false) {
+          this.$store.dispatch('getPresentation', this.id);
+      }
+      this.isEditing = isEditing;
     },
     submitForm() {
       this.$refs['presentationForm'].validate((valid) => {
