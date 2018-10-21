@@ -1,11 +1,9 @@
 package sg.edu.nus.comp.cs3219.viz.config;
 
-import sg.edu.nus.comp.cs3219.viz.VizApplication;
-
+import com.google.appengine.api.utils.SystemProperty;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
-
-import com.google.appengine.api.utils.SystemProperty;
+import sg.edu.nus.comp.cs3219.viz.VizApplication;
 
 public class ServletInitializer extends SpringBootServletInitializer {
 

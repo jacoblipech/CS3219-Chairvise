@@ -1,27 +1,29 @@
 <template>
-<el-alert v-if="isError" :title="apiErrorMsg" type="error" show-icon />
-<el-form v-else label-position="right" ref="presentationForm" label-width="120px" :rules="rules" :model="presentationForm" v-loading="isLoading">
-  <el-form-item label="Name" :prop=" isInEditMode ? 'name' : ''">
-    <div v-if="!isInEditMode">{{ presentationForm.name }}</div>
-    <el-input v-model="presentationFormName" v-if="isInEditMode"/>
-  </el-form-item>
-  <el-form-item label="Access Control" v-if="!isNewPresentation" >
-    <el-tag>Created by {{ presentationForm.creatorIdentifier }}</el-tag>
-    <el-button type="success" size="small" class="share_button_left_margin" icon="el-icon-view">SHARE</el-button>
-  </el-form-item>
-  <el-form-item label="Description">
-    <div v-if="!isInEditMode">{{ presentationForm.description }}</div>
-    <el-input v-model="presentationFormDescription" v-if="isInEditMode"/>
-  </el-form-item>
-  <el-form-item>
-    <el-button type="primary" @click="changeEditMode(true)" v-if="!isInEditMode">Edit</el-button>
-    <el-button type="primary" @click="submitForm()" v-if="isInEditMode">Save</el-button>
-    <el-button type="info" @click="cancelEditMode()" v-if="isInEditMode && !isNewPresentation">Cancel</el-button>
-  </el-form-item>
-  <el-form-item v-if="!isNewPresentation">
-    <el-button type="danger" @click="deleteForm()">Delete</el-button>
-  </el-form-item>
-</el-form>
+<el-row>
+  <el-alert v-if="isError" :title="apiErrorMsg" type="error" show-icon />
+  <el-form v-else label-position="right" ref="presentationForm" label-width="120px" :rules="rules" :model="presentationForm" v-loading="isLoading">
+    <el-form-item label="Name" :prop=" isInEditMode ? 'name' : ''">
+      <div v-if="!isInEditMode">{{ presentationForm.name }}</div>
+      <el-input v-model="presentationFormName" v-if="isInEditMode"/>
+    </el-form-item>
+    <el-form-item label="Access Control" v-if="!isNewPresentation" >
+      <el-tag>Created by {{ presentationForm.creatorIdentifier }}</el-tag>
+      <el-button type="success" size="small" class="share_button_left_margin" icon="el-icon-view">SHARE</el-button>
+    </el-form-item>
+    <el-form-item label="Description">
+      <div v-if="!isInEditMode">{{ presentationForm.description }}</div>
+      <el-input v-model="presentationFormDescription" v-if="isInEditMode"/>
+    </el-form-item>
+    <el-form-item>
+      <el-button type="primary" @click="changeEditMode(true)" v-if="!isInEditMode">Edit</el-button>
+      <el-button type="primary" @click="submitForm()" v-if="isInEditMode">Save</el-button>
+      <el-button type="info" @click="cancelEditMode()" v-if="isInEditMode && !isNewPresentation">Cancel</el-button>
+    </el-form-item>
+    <el-form-item v-if="!isNewPresentation">
+      <el-button type="danger" @click="deleteForm()">Delete</el-button>
+    </el-form-item>
+  </el-form>
+</el-row>
 </template>
 
 <script>

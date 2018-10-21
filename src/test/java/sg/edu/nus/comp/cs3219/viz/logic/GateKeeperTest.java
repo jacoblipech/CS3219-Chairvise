@@ -1,13 +1,12 @@
 package sg.edu.nus.comp.cs3219.viz.logic;
 
+import org.junit.Assert;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import sg.edu.nus.comp.cs3219.viz.BaseTestWithGAE;
 import sg.edu.nus.comp.cs3219.viz.common.datatransfer.AccessLevel;
 import sg.edu.nus.comp.cs3219.viz.common.datatransfer.UserInfo;
 import sg.edu.nus.comp.cs3219.viz.common.exception.UnauthorisedException;
-
-import org.junit.Assert;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class GateKeeperTest extends BaseTestWithGAE {
 

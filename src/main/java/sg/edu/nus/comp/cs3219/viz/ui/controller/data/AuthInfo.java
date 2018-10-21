@@ -1,8 +1,7 @@
 package sg.edu.nus.comp.cs3219.viz.ui.controller.data;
 
-import sg.edu.nus.comp.cs3219.viz.common.datatransfer.UserInfo;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
+import sg.edu.nus.comp.cs3219.viz.common.datatransfer.UserInfo;
 
 public class AuthInfo {
 
