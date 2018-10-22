@@ -104,7 +104,10 @@ export default {
   },
   methods: {
     changeEditMode(isEditing) {
-      this.isEditing = isEditing
+      if (isEditing === false) {
+          this.$store.dispatch('getPresentation', this.id);
+      }
+      this.isEditing = isEditing;
     },
     submitForm() {
       this.$refs['presentationForm'].validate((valid) => {
