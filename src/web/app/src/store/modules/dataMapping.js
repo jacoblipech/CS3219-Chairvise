@@ -4,7 +4,7 @@ import { processMapping } from '../helpers/processor.js'
 export default {
   state: {
 		dbSchemaSetted: false,
-    fileUploaded: false,
+    	fileUploaded: false,
 		tableTypeSelected: false,
 		hasLabelSpecified: false,
 		mappingFinished: false,
