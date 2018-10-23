@@ -8,7 +8,7 @@
       &nbsp;<el-button type="warning" plain size="mini" @click="navigateToHomePage">Return to the Home Page</el-button>
     </el-alert>
     <div v-if="isAdmin">
-      <mapping-tool v-if="readyForMapping" :dbList="dbSchemas[tableType]" ref="mapTool"></mapping-tool>
+      <mapping-tool v-if="readyForMapping" ref="mapTool"></mapping-tool>
       <div v-else class="upload-box">
         <el-upload drag action=""
           :auto-upload="false"
@@ -37,15 +37,16 @@
 
 <script>
 import MappingTool from "@/components/MappingTool.vue";
-import Papa from 'papaparse';
+import { DateDayField, DateTimeField } from "../common/const.js"
+import Papa from "papaparse";
 
 export default {
   name: "ImportData",
   data() {
-    return {
-    };
+    return {};
   },
   mounted() {
+    // When page is loaded, fetch all the database fields
     this.$store.dispatch('fetchDBMetaDataEntities');
   },
   computed: {
@@ -63,8 +64,13 @@ export default {
         return this.$store.state.dataMapping.data.tableType;
       },
       set: function(newValue) {
+        var dbSchema = JSON.parse(JSON.stringify(this.dbSchemas[newValue]));
+        if (newValue == 1) {
+          dbSchema.fieldMetaDataList.push(DateDayField);
+          dbSchema.fieldMetaDataList.push(DateTimeField);
+        }
         this.$store.commit("setTableType", newValue);
-        this.$store.commit("setDBSchema", this.dbSchemas[newValue]);
+        this.$store.commit("setDBSchema", dbSchema);
       }
     },
     hasLabel: {
@@ -89,9 +95,12 @@ export default {
       this.$router.replace("/home");
     },
     fileUploaded: function(file) {
+      // show loading and go parsing
       this.$store.commit("setDataProcessingStatus", true);
       Papa.parse(file.raw, {
         complete: function(result) {
+          // when complete, commit result to store
+          // and disable loading animation
           this.$store.commit("setUploadedFile", result.data);
           this.$store.commit("setDataProcessingStatus", false);
         }.bind(this)

@@ -1,6 +1,8 @@
 <template>
   <el-row :gutter="20" class="map-container">
+    <!-- left part of the page -->
     <el-col :span="10" :offset="1" class="map-area">
+      <!-- db fields -->
       <div class="db-tags">
         <h3>Database fields</h3>
         <transition-group name="tags-group" tag="div">
@@ -12,7 +14,9 @@
           </div>
         </transition-group>
       </div>
-            
+      <!-- end of db fields -->
+
+      <!-- imported tags -->
       <div class="import-tags">
         <h3>Imported data fields</h3>
         <transition-group name="tags-group" tag="div">
@@ -24,14 +28,20 @@
           </div>
         </transition-group>
       </div>
+      <!-- end of imported tags -->
 
+      <!-- button group -->
       <el-row class="button-row">
         <el-col>
           <el-button class="back-button" type="info" v-on:click="backClicked">back</el-button>
           <el-button class="back-button" type="success" v-on:click="uploadClicked">upload</el-button>
         </el-col>
       </el-row>
+      <!-- end of button group -->
     </el-col>
+    <!-- end of left part of the page -->
+
+    <!-- right part of the page -->
     <el-col :span="12" class="map-result">
       <h3>Mapping</h3>
       <transition-group name="map-group" tag="div">
@@ -43,7 +53,7 @@
 						{{ importList[item[1]] }}
 					</p><i class="el-icon-close" v-on:click="removeMapClicked(index)"></i><br>
 					<el-input placeholder="true value format (e.g. yes)" size="mini"
-							v-model="dataTypes[index].detail" 
+							v-model="typeDetails[index].detail" 
 							v-if="dbList.fieldMetaDataList[item[0]].type == 'boolean'">
 					</el-input>
         </div>
@@ -54,6 +64,7 @@
         </div>
       </transition>
     </el-col>
+    <!-- end of right part of the page -->
 
     <!-- dialogs -->
     <el-dialog
@@ -75,27 +86,36 @@
         <el-button type="primary" v-on:click="closeSuccess">Sure</el-button>
       </span>
     </el-dialog>
+    <!-- end of dialogs -->
   </el-row>
 </template>
 
 <script>
 export default {
   name: "MappingTool",
-  props: {
-    dbList: Object
-  },
   data() {
     return {
+      // currently selected databaes tag and
+      // imported tag
       selectedDBTag: -1,
       selectedImportTag: -1,
+
+      // ordered list of tags that have been
+      // mapped with their data type details
       mappedDBTag: [],
       mappedImportTag: [],
-      dataTypes: [],
+      typeDetails: [],
+
       submitCheck: false,
       tableType: ""
     };
   },
   computed: {
+    dbList: function() {
+      return this.$store.state.dataMapping.data.dbSchema
+    },
+    // a list of size k * 2, k is the number of mapped pairs
+    // the mapped pairs are indexes.
     mappedPairs: function() {
       var temp = this.mappedImportTag;
       var result = this.mappedDBTag.map(function(e, i) {
@@ -103,6 +123,9 @@ export default {
 			});
       return result;
     },
+
+    // generates imported tags.
+    // if initially no tag, just display column number
     importList: function() {
       if (this.$store.state.dataMapping.data.hasLabel) {
         return this.$store.state.dataMapping.data.uploadedLabel;  
@@ -113,13 +136,19 @@ export default {
       }
       return lst
     },
+
+    // gets errors
     errors: function() {
       return this.$store.state.dataMapping.error;
     },
+
+    // whether upload is successful
     uploadSuccess: function() {
       return this.$store.state.dataMapping.uploadSuccess;
     }
   },
+
+  // display errors
   watch: {
     errors (newValue) {
       if (newValue.length > 0) {
@@ -143,8 +172,8 @@ export default {
         this.selectedDBTag = -1;
 				this.selectedImportTag = -1;
 				var newTypeObject = {};
-				newTypeObject[this.dataTypes.length] = { detail: "" };
-				this.dataTypes.push(newTypeObject);
+				newTypeObject[this.typeDetails.length] = { detail: "" };
+				this.typeDetails.push(newTypeObject);
       }
     },
     importTagClicked: function(idx) {
@@ -159,14 +188,14 @@ export default {
         this.selectedDBTag = -1;
 				this.selectedImportTag = -1;
 				var newTypeObject = {};
-				newTypeObject[this.dataTypes.length] = { detail: "" };
-				this.dataTypes.push(newTypeObject);
+				newTypeObject[this.typeDetails.length] = { detail: "" };
+				this.typeDetails.push(newTypeObject);
       }
     },
     removeMapClicked: function(idx) {
       this.mappedDBTag.splice(idx, 1);
 			this.mappedImportTag.splice(idx, 1);
-			this.dataTypes.splice(idx, 1);
+			this.typeDetails.splice(idx, 1);
     },
     backClicked: function() {
       this.$store.commit("clearDBSchema");
@@ -177,7 +206,7 @@ export default {
     },
     uploadClicked: function() {
       var map = JSON.parse(JSON.stringify(this.mappedPairs));
-      var types = JSON.parse(JSON.stringify(this.dataTypes));
+      var types = JSON.parse(JSON.stringify(this.typeDetails));
       this.$store.commit("setMapping", { "map": map, "types": types });
       if (this.errors.length == 0) {
         this.submitCheck = true;

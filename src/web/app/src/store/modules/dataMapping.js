@@ -11,7 +11,7 @@ export default {
 		uploading: false,
 		uploadSuccess: false,
 		data: {
-			dbSchema: [],
+			dbSchema: null,
 			uploadedData: [],
 			uploadedLabel: [],
 			mappingResult: [],
@@ -32,10 +32,10 @@ export default {
 			state.uploadSuccess = success;
 		},
 
-    setUploadedFile(state, data) {
+    	setUploadedFile(state, data) {
 			state.data.uploadedLabel = data[0];
 			state.data.uploadedData = data;
-    	state.fileUploaded = true;
+    		state.fileUploaded = true;
 		},
 		
 		clearUploadedFile(state) {
@@ -46,7 +46,7 @@ export default {
 
 		setDBSchema(state, dbSchema) {
 			state.data.dbSchema = dbSchema;
-    	state.dbSchemaSetted = true;
+    		state.dbSchemaSetted = true;
 		},
 		
 		clearDBSchema(state) {
@@ -54,7 +54,7 @@ export default {
     	state.dbSchemaSetted = false;
 		},
 
-    setTableType(state, selected) {
+    	setTableType(state, selected) {
 			state.data.tableType = selected;
 			state.tableTypeSelected = true;
 		},
@@ -81,10 +81,10 @@ export default {
 				state.data.dataDetail = payload.types;
 				state.mappingFinished = true;
 				var processedResult = processMapping(payload.map, 
-																payload.types, 
-																state.data.uploadedData, 
-																state.data.dbSchema, 
-																state.data.hasLabel);
+													 payload.types, 
+													 state.data.uploadedData, 
+													 state.data.dbSchema, 
+													 state.data.hasLabel);
 				state.data.processedResult = processedResult;
 			} catch (err) {
 				state.error.push(err);
@@ -130,7 +130,6 @@ export default {
 			}
 			await axios.post("/api/record/" + endpoint, state.data.processedResult)
 				.then(response => {
-					console.log(response);
 					commit("setUploadingStatus", false);
 					commit("setUploadSuccess", true);
 				})

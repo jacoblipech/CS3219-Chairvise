@@ -11,7 +11,10 @@ export function processRawCSVString(csvFile) {
 	});
 }
 
+// This is a rather comoplex function
+// this function includes some parsing logic
 export function processMapping(mapping, detail, data, dbFields, hasLabel) {
+	// validate 
 	var checkDateResult = dateCheck(mapping, dbFields);
 	if (hasLabel) {
 		data = data.slice(1);
@@ -42,6 +45,8 @@ export function processMapping(mapping, detail, data, dbFields, hasLabel) {
 		for (var idx in mapping) {
 			var rawData = row[mapping[idx][1]];
 			var fieldType = dbFields.fieldMetaDataList[mapping[idx][0]].type;
+
+			// if date is selected, directly parse date as usual
 			if (fieldType == "Date") {
 				rawData = moment(rawData, "YYYY-M-D H:m").format("YYYY-MM-DD hh:mm:ss");
 				if (rawData == "Invalid date") {
@@ -51,16 +56,20 @@ export function processMapping(mapping, detail, data, dbFields, hasLabel) {
 				isSeperateDate = false;
 			}
 
+			// if we are not using date and date time is not complete,
+			// then store local date
 			if (!usingDate && fieldType == "LocalDate" && localTime == null) {
 				localDate = rawData;
 				continue;
 			}
 
+			// similarly, store local time
 			if (!usingDate && fieldType == "LocalTime" && localDate == null) {
 				localTime = rawData;
 				continue;
 			}
 
+			// then if date is complete, combine then together
 			if (!usingDate && fieldType == "LocalDate" && localTime != null) {
 				rawData = moment(rawData + " " + localTime, "YYYY-M-D H:m").format("YYYY-MM-DD hh:mm:ss");
 				if (rawData == "Invalid date") {
@@ -77,14 +86,17 @@ export function processMapping(mapping, detail, data, dbFields, hasLabel) {
 				isSeperateDate = true;
 			}
 
+			// parse integer
 			if (fieldType == "int") {
 				rawData = parseInt(rawData);
 			}
 
+			// parse double
 			if (fieldType == "double") {
 				rawData = parseFloat(rawData);
 			}
 
+			// parse boolean
 			if (fieldType == "boolean") {
 				var format = detail[idx].detail;
 				switch (format) {
@@ -104,12 +116,15 @@ export function processMapping(mapping, detail, data, dbFields, hasLabel) {
 					throw "boolean format not supported";
 				}
 			}
+
+			// if is seperate date format, assign using date field
+			// else, assign directly using date field
 			if (isSeperateDate) {
-				dataObject[dateField] = rawData;	
+				dataObject[dateField] = rawData;
+				isSeperateDate = false;
 			} else {
 				dataObject[dbFields.fieldMetaDataList[mapping[idx][0]].fieldName] = rawData;
 			}
-			isSeperateDate = false;
 		}
 		result.push(dataObject);
 	}
