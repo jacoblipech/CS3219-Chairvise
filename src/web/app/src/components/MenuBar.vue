@@ -2,7 +2,6 @@
   <el-menu mode="horizontal" router :default-active="menuDefaultActive">
     <el-menu-item index="/home">Home</el-menu-item>
     <el-menu-item index="/analyze" :disabled="!isLogin">Analyze</el-menu-item>
-    <el-menu-item index="/about">About</el-menu-item>
     <el-menu-item index="/importData" :disabled="!isAdmin">Import Data</el-menu-item>
     <el-menu-item index="/logout" v-if="isLogin" @click="logout" v-loading.fullscreen.lock="isFullscreenLoading">
       <el-button type="success" plain>Logout ({{ userNickname }})</el-button>
