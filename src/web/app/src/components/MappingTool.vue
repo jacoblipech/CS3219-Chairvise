@@ -144,7 +144,7 @@ export default {
 
     // whether upload is successful
     uploadSuccess: function() {
-      return this.$store.state.dataMapping.uploadSuccess;
+      return this.$store.state.dataMapping.isUploadSuccess;
     }
   },
 

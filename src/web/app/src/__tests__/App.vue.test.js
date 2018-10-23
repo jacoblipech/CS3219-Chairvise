@@ -22,7 +22,7 @@ describe('App.vue', () => {
           isApiError: false
         },
         dataMapping: {
-          uploading: false
+          isUploading: false
         },
         dbMetaData: {
           entitiesStatus: {

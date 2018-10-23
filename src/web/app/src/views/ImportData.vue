@@ -82,12 +82,12 @@ export default {
       }
     },
     readyForMapping: function() {
-      return this.$store.state.dataMapping.fileUploaded 
-        && this.$store.state.dataMapping.tableTypeSelected
+      return this.$store.state.dataMapping.hasFileUploaded
+        && this.$store.state.dataMapping.hasTableTypeSelected
         && this.$store.state.dataMapping.hasLabelSpecified;
     },
     uploaded: function() {
-      return this.$store.state.dataMapping.fileUploaded;
+      return this.$store.state.dataMapping.hasFileUploaded;
     }
   },
   methods: {
