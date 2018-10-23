@@ -1,6 +1,5 @@
 <template>
   <div>
-    <img alt="Vue logo" src="../assets/logo.png">
     <WelcomeMessage msg="Welcome to Conference Management System"/>
     <FeatureGuide />
   </div>
