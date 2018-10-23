@@ -26,10 +26,6 @@ public class Presentation extends BaseEntity {
 
     private String creatorIdentifier;
 
-    // ACL for the presentation
-    @OneToMany(mappedBy="presentation")
-    private Set<PresentationAccessControl> accessControlList = new HashSet<>();
-
     public Long getId() {
         return id;
     }
@@ -60,13 +56,5 @@ public class Presentation extends BaseEntity {
 
     public void setCreatorIdentifier(String creatorIdentifier) {
         this.creatorIdentifier = creatorIdentifier;
-    }
-
-    public Set<PresentationAccessControl> getAccessControlList() {
-        return accessControlList;
-    }
-
-    public void setAccessControlList(Set<PresentationAccessControl> accessControlList) {
-        this.accessControlList = accessControlList;
     }
 }

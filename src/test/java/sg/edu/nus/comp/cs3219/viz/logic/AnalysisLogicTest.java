@@ -158,13 +158,13 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
         Assert.assertNotEquals(
                 0,
                 submissionRecordRepository.findByDataSetEquals("test1@example.com").stream()
-                        .filter(s -> s.isS_is_notified() == true)
+                        .filter(s -> s.isNotified() == true)
                         .count()
         );
         Assert.assertNotEquals(
                 0,
                 submissionRecordRepository.findByDataSetEquals("test1@example.com").stream()
-                        .filter(s -> s.isS_is_notified() == false)
+                        .filter(s -> s.isNotified() == false)
                         .count()
         );
 
@@ -193,7 +193,7 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
         Assert.assertNotEquals(
                 0,
                 reviewRecordRepository.findByDataSetEquals("test@example.com").stream()
-                        .filter(s -> s.getR_num_review_assignment() == 47)
+                        .filter(s -> s.getNumReviewAssignment() == 47)
                         .count()
         );
 
@@ -222,8 +222,9 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
         Assert.assertNotEquals(
                 0,
                 reviewRecordRepository.findByDataSetEquals("test@example.com").stream()
-                        .filter(s -> s.getR_num_review_assignment() == 47)
-                        .filter(s -> s.getR_expertise_level() == 1)
+                        .filter(s -> s.getNumReviewAssignment() == 47)
+                        .filter(s -> s.isHasRecommendedForBestPaper() == false)
+                        .filter(s -> s.getReviewerName().equals("Juxxxx Bruxxxx"))
                         .count()
         );
 
@@ -241,16 +242,21 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
         filter.setValue("47");
         analysisRequest.getFilters().add(filter);
         filter = new PresentationSection.Filter();
-        filter.setField("r_expertise_level");
+        filter.setField("r_has_recommended_for_best_paper");
         filter.setComparator("=");
-        filter.setValue("1");
+        filter.setValue("false");
+        filter = new PresentationSection.Filter();
+        filter.setField("r_reviewer_name");
+        filter.setComparator("=");
+        filter.setValue("Juxxxx Bruxxxx");
         analysisRequest.getFilters().add(filter);
 
         List<Map<String, Object>> result = analysisLogic.analyse(analysisRequest);
 
         Assert.assertEquals(1, result.size());
         Assert.assertEquals(47, result.get(0).get("r_num_review_assignment"));
-        Assert.assertEquals(1.0, result.get(0).get("r_expertise_level"));
+        Assert.assertEquals(false, result.get(0).get("r_has_recommended_for_best_paper"));
+        Assert.assertEquals("Juxxxx Bruxxxx", result.get(0).get("r_reviewer_Name"));
     }
 
     @Test
@@ -310,6 +316,27 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
     }
 
     @Test
+    public void testAnalyse_queryReviewWithSorting_shouldQueryCorrectly() {
+        AnalysisRequest analysisRequest = new AnalysisRequest();
+
+        analysisRequest.setDataSet("test@example.com");
+
+        PresentationSection.Record reviewRecord = new PresentationSection.Record();
+        reviewRecord.setName("review_record");
+        analysisRequest.getInvolvedRecords().add(reviewRecord);
+
+        PresentationSection.Sorter sorter = new PresentationSection.Sorter();
+        sorter.setField("r_overall_evaluation_score");
+        sorter.setOrder("DESC");
+        analysisRequest.getSorters().add(sorter);
+
+        List<Map<String, Object>> result = analysisLogic.analyse(analysisRequest);
+
+        Assert.assertEquals(-2.1, result.get(0).get("r_overall_evaluation_score"));
+        Assert.assertEquals(-3.0, result.get(1).get("r_overall_evaluation_score"));
+    }
+
+    @Test
     public void testAnalyse_queryReviewWithAggregation_shouldQueryCorrectly() {
         AnalysisRequest analysisRequest = new AnalysisRequest();
 
@@ -331,7 +358,7 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
         List<Map<String, Object>> result = analysisLogic.analyse(analysisRequest);
 
         long totalSum = reviewRecordRepository.findByDataSetEquals("test@example.com").stream()
-                .mapToLong(ReviewRecord::getR_num_review_assignment)
+                .mapToLong(ReviewRecord::getNumReviewAssignment)
                 .sum();
 
         Assert.assertEquals(totalSum, result.get(0).get("totalSum"));
@@ -342,6 +369,7 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
         Assert.assertEquals("true", analysisLogic.wrapValue("a_is_corresponding", "true"));
         Assert.assertEquals("21", analysisLogic.wrapValue("r_num_review_assignment", "21"));
         Assert.assertEquals("21.0", analysisLogic.wrapValue("r_overall_evaluation_score", "21.0"));
+        Assert.assertEquals("22.0", analysisLogic.wrapValue("r_expertise_level", "22.0"));
         Assert.assertEquals("'NUS'", analysisLogic.wrapValue("a_organisation", "NUS"));
     }
 

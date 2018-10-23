@@ -1,13 +1,12 @@
 package sg.edu.nus.comp.cs3219.viz.common.entity.record;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.Date;
 
 @Exportable(name = "Submission Record", nameInDB = "submission_record")
@@ -18,87 +17,83 @@ public class SubmissionRecord {
     @GenericGenerator(name = "UseExistingIdOtherwiseGenerateUsingIdentity", strategy = "sg.edu.nus.comp.cs3219.viz.common.entity.UseExistingIdOtherwiseGenerateUsingIdentity")
     @GeneratedValue(generator = "UseExistingIdOtherwiseGenerateUsingIdentity")
     @JsonSerialize(using = ToStringSerializer.class)
-    private Long s_id;
+    @Column(name="s_id")
+    private Long id;
 
     // each record will be imported by each user, dataSet is used to distinguished records submitted by different user
     private String dataSet;
 
-    @Exportable(name = "Submission Id")
-    private String s_submission_id;
+    @Exportable(name = "Submission Id", nameInDB = "s_submission_id")
+    @Column(name="s_submission_id")
+    private String submissionId;
 
     // Track the submission is submitted to; like a full paper or just a poster
-    @Exportable(name = "Track Id", description = "Track the submission is submitted to")
-    private String s_track_id;
+    @Exportable(name = "Track Id", nameInDB = "s_track_id", description = "Track the submission is submitted to")
+    @Column(name="s_track_id")
+    private String trackId;
 
     // Name for the track referred in col2 (string)
-    @Exportable(name = "Track Name")
-    private String s_track_name;
+    @Exportable(name = "Track Name", nameInDB = "s_track_name")
+    @Column(name="s_track_name")
+    private String trackName;
 
     // Title of the submission
-    @Exportable(name = "Title")
-    @Column(columnDefinition="TEXT")
-    private String s_title;
+    @Exportable(name = "Title", nameInDB = "s_title")
+    @Column(name = "s_title", columnDefinition="TEXT")
+    private String title;
 
     // authors of the associated submission
     // TODO use many-to-many relationship
-    @Exportable(name = "Authors")
-    @Column(columnDefinition="TEXT")
-    private String s_authors;
+    @Exportable(name = "Authors", nameInDB = "s_authors")
+    @Column(name = "s_authors", columnDefinition="TEXT")
+    private String authors;
 
     // time submitted
-    @Exportable(name = "Submission Time")
+    @Exportable(name = "Submission Time", nameInDB = "s_submission_time")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
-    private Date s_submission_time;
-
-    @Exportable(name = "Submission Time Date", description = "The date part of Submission Time")
-    @Transient
-    private transient LocalDate s_submission_time_date;
-
-    @Exportable(name = "Submission Time Time", description = "The time part of Submission Time")
-    @Transient
-    private transient LocalTime s_submission_time_time;
+    @Column(name = "s_submission_time")
+    private Date submissionTime;
 
     //  time last updated
-    @Exportable(name = "Last Updated Time")
+    @Exportable(name = "Last Updated Time", nameInDB = "s_last_updated_time")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
-    private Date s_last_updated_time;
-
-    @Exportable(name = "Last Updated Time Date", description = "The date part of Last Updated Time")
-    @Transient
-    private transient LocalDate s_last_updated_time_date;
-
-    @Exportable(name = "Last Updated Time Time", description = "The time part of Last Updated Time")
-    @Transient
-    private transient LocalTime s_last_updated_time_time;
+    @Column(name = "s_last_updated_time")
+    private Date lastUpdatedTime;
 
     // keywords associated with submissions as put by the authors
-    @Exportable(name = "Keywords")
-    @Column(columnDefinition="TEXT")
-    private String s_keywords;
+    @Exportable(name = "Keywords", nameInDB = "s_keywords")
+    @Column(name = "s_keywords", columnDefinition="TEXT")
+    private String keywords;
 
     // accept/reject decision
-    @Exportable(name = "Is Accepted", description = "Accept/Reject decision")
-    private boolean s_is_accepted;
+    @Exportable(name = "Is Accepted", nameInDB = "s_is_accepted", description = "Accept/Reject decision")
+    @Column(name = "s_is_accepted")
+    @JsonProperty("isAccepted")
+    private boolean isAccepted;
 
     // acceptance/rejection mail sent to authors or not?
-    @Exportable(name = "Is Notified", description = "Acceptance/rejection mail sent to authors or not?")
-    private boolean s_is_notified;
+    @Exportable(name = "Is Notified", nameInDB = "s_is_notified", description = "Acceptance/rejection mail sent to authors or not?")
+    @Column(name = "s_is_notified")
+    @JsonProperty("isNotified")
+    private boolean isNotified;
 
     // review sent in the mails or not?
-    @Exportable(name = "Is Reviews Sent", description = "Review sent in the mails or not?")
-    private boolean s_is_reviews_sent;
+    @Exportable(name = "Is Reviews Sent", nameInDB = "s_is_reviews_sent", description = "Review sent in the mails or not?")
+    @Column(name = "s_is_reviews_sent")
+    @JsonProperty("isReviewsSent")
+    private boolean isReviewsSent;
 
     // abstract of the submission.
-    @Column(columnDefinition="TEXT")
-    @Exportable(name = "Submission Abstract", description = "Abstract of the submission")
-    private String s_submission_abstract;
+    @Exportable(name = "Submission Abstract", nameInDB = "s_submission_abstract", description = "Abstract of the submission")
+    @Column(name = "s_submission_abstract", columnDefinition="TEXT")
+    private String submissionAbstract;
 
-    public Long getS_id() {
-        return s_id;
+    public Long getId() {
+        return id;
     }
 
-    public void setS_id(Long s_id) {
-        this.s_id = s_id;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getDataSet() {
@@ -109,99 +104,99 @@ public class SubmissionRecord {
         this.dataSet = dataSet;
     }
 
-    public String getS_submission_id() {
-        return s_submission_id;
+    public String getSubmissionId() {
+        return submissionId;
     }
 
-    public void setS_submission_id(String s_submission_id) {
-        this.s_submission_id = s_submission_id;
+    public void setSubmissionId(String submissionId) {
+        this.submissionId = submissionId;
     }
 
-    public String getS_track_id() {
-        return s_track_id;
+    public String getTrackId() {
+        return trackId;
     }
 
-    public void setS_track_id(String s_track_id) {
-        this.s_track_id = s_track_id;
+    public void setTrackId(String trackId) {
+        this.trackId = trackId;
     }
 
-    public String getS_track_name() {
-        return s_track_name;
+    public String getTrackName() {
+        return trackName;
     }
 
-    public void setS_track_name(String s_track_name) {
-        this.s_track_name = s_track_name;
+    public void setTrackName(String trackName) {
+        this.trackName = trackName;
     }
 
-    public String getS_title() {
-        return s_title;
+    public String getTitle() {
+        return title;
     }
 
-    public void setS_title(String s_title) {
-        this.s_title = s_title;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getS_authors() {
-        return s_authors;
+    public String getAuthors() {
+        return authors;
     }
 
-    public void setS_authors(String s_authors) {
-        this.s_authors = s_authors;
+    public void setAuthors(String authors) {
+        this.authors = authors;
     }
 
-    public Date getS_submission_time() {
-        return s_submission_time;
+    public Date getSubmissionTime() {
+        return submissionTime;
     }
 
-    public void setS_submission_time(Date s_submission_time) {
-        this.s_submission_time = s_submission_time;
+    public void setSubmissionTime(Date submissionTime) {
+        this.submissionTime = submissionTime;
     }
 
-    public Date getS_last_updated_time() {
-        return s_last_updated_time;
+    public Date getLastUpdatedTime() {
+        return lastUpdatedTime;
     }
 
-    public void setS_last_updated_time(Date s_last_updated_time) {
-        this.s_last_updated_time = s_last_updated_time;
+    public void setLastUpdatedTime(Date lastUpdatedTime) {
+        this.lastUpdatedTime = lastUpdatedTime;
     }
 
-    public String getS_keywords() {
-        return s_keywords;
+    public String getKeywords() {
+        return keywords;
     }
 
-    public void setS_keywords(String s_keywords) {
-        this.s_keywords = s_keywords;
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
     }
 
-    public boolean isS_is_accepted() {
-        return s_is_accepted;
+    public boolean isAccepted() {
+        return isAccepted;
     }
 
-    public void setS_is_accepted(boolean s_is_accepted) {
-        this.s_is_accepted = s_is_accepted;
+    public void setAccepted(boolean accepted) {
+        isAccepted = accepted;
     }
 
-    public boolean isS_is_notified() {
-        return s_is_notified;
+    public boolean isNotified() {
+        return isNotified;
     }
 
-    public void setS_is_notified(boolean s_is_notified) {
-        this.s_is_notified = s_is_notified;
+    public void setNotified(boolean notified) {
+        isNotified = notified;
     }
 
-    public boolean isS_is_reviews_sent() {
-        return s_is_reviews_sent;
+    public boolean isReviewsSent() {
+        return isReviewsSent;
     }
 
-    public void setS_is_reviews_sent(boolean s_is_reviews_sent) {
-        this.s_is_reviews_sent = s_is_reviews_sent;
+    public void setReviewsSent(boolean reviewsSent) {
+        isReviewsSent = reviewsSent;
     }
 
-    public String getS_submission_abstract() {
-        return s_submission_abstract;
+    public String getSubmissionAbstract() {
+        return submissionAbstract;
     }
 
-    public void setS_submission_abstract(String s_submission_abstract) {
-        this.s_submission_abstract = s_submission_abstract;
+    public void setSubmissionAbstract(String submissionAbstract) {
+        this.submissionAbstract = submissionAbstract;
     }
 }

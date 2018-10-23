@@ -6,8 +6,6 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.Date;
 
 @Exportable(name = "Review Record", nameInDB = "review_record")
@@ -18,57 +16,58 @@ public class ReviewRecord {
     @GenericGenerator(name = "UseExistingIdOtherwiseGenerateUsingIdentity", strategy = "sg.edu.nus.comp.cs3219.viz.common.entity.UseExistingIdOtherwiseGenerateUsingIdentity")
     @GeneratedValue(generator = "UseExistingIdOtherwiseGenerateUsingIdentity")
     @JsonSerialize(using = ToStringSerializer.class)
-    private Long r_id;
+    @Column(name="r_id")
+    private Long id;
 
     // each record will be imported by each user, dataSet is used to distinguished records submitted by different user
     private String dataSet;
 
-    @Exportable(name = "Submission Id")
-    private String r_submission_id;
+    @Exportable(name = "Submission Id", nameInDB = "r_submission_id")
+    @Column(name="r_submission_id")
+    private String submissionId;
 
-    @Exportable(name = "Review Id")
-    private String r_review_id;
+    @Exportable(name = "Review Id", nameInDB = "r_review_id")
+    @Column(name="r_review_id")
+    private String reviewId;
 
     // (Each reviewer is given a number for each track he/she is reviewing.
     // For example Animesh reviewed 2 different tracks but 3 papers in total- one from Track 1 and two papers from Track 2. He therefore has 2 uniques numbers assigned
-    @Exportable(name = "Num Review Assignment", description = "Each reviewer is given a number for each track he/she is reviewing")
-    private int r_num_review_assignment;
+    @Exportable(name = "Num Review Assignment", nameInDB = "r_num_review_assignment", description = "Each reviewer is given a number for each track he/she is reviewing")
+    @Column(name="r_num_review_assignment")
+    private int numReviewAssignment;
 
-    @Exportable(name = "Reviewer Name")
-    private String r_reviewer_name;
+    @Exportable(name = "Reviewer Name", nameInDB = "r_reviewer_name")
+    @Column(name="r_reviewer_name")
+    private String reviewerName;
 
     // Reviewer selects a field 1-5 to indicate expertise while submitting the review. For example 5: expert, 1: passing knowledge
-    @Exportable(name = "Expertise Level", description = "Reviewer selects a field 1-5 to indicate expertise while submitting the review.")
-    private double r_expertise_level;
+    @Exportable(name = "Expertise Level", nameInDB = "r_expertise_level", description = "Reviewer selects a field 1-5 to indicate expertise while submitting the review.")
+    @Column(name="r_expertise_level")
+    private double expertiseLevel;
 
-    @Exportable(name = "Review Comment")
-    @Column(columnDefinition="TEXT")
-    private String r_review_comment;
+    @Exportable(name = "Review Comment", nameInDB = "r_review_comment")
+    @Column(name = "r_review_comment", columnDefinition="TEXT")
+    private String reviewComment;
 
-    @Exportable(name = "Overall Evaluation Score")
-    private double r_overall_evaluation_score;
+    @Exportable(name = "Overall Evaluation Score", nameInDB = "r_overall_evaluation_score")
+    @Column(name = "r_overall_evaluation_score")
+    private double overallEvaluationScore;
 
-    @Exportable(name = "Review Submission Time")
+    @Exportable(name = "Review Submission Time", nameInDB = "r_review_submission_time")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
-    private Date r_review_submission_time;
+    @Column(name = "r_review_submission_time")
+    private Date reviewSubmissionTime;
 
-    @Exportable(name = "Review Submission Time Date", description = "The date part of Review Submission Time")
-    @Transient
-    private transient LocalDate r_review_submission_time_date;
+    @Exportable(name = "Has Recommended for the Best Paper", nameInDB = "r_has_recommended_for_best_paper")
+    @Column(name = "r_has_recommended_for_best_paper")
+    private boolean hasRecommendedForBestPaper;
 
-    @Exportable(name = "Review Submission Time Time", description = "The time part of Review Submission Time")
-    @Transient
-    private transient LocalTime r_review_submission_time_time;
-
-    @Exportable(name = "Has Recommended for the Best Paper")
-    private boolean r_has_recommended_for_best_paper;
-
-    public Long getR_id() {
-        return r_id;
+    public Long getId() {
+        return id;
     }
 
-    public void setR_id(Long r_id) {
-        this.r_id = r_id;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getDataSet() {
@@ -79,75 +78,75 @@ public class ReviewRecord {
         this.dataSet = dataSet;
     }
 
-    public String getR_submission_id() {
-        return r_submission_id;
+    public String getSubmissionId() {
+        return submissionId;
     }
 
-    public void setR_submission_id(String r_submission_id) {
-        this.r_submission_id = r_submission_id;
+    public void setSubmissionId(String submissionId) {
+        this.submissionId = submissionId;
     }
 
-    public String getR_review_id() {
-        return r_review_id;
+    public String getReviewId() {
+        return reviewId;
     }
 
-    public void setR_review_id(String r_review_id) {
-        this.r_review_id = r_review_id;
+    public void setReviewId(String reviewId) {
+        this.reviewId = reviewId;
     }
 
-    public int getR_num_review_assignment() {
-        return r_num_review_assignment;
+    public int getNumReviewAssignment() {
+        return numReviewAssignment;
     }
 
-    public void setR_num_review_assignment(int r_num_review_assignment) {
-        this.r_num_review_assignment = r_num_review_assignment;
+    public void setNumReviewAssignment(int numReviewAssignment) {
+        this.numReviewAssignment = numReviewAssignment;
     }
 
-    public String getR_reviewer_name() {
-        return r_reviewer_name;
+    public String getReviewerName() {
+        return reviewerName;
     }
 
-    public void setR_reviewer_name(String r_reviewer_name) {
-        this.r_reviewer_name = r_reviewer_name;
+    public void setReviewerName(String reviewerName) {
+        this.reviewerName = reviewerName;
     }
 
-    public double getR_expertise_level() {
-        return r_expertise_level;
+    public double getExpertiseLevel() {
+        return expertiseLevel;
     }
 
-    public void setR_expertise_level(double r_expertise_level) {
-        this.r_expertise_level = r_expertise_level;
+    public void setExpertiseLevel(double expertiseLevel) {
+        this.expertiseLevel = expertiseLevel;
     }
 
-    public String getR_review_comment() {
-        return r_review_comment;
+    public String getReviewComment() {
+        return reviewComment;
     }
 
-    public void setR_review_comment(String r_review_comment) {
-        this.r_review_comment = r_review_comment;
+    public void setReviewComment(String reviewComment) {
+        this.reviewComment = reviewComment;
     }
 
-    public double getR_overall_evaluation_score() {
-        return r_overall_evaluation_score;
+    public double getOverallEvaluationScore() {
+        return overallEvaluationScore;
     }
 
-    public void setR_overall_evaluation_score(double r_overall_evaluation_score) {
-        this.r_overall_evaluation_score = r_overall_evaluation_score;
+    public void setOverallEvaluationScore(double overallEvaluationScore) {
+        this.overallEvaluationScore = overallEvaluationScore;
     }
 
-    public Date getR_review_submission_time() {
-        return r_review_submission_time;
+    public Date getReviewSubmissionTime() {
+        return reviewSubmissionTime;
     }
 
-    public void setR_review_submission_time(Date r_review_submission_time) {
-        this.r_review_submission_time = r_review_submission_time;
+    public void setReviewSubmissionTime(Date reviewSubmissionTime) {
+        this.reviewSubmissionTime = reviewSubmissionTime;
     }
 
-    public boolean isR_has_recommended_for_best_paper() {
-        return r_has_recommended_for_best_paper;
+    public boolean isHasRecommendedForBestPaper() {
+        return hasRecommendedForBestPaper;
     }
 
-    public void setR_has_recommended_for_best_paper(boolean r_has_recommended_for_best_paper) {
-        this.r_has_recommended_for_best_paper = r_has_recommended_for_best_paper;
+    public void setHasRecommendedForBestPaper(boolean hasRecommendedForBestPaper) {
+        this.hasRecommendedForBestPaper = hasRecommendedForBestPaper;
     }
 }

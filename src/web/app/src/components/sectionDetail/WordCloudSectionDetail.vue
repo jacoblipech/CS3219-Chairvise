@@ -41,25 +41,26 @@
 
     data() {
       return {
-        editFormSelectionsRule: {
+        editFormSelectionsRule: [{
           validator: (rule, value, callback) => {
-            if (value.expression.length === 0) {
-              return callback(new Error('Please specify expression for the selection'))
+            if (value.expression.length === 0 || value.expression.rename === 0) {
+              return callback(new Error('Please specify all fields'))
             }
             callback();
           },
           trigger: 'blur',
-        },
-        editFormInvolvedRecordsRule:             {
+        }],
+        editFormInvolvedRecordsRule: [{
           validator: (rule, value, callback) => {
+            alert(1)
             if (value.length >= 2 || value.length < 1) {
               return callback(new Error('There must be only one record involved'))
             }
             return callback();
           },
-          trigger: 'blur',
-        },
-        editFormFiltersRule: {
+          trigger: 'change',
+        }],
+        editFormFiltersRule: [{
           validator: (rule, value, callback) => {
             if (value.field.length === 0 || value.comparator.length === 0 || value.value.length === 0) {
               return callback(new Error('Please specify all fields'))
@@ -67,7 +68,7 @@
             callback();
           },
           trigger: 'blur',
-        },
+        }],
 
         extraFormItemsRules: {
           delimiters: [
@@ -92,15 +93,15 @@
 
     computed: {
       hasData() {
-        return this.words.length === 0;
+        return this.words.length !== 0;
       }
     },
 
     methods: {
       updateVisualisation({result, selections, extraData}) {
-        let fieldName = selections[0].expression;
+        let fieldName = selections[0].rename;
         let wordsCount = {};
-        let delimiterRegex = new RegExp(extraData.delimiters.join('|'),'g');
+        let delimiterRegex = new RegExp(extraData.delimiters.join('|'), 'g');
         // will only require at least one selection
         // count the occurrence of word
         result.forEach(r => {
@@ -109,27 +110,39 @@
             if (w.length === 0) {
               return
             }
+            // normalized word e.g. 'digital world' -> `Digital World`
+            let normalizedW = this.capitalizeFirstWord(w);
             // put in the count map
-            if (wordsCount.hasOwnProperty(w)) {
-              wordsCount[w]++
+            if (wordsCount.hasOwnProperty(normalizedW)) {
+              wordsCount[normalizedW]++
             } else {
-              wordsCount[w] = 0;
+              wordsCount[normalizedW] = 1;
             }
           })
         });
         // generate format as VueWordCloud required
-        this.words = [];
+        let words = [];
         for (let word in wordsCount) {
           if (wordsCount.hasOwnProperty(word)) {
-            this.words.push([word, wordsCount[wordsCount]])
+            words.push([word, wordsCount[word]])
           }
         }
+        // sort and keep the first twenty words
+        words.sort((a, b) => {
+          return b[1] - a[1]
+        });
+        words = words.slice(0, 20);
+        this.words = words;
       },
 
       // word cloud related
       colorComputer([, weight]) {
         return weight > 10 ? 'Red' : weight > 5 ? 'Blue' : 'Black'
       },
+
+      capitalizeFirstWord(str) {
+        return str.replace(/\b\w/g, l => l.toUpperCase());
+      }
     },
 
     components: {

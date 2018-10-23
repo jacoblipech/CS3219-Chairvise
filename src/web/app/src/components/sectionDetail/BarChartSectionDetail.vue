@@ -1,0 +1,194 @@
+<template>
+  <basic-section-detail :section-detail="sectionDetail" :presentation-id="presentationId" :has-data="hasData"
+                        :edit-form-selections-rule="editFormSelectionsRule"
+                        :edit-form-involved-records-rule="editFormInvolvedRecordsRule"
+                        :edit-form-filters-rule="editFormFiltersRule"
+                        :edit-form-groupers-rule="editFormGroupersRule"
+                        :edit-form-sorters-rule="editFormSortersRule"
+                        :extraFormItemsRules="extraFormItemsRules"
+                        @update-visualisation="updateVisualisation">
+    <bar-chart :chart-data="chartData" :options="options"></bar-chart>
+
+    <template slot="extraFormItems" slot-scope="slotProps">
+      <el-form-item label="xAxis Field Name" prop="extraData.xAxisFieldName" v-if="slotProps.isInAdvancedMode">
+        <el-select placeholder="xAxisFieldName" v-model="slotProps.extraData.xAxisFieldName">
+          <el-option
+            v-for="selection in slotProps.editForm.selections"
+            :key="selection.rename"
+            :label="selection.rename"
+            :value="selection.rename">
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="yAxis Field Name" prop="extraData.yAxisFieldName" v-if="slotProps.isInAdvancedMode">
+        <el-select placeholder="yAxisFieldName" v-model="slotProps.extraData.yAxisFieldName">
+          <el-option
+            v-for="selection in slotProps.editForm.selections"
+            :key="selection.rename"
+            :label="selection.rename"
+            :value="selection.rename">
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="Legend Label Name" prop="extraData.dataSetLabel" v-if="slotProps.isInAdvancedMode">
+        <el-input v-model="slotProps.extraData.dataSetLabel" placeholder="Label Name"></el-input>
+      </el-form-item>
+      <el-form-item label="Num of result to display" prop="extraData.numOfResultToDisplay" v-if="slotProps.isInAdvancedMode">
+        <el-slider v-model="slotProps.extraData.numOfResultToDisplay" :min="5" :max="30"></el-slider>
+      </el-form-item>
+    </template>
+  </basic-section-detail>
+</template>
+
+<script>
+  import BarChart from '@/components/sectionDetail/chart/BarChart.vue'
+  import BasicSectionDetail from '@/components/sectionDetail/BasicSectionDetail.vue'
+
+  export default {
+    name: "BarChartSectionDetail",
+
+    props: {
+      sectionDetail: {
+        type: Object,
+        required: true
+      },
+      presentationId: {
+        type: String,
+        required: true
+      }
+    },
+
+    data() {
+      return {
+        editFormSelectionsRule: [{
+          validator: (rule, value, callback) => {
+            if (value.expression.length === 0 || value.expression.rename === 0) {
+              return callback(new Error('Please specify all field for the selection'))
+            }
+            callback();
+          },
+          trigger: 'blur',
+        }],
+        editFormInvolvedRecordsRule: [{
+          validator: (rule, value, callback) => {
+            if (value.length >= 2 || value.length < 1) {
+              return callback(new Error('There must be only one record involved'))
+            }
+            callback();
+          },
+          trigger: 'change',
+        }],
+        editFormFiltersRule: [{
+          validator: (rule, value, callback) => {
+            if (value.field.length === 0 || value.comparator.length === 0 || value.value.length === 0) {
+              return callback(new Error('Please specify all fields'))
+            }
+            callback();
+          },
+          trigger: 'blur',
+        }],
+        editFormSortersRule: [{
+          validator: (rule, value, callback) => {
+            if (value.field.length === 0 || value.order.length === 0) {
+              return callback(new Error('Please specify all fields'))
+            }
+            callback();
+          },
+          trigger: 'blur',
+        }],
+        editFormGroupersRule: [],
+
+        extraFormItemsRules: {
+          xAxisFieldName: [{
+            required: true,
+            message: 'There should be one field to map x axis',
+            trigger: 'blur',
+          }],
+          yAxisFieldName: [{
+            required: true,
+            message: 'There should be one field to map y axis',
+            trigger: 'blur',
+          }],
+        },
+
+        labels: [],
+        dataset: {},
+        partialResult: [],
+        options: {},
+      }
+    },
+
+    computed: {
+      hasData() {
+        return this.labels.length !== 0;
+      },
+
+      chartData() {
+        return {
+          labels: this.labels,
+          datasets: [this.dataset]
+        }
+      }
+    },
+
+    methods: {
+      updateVisualisation({result, extraData}) {
+        this.partialResult = result.slice(0, extraData.numOfResultToDisplay);
+
+        // process x axis
+        this.labels = this.partialResult.map(record => record[extraData.xAxisFieldName]);
+
+        // process y axis
+        this.dataset = {
+          borderWidth: 1,
+          label: extraData.dataSetLabel,
+          data: this.partialResult.map(record => record[extraData.yAxisFieldName])
+        };
+
+        // process tooltip callback
+        this.options = {
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: true
+              },
+              gridLines: {
+                display: true
+              }
+            }],
+            xAxes: [ {
+              gridLines: {
+                display: false
+              },
+              ticks: {
+                autoSkip: false
+              }
+            }]
+          },
+          legend: {
+            display: true
+          },
+          responsive: true,
+          maintainAspectRatio: false,
+          tooltips: {
+            callbacks: {
+              footer: (tooltipItems) => {
+                let currentIndex = tooltipItems[0].index;
+                return extraData.fieldsShownInToolTips.map(f => this.partialResult[currentIndex][f]);
+              }
+            }
+          }
+        }
+      },
+    },
+
+    components: {
+      BasicSectionDetail,
+      BarChart
+    }
+  }
+</script>
+
+<style scoped>
+
+</style>

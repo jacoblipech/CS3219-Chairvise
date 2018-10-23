@@ -65,6 +65,12 @@
           "field": "groupField1"
         }
       ],
+      "sorters": [
+        {
+          "field": "test2",
+          "order": "ASC"
+        }
+      ],
       "extraData": {
         "listTest": [
           "hello",
@@ -113,6 +119,12 @@
       "groupers": [
         {
           "field": "groupField2"
+        }
+      ],
+      "sorters": [
+        {
+          "field": "test1",
+          "order": "DESC"
         }
       ],
       "extraData": {

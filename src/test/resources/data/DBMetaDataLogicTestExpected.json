@@ -114,18 +114,6 @@
         "description": ""
       },
       {
-        "fieldName": "r_review_submission_time_date",
-        "type": "LocalDate",
-        "name": "Review Submission Time Date",
-        "description": "The date part of Review Submission Time"
-      },
-      {
-        "fieldName": "r_review_submission_time_time",
-        "type": "LocalTime",
-        "name": "Review Submission Time Time",
-        "description": "The time part of Review Submission Time"
-      },
-      {
         "fieldName": "r_has_recommended_for_best_paper",
         "type": "boolean",
         "name": "Has Recommended for the Best Paper",
@@ -175,34 +163,10 @@
         "description": ""
       },
       {
-        "fieldName": "s_submission_time_date",
-        "type": "LocalDate",
-        "name": "Submission Time Date",
-        "description": "The date part of Submission Time"
-      },
-      {
-        "fieldName": "s_submission_time_time",
-        "type": "LocalTime",
-        "name": "Submission Time Time",
-        "description": "The time part of Submission Time"
-      },
-      {
         "fieldName": "s_last_updated_time",
         "type": "Date",
         "name": "Last Updated Time",
         "description": ""
-      },
-      {
-        "fieldName": "s_last_updated_time_date",
-        "type": "LocalDate",
-        "name": "Last Updated Time Date",
-        "description": "The date part of Last Updated Time"
-      },
-      {
-        "fieldName": "s_last_updated_time_time",
-        "type": "LocalTime",
-        "name": "Last Updated Time Time",
-        "description": "The time part of Last Updated Time"
       },
       {
         "fieldName": "s_keywords",

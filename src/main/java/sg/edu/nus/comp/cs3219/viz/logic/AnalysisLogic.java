@@ -36,7 +36,7 @@ public class AnalysisLogic {
         Arrays.stream(classToExamine.getDeclaredFields())
                 .filter(f -> f.getAnnotation(Exportable.class) != null)
                 .forEach(field -> {
-                    DATABASE_FIELD_NAME_TO_TYPE_MAP.put(field.getName(), field.getType());
+                    DATABASE_FIELD_NAME_TO_TYPE_MAP.put(field.getAnnotation(Exportable.class).nameInDB(), field.getType());
                 });
     }
 
@@ -81,6 +81,10 @@ public class AnalysisLogic {
                 .map(PresentationSection.Grouper::getField)
                 .collect(Collectors.joining(","));
 
+        String sortersStr = analysisRequest.getSorters().stream()
+                .map(s -> String.format("%s %s", s.getField(), s.getOrder()))
+                .collect(Collectors.joining(","));
+
         String baseSQL = String.format("SELECT %s FROM %s WHERE %s",
                 selectionsStr, tablesStr, dataSetFilter);
 
@@ -94,6 +98,10 @@ public class AnalysisLogic {
 
         if (!groupersStr.isEmpty()) {
             baseSQL += String.format(" GROUP BY %s", groupersStr);
+        }
+
+        if (!sortersStr.isEmpty()) {
+            baseSQL += String.format(" ORDER BY %s", sortersStr);
         }
 
         return baseSQL;
