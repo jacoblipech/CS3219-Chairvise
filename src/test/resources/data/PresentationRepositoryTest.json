@@ -15,8 +15,5 @@
             "description": "test description 3",
             "creatorIdentifier": "test2@viz.test"
         }
-    },
-    "presentationsAccessControl": {
-
     }
 }

@@ -1,18 +1,14 @@
 package sg.edu.nus.comp.cs3219.viz.common.entity;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Set;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-
-import org.hibernate.annotations.GenericGenerator;
-
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import sg.edu.nus.comp.cs3219.viz.common.datatransfer.AccessControlMapping;
 
 @Entity
@@ -31,10 +27,6 @@ public class Presentation extends BaseEntity {
     private String description;
 
     private String creatorIdentifier;
-
-    // ACL for the presentation
-    @OneToMany(mappedBy="presentation")
-    private Set<PresentationAccessControl> accessControlList = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -66,14 +58,6 @@ public class Presentation extends BaseEntity {
 
     public void setCreatorIdentifier(String creatorIdentifier) {
         this.creatorIdentifier = creatorIdentifier;
-    }
-
-    public Set<PresentationAccessControl> getAccessControlList() {
-        return accessControlList;
-    }
-
-    public void setAccessControlList(Set<PresentationAccessControl> accessControlList) {
-        this.accessControlList = accessControlList;
     }
 
     public ArrayList<AccessControlMapping> getMappingList() {

@@ -53,7 +53,6 @@ dependencies {
 
     // test dependencies
     testCompile('org.springframework.boot:spring-boot-starter-test')
-    testCompile('com.google.code.gson:gson')
     testCompile("com.google.appengine:appengine-api-stubs:1.9.+")
     testCompile("com.google.appengine:appengine-testing:1.9.+")
     testRuntime('com.h2database:h2')
