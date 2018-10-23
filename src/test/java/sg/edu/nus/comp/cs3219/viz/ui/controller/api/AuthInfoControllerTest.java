@@ -51,7 +51,7 @@ public class AuthInfoControllerTest extends BaseTestREST {
                         .value("http://localhost/_ah/logout?continue=http%3A%2F%2Fmywebsite.com"))
                 .andExpect(jsonPath("$.loginUrl").doesNotExist())
                 .andExpect(jsonPath("$.userInfo.userEmail").value("test@example.com"))
-                .andExpect(jsonPath("$.userInfo.userNickname").value("test@example.com"))
+                .andExpect(jsonPath("$.userInfo.userNickname").value("test@example.com"));
     }
 
 }
