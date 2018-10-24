@@ -1,6 +1,6 @@
 <template>
   <div>
-    <WelcomeMessage msg="Welcome to Conference Management System"/>
+    <WelcomeMessage />
     <FeatureGuide />
   </div>
 </template>
@@ -13,7 +13,7 @@ import FeatureGuide from '@/components/FeatureGuide.vue'
 export default {
   name: 'home',
   components: {
-      WelcomeMessage,
+    WelcomeMessage,
     FeatureGuide
   }
 }
