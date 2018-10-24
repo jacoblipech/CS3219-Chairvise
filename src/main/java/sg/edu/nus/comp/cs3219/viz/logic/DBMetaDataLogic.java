@@ -38,6 +38,7 @@ public class DBMetaDataLogic {
                     Exportable exportable = f.getAnnotation(Exportable.class);
                     DBFieldMetaData fieldMetaData = new DBFieldMetaData();
                     fieldMetaData.setFieldName(exportable.nameInDB());
+                    fieldMetaData.setJsonProperty(f.getName());
                     fieldMetaData.setName(exportable.name());
                     fieldMetaData.setType(f.getType().getSimpleName());
                     fieldMetaData.setDescription(exportable.description());
