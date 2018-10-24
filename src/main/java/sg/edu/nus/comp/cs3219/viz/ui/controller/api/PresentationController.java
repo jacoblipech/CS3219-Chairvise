@@ -1,6 +1,5 @@
 package sg.edu.nus.comp.cs3219.viz.ui.controller.api;
 
-import sg.edu.nus.comp.cs3219.viz.common.datatransfer.AccessControlMapping;
 import org.springframework.http.ResponseEntity;
 
 import sg.edu.nus.comp.cs3219.viz.common.datatransfer.AccessLevel;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import sg.edu.nus.comp.cs3219.viz.storage.repository.PresentationAccessControlRepository;
 
 @RestController
 public class PresentationController extends BaseRestController {
@@ -31,12 +29,8 @@ public class PresentationController extends BaseRestController {
 
     private final GateKeeper gateKeeper;
 
-    private PresentationAccessControlRepository presentationAccessControlRepository;
-
     public PresentationController(PresentationLogic presentationLogic,
-                                  GateKeeper gateKeeper,
-                                  PresentationAccessControlRepository presentationAccessControlRepository) {
-        this.presentationAccessControlRepository = presentationAccessControlRepository;
+                                  GateKeeper gateKeeper) {
         this.presentationLogic = presentationLogic;
         this.gateKeeper = gateKeeper;
     }
@@ -83,7 +77,7 @@ public class PresentationController extends BaseRestController {
     }
 
     @DeleteMapping("/presentations/{id}")
-    public ResponseEntity<?> deleteEmployee(@PathVariable Long id) {
+    public ResponseEntity<?> deletePresentation(@PathVariable Long id) {
         Presentation oldPresentation = presentationLogic.findById(id)
                 .orElseThrow(() -> new PresentationNotFoundException(id));
         gateKeeper.verifyDeletionAccessForPresentation(oldPresentation);
@@ -91,44 +85,5 @@ public class PresentationController extends BaseRestController {
         presentationLogic.deleteById(id);
 
         return ResponseEntity.noContent().build();
-    }
-
-    @PostMapping("/sharePresentation/{id}")
-    public ResponseEntity<?> sharePresentation(@RequestBody Presentation presentation, @PathVariable Long id) throws URISyntaxException {
-        Presentation oldPresentation = presentationLogic.findById(id)
-                .orElseThrow(() -> new PresentationNotFoundException(id));
-        gateKeeper.verifyAccessForPresentation(oldPresentation, AccessLevel.CAN_WRITE);
-
-        updateAccessControl(presentation);
-        Presentation updatedPresentation = presentationLogic.updatePresentation(oldPresentation, presentation);
-        return ResponseEntity
-                .created(new URI("/presentations/" + presentation.getId()))
-                .body(updatedPresentation);
-    }
-
-    /**
-     * Updates the access control of the target presentation file.
-     */
-    public void updateAccessControl(Presentation presentation) {
-        for (AccessControlMapping mapping : presentation.getMappingList()) {
-            PresentationAccessControl accessControl = new PresentationAccessControl();
-            accessControl.setUserIdentifier(mapping.getEmail());
-            accessControl.setPresentation(presentation);
-            accessControl.setAccessLevel(getAccessLevel(mapping.getAccessLevel()));
-            presentationAccessControlRepository.save(accessControl);
-        }
-    }
-
-    /**
-     * Returns the actual access level of a string equivalent.
-     */
-    public AccessLevel getAccessLevel(String accessLevel) {
-        switch (accessLevel) {
-            case "AccessLevel.CAN_WRITE":
-                return AccessLevel.CAN_WRITE;
-            case "AccessLevel.CAN_READ":
-                return AccessLevel.CAN_READ;
-        }
-        return AccessLevel.CAN_READ;
     }
 }

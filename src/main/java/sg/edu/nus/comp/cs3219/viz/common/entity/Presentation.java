@@ -9,7 +9,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import sg.edu.nus.comp.cs3219.viz.common.datatransfer.AccessControlMapping;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Presentation extends BaseEntity {
@@ -22,7 +22,8 @@ public class Presentation extends BaseEntity {
 
     private String name;
 
-    private ArrayList<AccessControlMapping> mappingList;
+    @OneToMany(mappedBy="presentation")
+    private Set<PresentationAccessControl> accessControlList;
 
     private String description;
 
@@ -60,11 +61,11 @@ public class Presentation extends BaseEntity {
         this.creatorIdentifier = creatorIdentifier;
     }
 
-    public ArrayList<AccessControlMapping> getMappingList() {
-        return mappingList;
+    public Set<PresentationAccessControl> getAccessControlList() {
+        return accessControlList;
     }
 
-    public void setMappingList(ArrayList<AccessControlMapping> mappingList) {
-        this.mappingList = mappingList;
+    public void setAccessControlList(Set<PresentationAccessControl> accessControlList) {
+        this.accessControlList = accessControlList;
     }
 }
