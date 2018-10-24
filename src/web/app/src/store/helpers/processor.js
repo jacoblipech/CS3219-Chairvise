@@ -30,7 +30,7 @@ export function processMapping(mapping, detail, data, dbFields, hasLabel) {
 	var dateField;
 	for (var idx in dbFields.fieldMetaDataList) {
 		if (dbFields.fieldMetaDataList[idx].type == "Date") {
-			dateField = dbFields.fieldMetaDataList[idx].fieldName
+			dateField = dbFields.fieldMetaDataList[idx].jsonProperty
 		}
 	}
 	// for each row of data
@@ -123,12 +123,11 @@ export function processMapping(mapping, detail, data, dbFields, hasLabel) {
 				dataObject[dateField] = rawData;
 				isSeperateDate = false;
 			} else {
-				dataObject[dbFields.fieldMetaDataList[mapping[idx][0]].fieldName] = rawData;
+				dataObject[dbFields.fieldMetaDataList[mapping[idx][0]].jsonProperty] = rawData;
 			}
 		}
 		result.push(dataObject);
 	}
-	console.log(result);
 	return result;
 }
 

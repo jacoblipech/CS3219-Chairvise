@@ -1,9 +1,9 @@
 <template>
   <div>
     <el-alert
-        title="You need to have login-in access to view the page"
+        title="You need to login-in to view the page"
         type="error"
-        v-if="!isAppLoading"
+        v-if="!isLogin && !isAppLoading"
     >
       &nbsp;<el-button type="warning" plain size="mini" @click="navigateToHomePage">Return to the Home Page</el-button>
     </el-alert>
@@ -50,7 +50,7 @@ export default {
     this.$store.dispatch('fetchDBMetaDataEntities');
   },
   computed: {
-    isLogin: function() {
+    isLogin() {
       return this.$store.state.userInfo.isLogin;
     },
     isAppLoading: function() {
