@@ -1,13 +1,13 @@
 <template>
   <div>
     <el-alert
-        title="You need to have admin access to view the page"
+        title="You need to login-in to view the page"
         type="error"
-        v-if="!isAdmin && !isAppLoading"
+        v-if="!isLogin && !isAppLoading"
     >
       &nbsp;<el-button type="warning" plain size="mini" @click="navigateToHomePage">Return to the Home Page</el-button>
     </el-alert>
-    <div v-if="isAdmin">
+    <div v-if="isLogin">
       <h1>This is import data page</h1>
     </div>
   </div>
@@ -17,8 +17,8 @@
   export default {
     name: 'ImportData',
     computed: {
-      isAdmin: function() {
-        return this.$store.state.userInfo.isAdmin
+      isLogin() {
+        return this.$store.state.userInfo.isLogin
       },
       isAppLoading() {
         return this.$store.state.isPageLoading
