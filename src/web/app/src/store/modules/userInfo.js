@@ -5,7 +5,6 @@ export default {
     isApiError: false,
     apiErrorMsg: '',
     isLogin: false,
-    isAdmin: false,
     loginUrl: '',
     logoutUrl: '',
     userEmail: '',
@@ -24,7 +23,6 @@ export default {
 
       if (payload.isLogin) {
         state.userEmail = payload.userInfo.userEmail;
-        state.isAdmin = payload.userInfo.isAdmin;
         state.userNickname = payload.userInfo.userNickname;
       }
     }

@@ -4,6 +4,8 @@ public class DBFieldMetaData {
 
     private String fieldName;
 
+    private String jsonProperty;
+
     private String type;
 
     private String name;
@@ -16,6 +18,14 @@ public class DBFieldMetaData {
 
     public void setFieldName(String fieldName) {
         this.fieldName = fieldName;
+    }
+
+    public String getJsonProperty() {
+        return jsonProperty;
+    }
+
+    public void setJsonProperty(String jsonProperty) {
+        this.jsonProperty = jsonProperty;
     }
 
     public String getType() {

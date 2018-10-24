@@ -34,7 +34,6 @@ public class GateKeeper {
         UserInfo userInfo = new UserInfo();
         userInfo.setUserEmail(user.getEmail());
         userInfo.setUserNickname(user.getNickname());
-        userInfo.setAdmin(userService.isUserAdmin());
         return Optional.of(userInfo);
     }
 
@@ -53,15 +52,6 @@ public class GateKeeper {
 
     public UserInfo verifyLoginAccess() {
         return getCurrentLoginUser().orElseThrow(UnauthorisedException::new);
-    }
-
-    public UserInfo verifyAdminAccess() {
-        UserInfo currentUser = getCurrentLoginUser()
-                .orElseThrow(UnauthorisedException::new);
-        if (!currentUser.isAdmin()) {
-            throw new UnauthorisedException();
-        }
-        return currentUser;
     }
 
     public void verifyDeletionAccessForPresentation(Presentation presentation) {
