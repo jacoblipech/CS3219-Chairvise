@@ -107,9 +107,6 @@ export default {
         accessControlList: this.presentationFormAccessControlList,
       }
     },
-    accessControlList() {
-      return this.$store.state.presentation.presentationForm.accessControlList;
-    },
     presentationFormName: {
       get() {
         return this.$store.state.presentation.presentationForm.name

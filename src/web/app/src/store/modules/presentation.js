@@ -116,7 +116,7 @@ export default {
 
     async savePresentation({ commit, state }) {
       commit('setPresentationFormLoading', true);
-      await axios.post('/api/presentations/', state.presentationForm)
+      await axios.post('/api/presentations', state.presentationForm)
           .then(response => {
             commit('addToPresentationList', response.data);
             commit('setPresentationForm', response.data)
