@@ -102,7 +102,7 @@ public class GateKeeper {
             for (PresentationAccessControl accessControl : presentation.getAccessControlList()) {
                 // If the user can write, he/she can also read the file
                 if (accessControl.getUserIdentifier().equals(currentUser.getUserEmail()) &&
-                        (accessControl.getAccessLevel() == accessLevel || accessControl.getAccessLevel() == AccessLevel.CAN_WRITE) ) {
+                        (accessControl.getAccessLevel().equals(accessLevel) || accessControl.equals(accessLevel)) ) {
                     return;
                 }
             }
