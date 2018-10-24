@@ -13,7 +13,7 @@ export default {
       name: '',
       description: '',
       creatorIdentifier: '',
-      mappingList: [],
+      accessControlList: [],
     },
     shareForm: {
       email: '',
@@ -23,7 +23,7 @@ export default {
       isLoading: false,
       isApiError: false,
       apiErrorMsg: '',
-    }
+    },
   },
   mutations: {
     setPresentationListLoading(state, payload) {
@@ -84,10 +84,6 @@ export default {
     setShareFormField(state, {field, value}) {
       state.shareForm[field] = value
     },
-
-    setPresentationFormAccessControlList(state, shareForm)  {
-        state.presentationForm.mappingList = new Array(shareForm);
-    }
   },
   actions: {
     async getPresentationList({ commit }) {
@@ -120,7 +116,7 @@ export default {
 
     async savePresentation({ commit, state }) {
       commit('setPresentationFormLoading', true);
-      await axios.post('/api/presentations', state.presentationForm)
+      await axios.post('/api/presentations/', state.presentationForm)
           .then(response => {
             commit('addToPresentationList', response.data);
             commit('setPresentationForm', response.data)
@@ -147,10 +143,41 @@ export default {
           })
     },
 
-    async sharePresentation({ commit, state }) {
+    async sharePresentation({ commit, state }, payload) {
       commit('setPresentationFormLoading', true);
-      await axios.post('/api/sharePresentation/' + state.presentationForm.id, state.presentationForm)
+      await axios.put('/api/presentations/' + payload.id + '/accessControl/' + payload.email + '/' + payload.accessLevel, state.presentationForm)
           .then(response => {
+            commit('setPresentationForm', response.data);
+            commit('updatePresentationListWith', response.data)
+          })
+          .catch(e => {
+            commit('setPresentationFormApiError', e.toString());
+          })
+          .finally(() => {
+            commit('setPresentationFormLoading', false);
+          })
+    },
+
+    async removePermissions({ commit, state }, payload) {
+      commit('setPresentationFormLoading', true);
+      await axios.put('/api/presentations/' + payload.id + '/' + payload.email, state.presentationForm)
+          .then(response => {
+            commit('setPresentationForm', response.data);
+            commit('updatePresentationListWith', response.data)
+          })
+          .catch(e => {
+            commit('setPresentationFormApiError', e.toString());
+          })
+          .finally(() => {
+            commit('setPresentationFormLoading', false);
+          })
+    },
+
+    async updatePermissions({ commit, state }, payload) {
+      commit('setPresentationFormLoading', true);
+      await axios.put('/api/presentations/' + payload.id + '/newAccessControl/' + payload.email + '/' + payload.accessLevel, state.presentationForm)
+          .then(response => {
+            commit('setPresentationForm', response.data);
             commit('updatePresentationListWith', response.data)
           })
           .catch(e => {

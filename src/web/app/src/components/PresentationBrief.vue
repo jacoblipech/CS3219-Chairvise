@@ -17,15 +17,55 @@
         </el-form-item>
         <el-form-item label="Permissions:" :label-width="shareFormLabelWidth">
           <el-select v-model="shareFormAccessLevel" placeholder="Select the permission">
-            <el-option label="View" value=AccessLevel.CAN_READ></el-option>
-            <el-option label="Edit" value=AccessLevel.CAN_WRITE></el-option>
+            <el-option label="View" value=CAN_READ></el-option>
+            <el-option label="Edit" value=CAN_WRITE></el-option>
           </el-select>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
+        <el-button round type="info" @click="innerVisible = true">Edit existing permissions</el-button>
         <el-button @click="dialogFormVisible = false">Cancel</el-button>
         <el-button type="primary" @click="dialogFormVisible = false, submitShareForm()">Confirm</el-button>
       </span>
+    </el-dialog>
+    <el-dialog
+        width="70%"
+        title="Existing permissions"
+        :visible.sync="innerVisible"
+        append-to-body>
+      <el-table
+          :data=presentationForm.accessControlList
+          style="width: 100%">
+        <el-table-column
+            prop="userIdentifier"
+            label="Email"
+            width="180">
+        </el-table-column>
+        <el-table-column
+            prop="accessLevel"
+            label="Access Level"
+            width="180">
+        </el-table-column>
+        <el-table-column
+            label="Update permissions">
+            <template slot-scope="scope">
+              <el-select v-model="existingPermissionsArray[scope.$index]" placeholder="Select the permission">
+                <el-option label="View" value=CAN_READ></el-option>
+                <el-option label="Edit" value=CAN_WRITE></el-option>
+              </el-select>
+            </template>
+        </el-table-column>
+        <el-table-column
+            label="Operations">
+          <template slot-scope="scope">
+            <el-button
+                @click="updatePermissions(scope.$index, scope.row)">Update</el-button>
+            <el-button
+                type="danger"
+                @click="removePermissions(scope.$index, scope.row)">Remove</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
     </el-dialog>
     <el-form-item label="Description">
       <div v-if="!isInEditMode">{{ presentationForm.description }}</div>
@@ -64,8 +104,11 @@ export default {
         name: this.presentationFormName,
         creatorIdentifier: this.presentationFormCreatorIdentifier,
         description: this.presentationFormDescription,
-        mappingList: this.presentationFormMappingList,
+        accessControlList: this.presentationFormAccessControlList,
       }
+    },
+    accessControlList() {
+      return this.$store.state.presentation.presentationForm.accessControlList;
     },
     presentationFormName: {
       get() {
@@ -81,8 +124,8 @@ export default {
     presentationFormCreatorIdentifier() {
       return this.$store.state.presentation.presentationForm.creatorIdentifier
     },
-    presentationFormMappingList() {
-      return this.$store.state.presentation.presentationForm.mappingList
+    presentationFormAccessControlList() {
+      return this.$store.state.presentation.presentationForm.accessControlList
     },
     presentationFormDescription: {
       get() {
@@ -96,15 +139,15 @@ export default {
       },
     },
     shareFormEmail: {
-        get() {
-            return this.$store.state.presentation.shareForm.email
-        },
-        set(value) {
-            this.$store.commit('setShareFormField', {
-                field: 'email',
-                value
-            })
-        },
+      get() {
+        return this.$store.state.presentation.shareForm.email
+      },
+      set(value) {
+        this.$store.commit('setShareFormField', {
+            field: 'email',
+            value
+        })
+      },
     },
     shareFormAccessLevel: {
       get() {
@@ -143,7 +186,9 @@ export default {
     return {
       isEditing: false,
       dialogFormVisible: false,
+      innerVisible: false,
       shareFormLabelWidth: '120px',
+      existingPermissionsArray: [],
       rules: {
         name: [
           { required: true, message: 'Please enter presentation name', trigger: 'blur' },
@@ -153,6 +198,21 @@ export default {
     }
   },
   methods: {
+    updatePermissions(rowIndex, row) {
+      this.$store.dispatch('updatePermissions',
+        { id: this.id,
+          email: row.userIdentifier,
+          accessLevel: this.existingPermissionsArray[rowIndex]
+        }
+      );
+    },
+    removePermissions(rowIndex, row) {
+      this.$store.dispatch('removePermissions',
+        { id: this.id,
+          email: row.userIdentifier,
+        }
+      );
+    },
     changeEditMode(isEditing) {
       if (isEditing === false) {
           this.$store.dispatch('getPresentation', this.id);
@@ -187,11 +247,12 @@ export default {
       });
     },
     submitShareForm() {
-      this.$store.commit('setPresentationFormAccessControlList', this.$store.state.presentation.shareForm)
-      this.$store.dispatch('sharePresentation')
-          .then(() => {
-            this.isEditing = false
-          })
+      this.$store.dispatch('sharePresentation',
+          { id: this.id,
+            email: this.$store.state.presentation.shareForm.email,
+            accessLevel: this.$store.state.presentation.shareForm.accessLevel
+          }
+      );
     },
     deleteForm() {
       this.$store.dispatch('deletePresentation', this.id)
