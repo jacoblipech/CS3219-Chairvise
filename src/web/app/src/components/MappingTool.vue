@@ -46,16 +46,16 @@
       <h3>Mapping</h3>
       <transition-group name="map-group" tag="div">
         <div class="pair-tag" v-for="(item, index) in mappedPairs" v-bind:key="index">
-					<el-tag size="medium">{{ dbList.fieldMetaDataList[item[0]].type }}</el-tag>
+          <el-tag size="medium">{{ dbList.fieldMetaDataList[item[0]].type }}</el-tag>
           <p class="pair-info">
-						{{ dbList.fieldMetaDataList[item[0]].name }} 
-						<i class="el-icon-caret-right"></i> 
-						{{ importList[item[1]] }}
-					</p><i class="el-icon-close" v-on:click="removeMapClicked(index)"></i><br>
-					<el-input placeholder="true value format (e.g. yes)" size="mini"
-							v-model="typeDetails[index].detail" 
-							v-if="dbList.fieldMetaDataList[item[0]].type == 'boolean'">
-					</el-input>
+            {{ dbList.fieldMetaDataList[item[0]].name }}
+            <i class="el-icon-caret-right"></i>
+            {{ importList[item[1]] }}
+          </p><i class="el-icon-close" v-on:click="removeMapClicked(index)"></i><br>
+          <el-input placeholder="true value format (e.g. yes)" size="mini"
+              v-model="typeDetails[index].detail"
+              v-if="dbList.fieldMetaDataList[item[0]].type == 'boolean'">
+          </el-input>
         </div>
       </transition-group>
       <transition name="fade" mode="out-in">
@@ -69,11 +69,11 @@
     <!-- dialogs -->
     <el-dialog
       title="Confirm"
-      :visible.sync="submitCheck"
+      :visible.sync="hasSubmitted"
       width="30%" center>
       <span>After submission, your will not be abled to modify your mapping. Are you sure that the columns are correctly mapped?</span>
       <span slot="footer" class="dialog-footer">
-        <el-button v-on:click="submitCheck = false">Cancel</el-button>
+        <el-button v-on:click="hasSubmitted = false">Cancel</el-button>
         <el-button type="primary" v-on:click="submitMapping">Confirm</el-button>
       </span>
     </el-dialog>
@@ -106,7 +106,7 @@ export default {
       mappedImportTag: [],
       typeDetails: [],
 
-      submitCheck: false,
+      hasSubmitted: false,
       tableType: ""
     };
   },
@@ -120,15 +120,15 @@ export default {
       var temp = this.mappedImportTag;
       var result = this.mappedDBTag.map(function(e, i) {
         return [e, temp[i]];
-			});
+      });
       return result;
     },
 
     // generates imported tags.
     // if initially no tag, just display column number
     importList: function() {
-      if (this.$store.state.dataMapping.data.hasLabel) {
-        return this.$store.state.dataMapping.data.uploadedLabel;  
+      if (this.$store.state.dataMapping.data.hasHeader) {
+        return this.$store.state.dataMapping.data.uploadedLabel;
       }
       var lst = [];
       for (var i = 0; i < this.$store.state.dataMapping.data.uploadedLabel.length; i++) {
@@ -170,10 +170,10 @@ export default {
         this.mappedDBTag.push(this.selectedDBTag);
         this.mappedImportTag.push(this.selectedImportTag);
         this.selectedDBTag = -1;
-				this.selectedImportTag = -1;
-				var newTypeObject = {};
-				newTypeObject[this.typeDetails.length] = { detail: "" };
-				this.typeDetails.push(newTypeObject);
+        this.selectedImportTag = -1;
+        var newTypeObject = {};
+        newTypeObject[this.typeDetails.length] = { detail: "" };
+        this.typeDetails.push(newTypeObject);
       }
     },
     importTagClicked: function(idx) {
@@ -186,22 +186,22 @@ export default {
         this.mappedDBTag.push(this.selectedDBTag);
         this.mappedImportTag.push(this.selectedImportTag);
         this.selectedDBTag = -1;
-				this.selectedImportTag = -1;
-				var newTypeObject = {};
-				newTypeObject[this.typeDetails.length] = { detail: "" };
-				this.typeDetails.push(newTypeObject);
+        this.selectedImportTag = -1;
+        var newTypeObject = {};
+        newTypeObject[this.typeDetails.length] = { detail: "" };
+        this.typeDetails.push(newTypeObject);
       }
     },
     removeMapClicked: function(idx) {
       this.mappedDBTag.splice(idx, 1);
-			this.mappedImportTag.splice(idx, 1);
-			this.typeDetails.splice(idx, 1);
+      this.mappedImportTag.splice(idx, 1);
+      this.typeDetails.splice(idx, 1);
     },
     backClicked: function() {
       this.$store.commit("clearDBSchema");
       this.$store.commit("clearUploadedFile");
       this.$store.commit("clearTableType");
-      this.$store.commit("clearHasLabel");
+      this.$store.commit("clearHasHeader");
       this.$store.commit("clearMapping");
     },
     uploadClicked: function() {
@@ -209,19 +209,19 @@ export default {
       var types = JSON.parse(JSON.stringify(this.typeDetails));
       this.$store.commit("setMapping", { "map": map, "types": types });
       if (this.errors.length == 0) {
-        this.submitCheck = true;
+        this.hasSubmitted = true;
       }
     },
     submitMapping: function() {
-      this.submitCheck = false;
-      this.$store.dispatch("uploadMapping");
+      this.hasSubmitted = false;
+      this.$store.dispatch("persistMapping");
     },
     closeSuccess: function() {
       this.$store.commit("setUploadSuccess", false);
       this.$store.commit("clearDBSchema");
       this.$store.commit("clearUploadedFile");
       this.$store.commit("clearTableType");
-      this.$store.commit("clearHasLabel");
+      this.$store.commit("clearHasHeader");
       this.$store.commit("clearMapping");
       this.$store.commit("clearError");
     }
@@ -321,7 +321,7 @@ export default {
   border-radius: 5px;
   max-width: 400px;
   text-overflow: ellipsis;
-  overflow: hidden; 
+  overflow: hidden;
   white-space: nowrap;
   /* box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12); */
 }
@@ -365,9 +365,9 @@ export default {
 }
 
 .pair-tag .pair-info {
-	margin-left: 10px;
+  margin-left: 10px;
   transition: 1s ease;
-	font-size: 14px;
+  font-size: 14px;
   display: inline;
 }
 
@@ -397,17 +397,17 @@ export default {
 }
 
 .el-tag {
-	margin-left: 0px;
+  margin-left: 0px;
   padding: 0px;
-	width: 70px;
-	text-align: center;
+  width: 70px;
+  text-align: center;
   font-size: 9px;
 }
 
 .el-input {
-	margin-left: 78px;
+  margin-left: 78px;
   margin-top: 8px;
-	width: 185px;
+  width: 185px;
 }
 
 .button-row {

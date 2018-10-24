@@ -30,6 +30,7 @@ export default {
   actions: {
     async fetchDBMetaDataEntities({commit}) {
       commit('setDBMetaDataEntitiesLoading', true);
+      commit('setPageLoadingStatus', true);
 
       await axios.get('/api/db/entity')
         .then(response => {
@@ -40,6 +41,7 @@ export default {
         })
         .finally(() => {
           commit('setDBMetaDataEntitiesLoading', false);
+          commit('setPageLoadingStatus', false);
         })
     }
   }

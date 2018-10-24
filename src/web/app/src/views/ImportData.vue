@@ -8,25 +8,25 @@
       &nbsp;<el-button type="warning" plain size="mini" @click="navigateToHomePage">Return to the Home Page</el-button>
     </el-alert>
     <div v-if="isAdmin">
-      <mapping-tool v-if="readyForMapping" ref="mapTool"></mapping-tool>
+      <mapping-tool v-if="isReadyForMapping" ref="mapTool"></mapping-tool>
       <div v-else class="upload-box">
         <el-upload drag action=""
           :auto-upload="false"
           :show-file-list="false"
           :multiple="false"
-          :on-change="fileUploaded">
+          :on-change="fileUploadHandler">
           <i class="el-icon-upload"></i>
             <div class="el-upload__text">Drop file here or <em>click to upload</em></div>
             <div class="el-upload__tip" slot="tip">Please upload .csv files with filed names.</div>
         </el-upload>
         <el-select v-if="uploaded" v-model="tableType" placeholder="Table Type">
           <el-option v-for="(schema, idx) in dbSchemas"
-              :key="schema.tableName"
-              :label="schema.tableName.replace('_', ' ')"
+              :key="schema.name"
+              :label="schema.name"
               :value="idx">
           </el-option>
         </el-select>
-        <el-select v-if="uploaded" v-model="hasLabel" placeholder="Has label?">
+        <el-select v-if="uploaded" v-model="hasHeader" placeholder="Has header?">
           <el-option :key="'Yes'" :label="'Yes'" :value="true"></el-option>
           <el-option :key="'No'" :label="'No'" :value="false"></el-option>
         </el-select>
@@ -37,7 +37,7 @@
 
 <script>
 import MappingTool from "@/components/MappingTool.vue";
-import { DateDayField, DateTimeField } from "../common/const.js"
+import { REVIEW_DATE_DAY_FIELD, REVIEW_DATE_TIME_FIELD, REVIEW_TABLE_ID } from "../common/const.js"
 import Papa from "papaparse";
 
 export default {
@@ -65,26 +65,26 @@ export default {
       },
       set: function(newValue) {
         var dbSchema = JSON.parse(JSON.stringify(this.dbSchemas[newValue]));
-        if (newValue == 1) {
-          dbSchema.fieldMetaDataList.push(DateDayField);
-          dbSchema.fieldMetaDataList.push(DateTimeField);
+        if (newValue == REVIEW_TABLE_ID) {
+          dbSchema.fieldMetaDataList.push(REVIEW_DATE_DAY_FIELD);
+          dbSchema.fieldMetaDataList.push(REVIEW_DATE_TIME_FIELD);
         }
         this.$store.commit("setTableType", newValue);
         this.$store.commit("setDBSchema", dbSchema);
       }
     },
-    hasLabel: {
+    hasHeader: {
       get: function() {
-        return this.$store.state.dataMapping.data.hasLabel;
+        return this.$store.state.dataMapping.data.hasHeader;
       },
       set: function(newValue) {
-        this.$store.commit("setHasLabel", newValue);
+        this.$store.commit("setHasHeader", newValue);
       }
     },
-    readyForMapping: function() {
+    isReadyForMapping: function() {
       return this.$store.state.dataMapping.hasFileUploaded
         && this.$store.state.dataMapping.hasTableTypeSelected
-        && this.$store.state.dataMapping.hasLabelSpecified;
+        && this.$store.state.dataMapping.hasHeaderSpecified;
     },
     uploaded: function() {
       return this.$store.state.dataMapping.hasFileUploaded;
@@ -94,15 +94,17 @@ export default {
     navigateToHomePage() {
       this.$router.replace("/home");
     },
-    fileUploaded: function(file) {
+    fileUploadHandler: function(file) {
       // show loading and go parsing
       this.$store.commit("setDataProcessingStatus", true);
+      this.$store.commit("setPageLoadingStatus", true);
       Papa.parse(file.raw, {
         complete: function(result) {
           // when complete, commit result to store
           // and disable loading animation
           this.$store.commit("setUploadedFile", result.data);
           this.$store.commit("setDataProcessingStatus", false);
+          this.$store.commit("setPageLoadingStatus", false);
         }.bind(this)
       });
     }

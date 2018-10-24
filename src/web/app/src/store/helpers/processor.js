@@ -128,6 +128,7 @@ export function processMapping(mapping, detail, data, dbFields, hasLabel) {
 		}
 		result.push(dataObject);
 	}
+	console.log(result);
 	return result;
 }
 

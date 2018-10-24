@@ -1,12 +1,12 @@
 import axios from 'axios'
-import {processMapping} from '../helpers/processor.js'
+import { processMapping } from '../helpers/processor.js'
 
 export default {
   state: {
-    hasDBSchemaSetted: false,
+    hasDBSchemaSet: false,
     hasFileUploaded: false,
     hasTableTypeSelected: false,
-    hasLabelSpecified: false,
+    hasHeaderSpecified: false,
     hasMappingFinished: false,
     isUploading: false,
     isUploadSuccess: false,
@@ -18,7 +18,7 @@ export default {
       dataDetail: [],
       processedResult: [],
       tableType: null,
-      hasLabel: null
+      hasHeader: null
     },
     error: []
   },
@@ -46,12 +46,12 @@ export default {
 
     setDBSchema(state, dbSchema) {
       state.data.dbSchema = dbSchema;
-      state.hasDBSchemaSetted = true;
+      state.hasDBSchemaSet = true;
     },
 
     clearDBSchema(state) {
       state.data.dbSchema = [];
-      state.hasDBSchemaSetted = false;
+      state.hasDBSchemaSet = false;
     },
 
     setTableType(state, selected) {
@@ -64,14 +64,14 @@ export default {
       state.tableTypeSelected = false;
     },
 
-    setHasLabel(state, hasLabel) {
-      state.data.hasLabel = hasLabel;
-      state.hasLabelSpecified = true;
+    setHasHeader(state, hasHeader) {
+      state.data.hasHeader = hasHeader;
+      state.hasHeaderSpecified = true;
     },
 
-    clearHasLabel(state) {
-      state.data.hasLabel = null,
-          state.hasLabelSpecified = false;
+    clearHasHeader(state) {
+      state.data.hasHeader = null;
+      state.hasHeaderSpecified = false;
     },
 
     setMapping(state, payload) {
@@ -84,7 +84,7 @@ export default {
             payload.types,
             state.data.uploadedData,
             state.data.dbSchema,
-            state.data.hasLabel);
+            state.data.hasHeader);
         state.data.processedResult = processedResult;
       } catch (err) {
         state.error.push(err);
@@ -104,7 +104,7 @@ export default {
       state.data.dataDetail = null;
     },
 
-    setError(state, err) {
+    setDataMappingError(state, err) {
       state.error.push(err);
     },
 
@@ -114,8 +114,9 @@ export default {
   },
 
   actions: {
-    async uploadMapping({commit, state}) {
+    async persistMapping({commit, state}) {
       commit("setUploadingStatus", true);
+      commit("setPageLoadingStatus", true);
       var endpoint;
       switch (state.data.tableType) {
         case 0:
@@ -131,12 +132,14 @@ export default {
       await axios.post("/api/record/" + endpoint, state.data.processedResult)
         .then(response => {
           commit("setUploadingStatus", false);
+          commit("setPageLoadingStatus", false);
           commit("setUploadSuccess", true);
         })
         .catch(e => {
           commit("setUploadingStatus", false);
+          commit("setPageLoadingStatus", false);
           commit("setUploadSuccess", false);
-          commit("setError", e.toString());
+          commit("setDataMappingError", e.toString());
         });
     }
   }
