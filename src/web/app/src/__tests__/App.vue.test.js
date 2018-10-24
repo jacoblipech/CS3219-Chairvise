@@ -21,9 +21,6 @@ describe('App.vue', () => {
         userInfo: {
           isApiError: false
         },
-        dataMapping: {
-          isUploading: false
-        },
         dbMetaData: {
           entitiesStatus: {
             isLoading: false

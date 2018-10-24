@@ -54,7 +54,7 @@ export default {
       return this.$store.state.userInfo.isLogin;
     },
     isAppLoading: function() {
-      return this.$store.state.isPageLoading || this.$store.state.isDataProcessing;
+      return this.$store.state.isPageLoading || this.$store.state.dbMetaData.entitiesStatus.isLoading;
     },
     dbSchemas: function() {
       return this.$store.state.dbMetaData.entities;
@@ -96,14 +96,12 @@ export default {
     },
     fileUploadHandler: function(file) {
       // show loading and go parsing
-      this.$store.commit("setDataProcessingStatus", true);
       this.$store.commit("setPageLoadingStatus", true);
       Papa.parse(file.raw, {
         complete: function(result) {
           // when complete, commit result to store
           // and disable loading animation
           this.$store.commit("setUploadedFile", result.data);
-          this.$store.commit("setDataProcessingStatus", false);
           this.$store.commit("setPageLoadingStatus", false);
         }.bind(this)
       });

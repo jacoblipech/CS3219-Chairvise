@@ -8,7 +8,6 @@ export default {
     hasTableTypeSelected: false,
     hasHeaderSpecified: false,
     hasMappingFinished: false,
-    isUploading: false,
     isUploadSuccess: false,
     data: {
       dbSchema: null,
@@ -24,10 +23,6 @@ export default {
   },
 
   mutations: {
-    setUploadingStatus(state, status) {
-      state.isUploading = status;
-    },
-
     setUploadSuccess(state, success) {
       state.isUploadSuccess = success;
     },
@@ -115,7 +110,6 @@ export default {
 
   actions: {
     async persistMapping({commit, state}) {
-      commit("setUploadingStatus", true);
       commit("setPageLoadingStatus", true);
       var endpoint;
       switch (state.data.tableType) {
@@ -131,12 +125,10 @@ export default {
       }
       await axios.post("/api/record/" + endpoint, state.data.processedResult)
         .then(response => {
-          commit("setUploadingStatus", false);
           commit("setPageLoadingStatus", false);
           commit("setUploadSuccess", true);
         })
         .catch(e => {
-          commit("setUploadingStatus", false);
           commit("setPageLoadingStatus", false);
           commit("setUploadSuccess", false);
           commit("setDataMappingError", e.toString());
