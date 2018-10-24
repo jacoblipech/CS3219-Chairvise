@@ -50,13 +50,12 @@ public class GaeSimulation {
     }
 
     /**
-     * Logs in the user to the GAE simulation environment without admin rights.
+     * Logs in the user to the GAE simulation environment.
      */
     public void loginUser(String userEmail) {
         helper.setEnvIsLoggedIn(true);
         helper.setEnvEmail(userEmail);
         helper.setEnvAuthDomain("gmail.com");
-        helper.setEnvIsAdmin(false);
     }
 
     /**
@@ -64,17 +63,7 @@ public class GaeSimulation {
      */
     public void logoutUser() {
         helper.setEnvIsLoggedIn(false);
-        helper.setEnvIsAdmin(false);
     }
-
-    /**
-     * Logs in the user to the GAE simulation environment as an admin.
-     */
-    public void loginAsAdmin(String userId) {
-        loginUser(userId);
-        helper.setEnvIsAdmin(true);
-    }
-
 
     /**
      * Tears down the GAE simulation.

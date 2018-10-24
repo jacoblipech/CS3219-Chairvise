@@ -18,9 +18,7 @@
       <el-button type="primary" @click="changeEditMode(true)" v-if="!isInEditMode">Edit</el-button>
       <el-button type="primary" @click="submitForm()" v-if="isInEditMode">Save</el-button>
       <el-button type="info" @click="changeEditMode(false)" v-if="isInEditMode && !isNewPresentation">Cancel</el-button>
-    </el-form-item>
-    <el-form-item v-if="!isNewPresentation">
-      <el-button type="danger" @click="deleteForm()">Delete</el-button>
+      <el-button type="danger" v-if="!isNewPresentation" @click="deleteForm()">Delete</el-button>
     </el-form-item>
   </el-form>
 </el-row>
@@ -142,7 +140,7 @@ export default {
           this.$router.replace({
               name: 'analyze',
               params: {
-                  id: "__NEW__"
+                  id: ID_NEW_PRESENTATION
               }
           });
           this.isEditing = false;

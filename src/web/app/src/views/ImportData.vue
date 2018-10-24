@@ -1,13 +1,13 @@
 <template>
   <div>
     <el-alert
-        title="You need to have admin access to view the page"
+        title="You need to have login-in access to view the page"
         type="error"
-        v-if="!isAdmin && !isAppLoading"
+        v-if="!isAppLoading"
     >
       &nbsp;<el-button type="warning" plain size="mini" @click="navigateToHomePage">Return to the Home Page</el-button>
     </el-alert>
-    <div v-if="isAdmin">
+    <div v-if="isLogin">
       <mapping-tool v-if="isReadyForMapping" ref="mapTool"></mapping-tool>
       <div v-else class="upload-box">
         <el-upload drag action=""
@@ -50,8 +50,8 @@ export default {
     this.$store.dispatch('fetchDBMetaDataEntities');
   },
   computed: {
-    isAdmin: function() {
-      return this.$store.state.userInfo.isAdmin;
+    isLogin: function() {
+      return this.$store.state.userInfo.isLogin;
     },
     isAppLoading: function() {
       return this.$store.state.isPageLoading || this.$store.state.isDataProcessing;
