@@ -33,9 +33,24 @@
       <el-form-item label="Legend Label Name" prop="extraData.dataSetLabel" v-if="slotProps.isInAdvancedMode">
         <el-input v-model="slotProps.extraData.dataSetLabel" placeholder="Label Name"></el-input>
       </el-form-item>
-      <el-form-item label="Num of result to display" prop="extraData.numOfResultToDisplay" v-if="slotProps.isInAdvancedMode">
-        <el-slider v-model="slotProps.extraData.numOfResultToDisplay" :min="5" :max="30"></el-slider>
+      <el-form-item label="Type" v-if="slotProps.isInAdvancedMode">
+        <el-select placeholder="type" v-model="slotProps.extraData.type">
+          <el-option label="Display as Category" value="category"></el-option>
+          <el-option label="Group data" value="group"></el-option>
+        </el-select>
       </el-form-item>
+      <div v-if="slotProps.extraData.type === 'category'">
+        <el-form-item label="Num of result to display" prop="extraData.numOfResultToDisplay" v-if="slotProps.isInAdvancedMode">
+          <el-slider v-model="slotProps.extraData.numOfResultToDisplay" :min="5" :max="30"></el-slider>
+        </el-form-item>
+      </div>
+      <div v-if="slotProps.extraData.type === 'group'">
+        <el-form-item label="Group Options" v-if="slotProps.isInAdvancedMode">
+          Min: <el-input-number size="mini" v-model="slotProps.extraData.group.min" :precision="2" :step="0.1"></el-input-number>
+          Max: <el-input-number size="mini" v-model="slotProps.extraData.group.max" :precision="2" :step="0.1"></el-input-number>
+          StepSize: <el-input-number size="mini" v-model="slotProps.extraData.group.stepSize" :precision="2" :step="0.1"></el-input-number>
+        </el-form-item>
+      </div>
     </template>
   </basic-section-detail>
 </template>
@@ -71,8 +86,8 @@
         }],
         editFormInvolvedRecordsRule: [{
           validator: (rule, value, callback) => {
-            if (value.length >= 2 || value.length < 1) {
-              return callback(new Error('There must be only one record involved'))
+            if (value.length < 1) {
+              return callback(new Error('There must be one record involved'))
             }
             callback();
           },
@@ -133,17 +148,49 @@
 
     methods: {
       updateVisualisation({result, extraData}) {
-        this.partialResult = result.slice(0, extraData.numOfResultToDisplay);
+        let toolTipFooterCallback = () => {};
+        switch (extraData.type) {
+          case 'category':
+            this.partialResult = result.slice(0, extraData.numOfResultToDisplay);
+            // process x axis
+            this.labels = this.partialResult.map(record => record[extraData.xAxisFieldName]);
 
-        // process x axis
-        this.labels = this.partialResult.map(record => record[extraData.xAxisFieldName]);
+            // process y axis
+            this.dataset = {
+              borderWidth: 1,
+              label: extraData.dataSetLabel,
+              data: this.partialResult.map(record => record[extraData.yAxisFieldName])
+            };
 
-        // process y axis
-        this.dataset = {
-          borderWidth: 1,
-          label: extraData.dataSetLabel,
-          data: this.partialResult.map(record => record[extraData.yAxisFieldName])
-        };
+            // to display more data
+            toolTipFooterCallback = (tooltipItems) => {
+              let currentIndex = tooltipItems[0].index;
+              return extraData.fieldsShownInToolTips.map(f => this.partialResult[currentIndex][f]);
+            };
+            break;
+          case 'group':
+            let {min, max, stepSize} = extraData.group;
+
+            // process x axis
+            this.labels = [];
+            for (let i = min; i < max; i += stepSize) {
+              let left = i.toFixed(2);
+              let right = (i + stepSize < max ? i + stepSize : max).toFixed(2);
+              this.labels.push(`${left} ~ ${right}`);
+            }
+
+            // process y axis
+            let data = [];
+            result.map(record => record[extraData.xAxisFieldName]).forEach(x => {
+              let index = Math.floor((x - min) / stepSize);
+              data[index] = data[index] === undefined ? 1 : data[index] + 1;
+            });
+            this.dataset = {
+              borderWidth: 1,
+              label: extraData.dataSetLabel,
+              data
+            };
+        }
 
         // process tooltip callback
         this.options = {
@@ -156,7 +203,7 @@
                 display: true
               }
             }],
-            xAxes: [ {
+            xAxes: [{
               gridLines: {
                 display: false
               },
@@ -172,10 +219,7 @@
           maintainAspectRatio: false,
           tooltips: {
             callbacks: {
-              footer: (tooltipItems) => {
-                let currentIndex = tooltipItems[0].index;
-                return extraData.fieldsShownInToolTips.map(f => this.partialResult[currentIndex][f]);
-              }
+              footer: toolTipFooterCallback
             }
           }
         }
