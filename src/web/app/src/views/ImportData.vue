@@ -37,8 +37,8 @@
 
 <script>
 import MappingTool from "@/components/MappingTool.vue";
-import { REVIEW_DATE_DAY_FIELD, REVIEW_DATE_TIME_FIELD, REVIEW_TABLE_ID } from "../common/const.js"
 import Papa from "papaparse";
+import { REVIEW_DATE_DAY_FIELD, REVIEW_DATE_TIME_FIELD, REVIEW_TABLE_ID } from "../common/const.js"
 
 export default {
   name: "ImportData",
