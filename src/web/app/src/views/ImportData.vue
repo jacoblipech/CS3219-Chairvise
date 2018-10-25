@@ -101,7 +101,6 @@ export default {
         complete: function(result) {
           // when complete, commit result to store
           // and disable loading animation
-          console.log(result);
           this.$store.commit("setUploadedFile", result.data);
           this.$store.commit("setPageLoadingStatus", false);
         }.bind(this)
