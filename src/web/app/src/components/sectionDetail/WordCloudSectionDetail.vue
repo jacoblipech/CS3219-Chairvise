@@ -5,11 +5,9 @@
                         :edit-form-filters-rule="editFormFiltersRule"
                         :extraFormItemsRules="extraFormItemsRules"
                         @update-visualisation="updateVisualisation">
-    <vue-word-cloud :words="words"
-                    :animationDuration="animationDuration"
-                    :color="colorComputer"
-                    :font-family="fontFamily"
-                    style="width: 70%;height: 200px"></vue-word-cloud>
+    <word-cloud
+      :data="words">
+    </word-cloud>
 
     <template slot="extraFormItems" slot-scope="slotProps">
       <el-form-item label="Delimiter to Generate Word" prop="extraData.delimiters" v-if="slotProps.isInAdvancedMode">
@@ -24,7 +22,7 @@
 </template>
 
 <script>
-  import VueWordCloud from 'vuewordcloud';
+  import WordCloud from '@/components/sectionDetail/chart/WordCloud.vue'
   import BasicSectionDetail from '@/components/sectionDetail/BasicSectionDetail.vue'
 
   export default {
@@ -52,7 +50,6 @@
         }],
         editFormInvolvedRecordsRule: [{
           validator: (rule, value, callback) => {
-            alert(1)
             if (value.length >= 2 || value.length < 1) {
               return callback(new Error('There must be only one record involved'))
             }
@@ -85,8 +82,11 @@
         },
 
         // word cloud related field
+<<<<<<< HEAD
         animationDuration: 100,
         fontFamily: "Roboto",
+=======
+>>>>>>> master
         words: [],
       }
     },
@@ -135,18 +135,13 @@
         this.words = words;
       },
 
-      // word cloud related
-      colorComputer([, weight]) {
-        return weight > 10 ? 'Red' : weight > 5 ? 'Blue' : 'Black'
-      },
-
       capitalizeFirstWord(str) {
         return str.replace(/\b\w/g, l => l.toUpperCase());
       }
     },
 
     components: {
-      [VueWordCloud.name]: VueWordCloud,
+      WordCloud,
       BasicSectionDetail
     }
   }

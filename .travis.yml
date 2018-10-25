@@ -24,8 +24,8 @@ before_script:
 - gcloud -q components install app-engine-java
 
 script:
-# test front end
-- cd $frontendBuildPath && npm install && npm run test:unit
+# lint and test front end
+- cd $frontendBuildPath && npm install && npm run lint && npm run test:unit
 
 # build production files of frontend
 - cd $frontendBuildPath && npm run build

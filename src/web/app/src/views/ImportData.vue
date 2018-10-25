@@ -64,7 +64,7 @@ export default {
         return this.$store.state.dataMapping.data.tableType;
       },
       set: function(newValue) {
-        var dbSchema = JSON.parse(JSON.stringify(this.dbSchemas[newValue]));
+        let dbSchema = JSON.parse(JSON.stringify(this.dbSchemas[newValue]));
         if (newValue == REVIEW_TABLE_ID) {
           dbSchema.fieldMetaDataList.push(REVIEW_DATE_DAY_FIELD);
           dbSchema.fieldMetaDataList.push(REVIEW_DATE_TIME_FIELD);
