@@ -15,7 +15,7 @@ export function download(numberOfElements, presentationFormName, presentationDes
     var imageData = element.toDataURL("image/png");
     var marginLeft = PDF_CHART_MARGIN_LEFT;
     var descriptionHeight = element.height * PDF_CHART_WIDTH / element.width;
-    doc.addImage(imageData, "PNG", marginLeft, 10, PDF_CHART_WIDTH, descriptionHeight);
+    doc.addImage(imageData, "PNG", marginLeft, 10, PDF_CHART_WIDTH, descriptionHeight, "", "FAST");
 
     // recursively add charts
     recursiveGetChart(numberOfElements, 0, callback);
@@ -35,7 +35,7 @@ function recursiveGetChart(total, current, callback) {
     var imageData = element.toDataURL("image/png");
     var marginLeft = PDF_CHART_MARGIN_LEFT;
     var chartHeight = element.height * PDF_CHART_WIDTH / element.width;
-    doc.addImage(imageData, "PNG", marginLeft, marginTop, PDF_CHART_WIDTH, chartHeight);
+    doc.addImage(imageData, "PNG", marginLeft, marginTop, PDF_CHART_WIDTH, chartHeight, "", "FAST");
     marginTop += chartHeight + marginTop;
 
     // if all added, call callback function and return out
