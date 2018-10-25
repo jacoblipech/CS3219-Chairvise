@@ -124,7 +124,7 @@ export default {
           break;
       }
       await axios.post("/api/record/" + endpoint, state.data.processedResult)
-        .then(response => {
+        .then(() => {
           commit("setPageLoadingStatus", false);
           commit("setUploadSuccess", true);
         })
