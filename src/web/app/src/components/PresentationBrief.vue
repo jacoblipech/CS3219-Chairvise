@@ -10,8 +10,8 @@
       <el-tag>Created by {{ presentationForm.creatorIdentifier }}</el-tag>
       <el-button type="success" size="small" class="share_button_left_margin" icon="el-icon-view">SHARE</el-button>
     </el-form-item>
-    <el-form-item label="Description" id="presentation-description">
-      <div v-if="!isInEditMode">{{ presentationForm.description }}</div>
+    <el-form-item label="Description">
+      <div v-if="!isInEditMode" id="presentation-description">{{ presentationForm.description }}</div>
       <el-input v-model="presentationFormDescription" v-if="isInEditMode"/>
     </el-form-item>
     <el-form-item>
@@ -160,10 +160,13 @@ export default {
       this.$store.commit('setRenderForPDF', true);
       this.$store.commit('setPageLoadingStatus', true);
       setTimeout(function() {
-        download(this.$store.state.section.sectionList.length, this.presentationFormName, this.presentationFormDescription, function() {
-          this.$store.commit('setRenderForPDF', false);
-          this.$store.commit('setPageLoadingStatus', false);
-        }.bind(this));
+        download(this.$store.state.section.sectionList.length,
+            this.presentationFormName,
+            this.presentationFormDescription,
+            function() {
+              this.$store.commit('setRenderForPDF', false);
+              this.$store.commit('setPageLoadingStatus', false);
+            }.bind(this));
       }.bind(this), 1000);
     }
   }
