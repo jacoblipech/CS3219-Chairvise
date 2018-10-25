@@ -10,12 +10,12 @@
       <el-tag>Created by {{ presentationForm.creatorIdentifier }}</el-tag>
       <el-button type="success" size="small" class="share_button_left_margin" icon="el-icon-view">SHARE</el-button>
     </el-form-item>
-    <el-form-item label="Description">
+    <el-form-item label="Description" id="presentation-description">
       <div v-if="!isInEditMode">{{ presentationForm.description }}</div>
       <el-input v-model="presentationFormDescription" v-if="isInEditMode"/>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="downloadPDF()">Download as PDF</el-button>
+      <el-button type="primary" @click="downloadPDF()" v-if="!isInEditMode">Download as PDF</el-button>
       <el-button type="primary" @click="changeEditMode(true)" v-if="!isInEditMode">Edit</el-button>
       <el-button type="primary" @click="submitForm()" v-if="isInEditMode">Save</el-button>
       <el-button type="info" @click="changeEditMode(false)" v-if="isInEditMode && !isNewPresentation">Cancel</el-button>
@@ -160,7 +160,7 @@ export default {
       this.$store.commit('setRenderForPDF', true);
       this.$store.commit('setPageLoadingStatus', true);
       setTimeout(function() {
-        download(this.$store.state.section.sectionList.length, this.presentationFormName, function() {
+        download(this.$store.state.section.sectionList.length, this.presentationFormName, this.presentationFormDescription, function() {
           this.$store.commit('setRenderForPDF', false);
           this.$store.commit('setPageLoadingStatus', false);
         }.bind(this));

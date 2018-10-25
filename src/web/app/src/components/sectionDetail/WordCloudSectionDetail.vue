@@ -82,11 +82,6 @@
         },
 
         // word cloud related field
-<<<<<<< HEAD
-        animationDuration: 100,
-        fontFamily: "Roboto",
-=======
->>>>>>> master
         words: [],
       }
     },
