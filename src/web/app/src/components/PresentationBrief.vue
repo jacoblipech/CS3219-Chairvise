@@ -15,6 +15,7 @@
       <el-input v-model="presentationFormDescription" v-if="isInEditMode"/>
     </el-form-item>
     <el-form-item>
+      <el-button type="primary" @click="downloadPDF()">Download as PDF</el-button>
       <el-button type="primary" @click="changeEditMode(true)" v-if="!isInEditMode">Edit</el-button>
       <el-button type="primary" @click="submitForm()" v-if="isInEditMode">Save</el-button>
       <el-button type="info" @click="changeEditMode(false)" v-if="isInEditMode && !isNewPresentation">Cancel</el-button>
@@ -25,6 +26,7 @@
 </template>
 
 <script>
+import {download} from "@/store/helpers/pdfDownloader"
 import {ID_NEW_PRESENTATION} from "@/common/const";
 
 export default {
@@ -153,6 +155,16 @@ export default {
       } else {
         this.$store.dispatch('getPresentation', this.id)
       }
+    },
+    downloadPDF() {
+      this.$store.commit('setRenderForPDF', true);
+      this.$store.commit('setPageLoadingStatus', true);
+      setTimeout(function() {
+        download(this.$store.state.section.sectionList.length, this.presentationFormName, function() {
+          this.$store.commit('setRenderForPDF', false);
+          this.$store.commit('setPageLoadingStatus', false);
+        }.bind(this));
+      }.bind(this), 1000);
     }
   }
 }

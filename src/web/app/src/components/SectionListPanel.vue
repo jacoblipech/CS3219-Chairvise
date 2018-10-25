@@ -5,7 +5,7 @@
       type="info">
     </el-alert>
   </el-row>
-  <div v-loading="isLoadingDBMetaData || isLoadingSectionList" v-else>
+  <div id="presentation" v-loading="isLoadingDBMetaData || isLoadingSectionList" v-else>
     <el-row class="addRowRightAlign">
       <el-select v-model="selectedNewSection" placeholder="Please select a section">
         <el-option
@@ -23,7 +23,7 @@
       :title="sectionListApiErrorMsg"
       type="error">
     </el-alert>
-    <abstract-section-detail v-for="section in sectionList" :sectionDetail="section" :key="section.id" :presentationId="presentationId"/>
+    <abstract-section-detail :id="currentChartID(idx)" v-for="(section, idx) in sectionList" :sectionDetail="section" :key="section.id" :presentationId="presentationId"/>
   </div>
 </template>
 
@@ -100,6 +100,10 @@ export default {
       }).then(() => {
         this.selectedNewSection = ''
       })
+    },
+
+    currentChartID(idx) {
+      return "presentation-section-" + idx;
     }
   }
 }

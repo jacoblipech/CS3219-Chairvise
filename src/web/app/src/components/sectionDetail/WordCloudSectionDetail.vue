@@ -9,7 +9,7 @@
                     :animationDuration="animationDuration"
                     :color="colorComputer"
                     :font-family="fontFamily"
-                    style="width: 100%;height: 200px"></vue-word-cloud>
+                    style="width: 70%;height: 200px"></vue-word-cloud>
 
     <template slot="extraFormItems" slot-scope="slotProps">
       <el-form-item label="Delimiter to Generate Word" prop="extraData.delimiters" v-if="slotProps.isInAdvancedMode">
@@ -85,7 +85,7 @@
         },
 
         // word cloud related field
-        animationDuration: 50,
+        animationDuration: 100,
         fontFamily: "Roboto",
         words: [],
       }
