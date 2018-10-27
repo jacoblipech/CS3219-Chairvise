@@ -162,10 +162,9 @@ export default {
       vm.$store.commit('setPageLoadingStatus', true);
 
       this.$nextTick(() => {
-        let resultPromise = download(vm.$store.state.section.sectionList.length,
+        download(vm.$store.state.section.sectionList.length,
             vm.presentationFormName,
-            vm.presentationFormDescription);
-        resultPromise.then(() => {
+            vm.presentationFormDescription).then(() => {
           vm.$store.commit('setRenderForPDF', false);
           vm.$store.commit('setPageLoadingStatus', false);
         });

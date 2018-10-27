@@ -18,28 +18,19 @@ export function download(numberOfCharts, presentationFormName) {
   doc.setFontSize(TITLE_FONT_SIZE);
   doc.text(TITLE_MARGIN_LEFT, TITLE_MARGIN_TOP, presentationFormName);
 
-  return new Promise(resolve => {
-    let resultPromise = createPDF(numberOfCharts, presentationFormName);
-    resultPromise.then(() => {
-      resolve();
-    });
-  });
+  return createPDF(numberOfCharts, presentationFormName);
 }
 
 function getDescription() {
-  return new Promise(resolve => {
-    html2canvas(document.getElementById("presentation-description")).then(element => {
+  return html2canvas(document.getElementById("presentation-description")).then(element => {
       let imageData = element.toDataURL("image/png");
       let descriptionHeight = element.height * PDF_CHART_WIDTH / element.width;
       doc.addImage(imageData, "PNG", PDF_CHART_MARGIN_LEFT, DESCRIPTION_MARGIN_TOP, PDF_CHART_WIDTH, descriptionHeight, "", "FAST");
-      resolve();
     });
-  });
 }
 
 function getChart(idx) {
-  return new Promise(resolve => {
-    html2canvas(document.getElementById("presentation-section-" + idx)).then(element => {
+  return html2canvas(document.getElementById("presentation-section-" + idx)).then(element => {
       if (idx > 0 && idx % 2 == 0) {
         doc.addPage();
         marginTop = PDF_CHART_MARGIN_TOP;
@@ -48,9 +39,7 @@ function getChart(idx) {
       let chartHeight = element.height * PDF_CHART_WIDTH / element.width;
       doc.addImage(imageData, "PNG", PDF_CHART_MARGIN_LEFT, marginTop, PDF_CHART_WIDTH, chartHeight, "", "FAST");
       marginTop = chartHeight + marginTop * 2;
-      resolve();
     });
-  });
 }
 
 async function createPDF(numberOfCharts, pdfName) {

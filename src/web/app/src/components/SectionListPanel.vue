@@ -5,7 +5,7 @@
       type="info">
     </el-alert>
   </el-row>
-  <div id="presentation" v-loading="isLoadingDBMetaData || isLoadingSectionList" v-else>
+  <div v-loading="isLoadingDBMetaData || isLoadingSectionList" v-else>
     <el-row class="addRowRightAlign">
       <el-select v-model="selectedNewSection" placeholder="Please select a section">
         <el-option
