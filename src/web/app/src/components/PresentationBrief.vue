@@ -157,17 +157,19 @@ export default {
       }
     },
     downloadPDF() {
-      this.$store.commit('setRenderForPDF', true);
-      this.$store.commit('setPageLoadingStatus', true);
-      setTimeout(function() {
-        download(this.$store.state.section.sectionList.length,
-            this.presentationFormName,
-            this.presentationFormDescription,
-            function() {
-              this.$store.commit('setRenderForPDF', false);
-              this.$store.commit('setPageLoadingStatus', false);
-            }.bind(this));
-      }.bind(this), 1000);
+      let vm = this;
+      vm.$store.commit('setRenderForPDF', true);
+      vm.$store.commit('setPageLoadingStatus', true);
+
+      this.$nextTick(() => {
+        let resultPromise = download(vm.$store.state.section.sectionList.length,
+            vm.presentationFormName,
+            vm.presentationFormDescription);
+        resultPromise.then(() => {
+          vm.$store.commit('setRenderForPDF', false);
+          vm.$store.commit('setPageLoadingStatus', false);
+        });
+      });
     }
   }
 }

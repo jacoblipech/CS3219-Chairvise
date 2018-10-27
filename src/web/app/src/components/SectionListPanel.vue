@@ -23,7 +23,7 @@
       :title="sectionListApiErrorMsg"
       type="error">
     </el-alert>
-    <abstract-section-detail :id="currentChartID(idx)" v-for="(section, idx) in sectionList" :sectionDetail="section" :key="section.id" :presentationId="presentationId"/>
+    <abstract-section-detail ref="presentationSection" :id="'presentation-section-' + idx" v-for="(section, idx) in sectionList" :sectionDetail="section" :key="section.id" :presentationId="presentationId"/>
   </div>
 </template>
 
@@ -100,10 +100,6 @@ export default {
       }).then(() => {
         this.selectedNewSection = ''
       })
-    },
-
-    currentChartID(idx) {
-      return "presentation-section-" + idx;
     }
   }
 }
