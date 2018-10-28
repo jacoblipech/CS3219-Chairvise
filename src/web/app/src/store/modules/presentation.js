@@ -84,6 +84,27 @@ export default {
     setShareFormField(state, {field, value}) {
       state.shareForm[field] = value
     },
+
+    setNewAccessControl(state, payload) {
+      state.presentationForm.accessControlList.push(payload);
+    },
+
+    removeAccessControl(state, payload) {
+      const accessControlList = state.presentationForm.accessControlList;
+      accessControlList.splice(accessControlList.findIndex((element) => {
+            return JSON.stringify(element) === JSON.stringify(payload);
+          }), 1);
+    },
+
+    updateAccessControl(state, payload) {
+      const accessControlList = state.presentationForm.accessControlList;
+      // Delete old access control
+      accessControlList.splice(accessControlList.findIndex((element) => {
+        return element.userIdentifier === payload.userIdentifier;
+      }), 1);
+      // Add updated access control
+      accessControlList.push(payload);
+    }
   },
   actions: {
     async getPresentationList({ commit }) {
@@ -143,12 +164,11 @@ export default {
           })
     },
 
-    async sharePresentation({ commit, state }, payload) {
+    async addPermission({ commit, state }, payload) {
       commit('setPresentationFormLoading', true);
       await axios.put('/api/presentations/' + payload.id + '/accessControl/' + payload.email + '/' + payload.accessLevel, state.presentationForm)
           .then(response => {
-            commit('setPresentationForm', response.data);
-            commit('updatePresentationListWith', response.data)
+            commit('setNewAccessControl', response.data);
           })
           .catch(e => {
             commit('setPresentationFormApiError', e.toString());
@@ -158,12 +178,11 @@ export default {
           })
     },
 
-    async removePermissions({ commit, state }, payload) {
+    async removePermission({ commit, state }, payload) {
       commit('setPresentationFormLoading', true);
       await axios.put('/api/presentations/' + payload.id + '/' + payload.email, state.presentationForm)
           .then(response => {
-            commit('setPresentationForm', response.data);
-            commit('updatePresentationListWith', response.data)
+            commit('removeAccessControl', response.data);
           })
           .catch(e => {
             commit('setPresentationFormApiError', e.toString());
@@ -173,12 +192,11 @@ export default {
           })
     },
 
-    async updatePermissions({ commit, state }, payload) {
+    async updatePermission({ commit, state }, payload) {
       commit('setPresentationFormLoading', true);
       await axios.put('/api/presentations/' + payload.id + '/newAccessControl/' + payload.email + '/' + payload.accessLevel, state.presentationForm)
           .then(response => {
-            commit('setPresentationForm', response.data);
-            commit('updatePresentationListWith', response.data)
+            commit('updateAccessControl', response.data);
           })
           .catch(e => {
             commit('setPresentationFormApiError', e.toString());
