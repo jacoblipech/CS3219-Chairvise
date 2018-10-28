@@ -1,6 +1,5 @@
 package sg.edu.nus.comp.cs3219.viz.ui.controller.api;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
