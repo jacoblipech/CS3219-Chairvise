@@ -1,5 +1,5 @@
 <template>
-<el-alert v-if="isErrorList" v-on="isError" :title="apiErrorMsgList" type="error" show-icon />
+<el-alert v-if="isErrorList" :title="apiErrorMsgList" type="error" show-icon />
   <el-form v-else label-position="right" ref="presentationForm" label-width="120px" :rules="rules" :model="presentationForm" v-loading="isLoading">
     <el-alert v-if="isErrorForm" :title="apiErrorMsgForm" type="error" show-icon />
     <el-form-item label="Name" :prop=" isInEditMode ? 'name' : ''">
@@ -12,10 +12,10 @@
     </el-form-item>
     <el-dialog title="Share with other users:" :visible.sync="dialogFormVisible">
       <el-form>
-        <el-form-item label="Email address:" :label-width="shareFormLabelWidth">
+        <el-form-item label="Email address:" label-width="120px">
           <el-input v-model="shareFormEmail" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="Permissions:" :label-width="shareFormLabelWidth">
+        <el-form-item label="Permissions:" label-width="120px">
           <el-select v-model="shareFormAccessLevel" placeholder="Select the permission">
             <el-option label="View" value=CAN_READ></el-option>
             <el-option label="Edit" value=CAN_WRITE></el-option>
@@ -25,7 +25,7 @@
       <span slot="footer" class="dialog-footer">
         <el-button round type="info" @click="innerVisible = true">Edit existing permissions</el-button>
         <el-button @click="dialogFormVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false, submitShareForm()">Confirm</el-button>
+        <el-button type="primary" @click="submitShareForm(false)">Confirm</el-button>
       </span>
     </el-dialog>
     <el-dialog
@@ -184,7 +184,6 @@ export default {
       isEditing: false,
       dialogFormVisible: false,
       innerVisible: false,
-      shareFormLabelWidth: '120px',
       existingPermissionsArray: [],
       rules: {
         name: [
@@ -196,7 +195,7 @@ export default {
   },
   methods: {
     updatePermissions(rowIndex, row) {
-      this.$store.dispatch('updatePermissions',
+      this.$store.dispatch('updatePermission',
         { id: this.id,
           email: row.userIdentifier,
           accessLevel: this.existingPermissionsArray[rowIndex]
@@ -204,7 +203,7 @@ export default {
       );
     },
     removePermissions(rowIndex, row) {
-      this.$store.dispatch('removePermissions',
+      this.$store.dispatch('removePermission',
         { id: this.id,
           email: row.userIdentifier,
         }
@@ -243,8 +242,9 @@ export default {
         }
       });
     },
-    submitShareForm() {
-      this.$store.dispatch('sharePresentation',
+    submitShareForm(dialogFormVisible) {
+      this.dialogFormVisible = dialogFormVisible;
+      this.$store.dispatch('addPermission',
           { id: this.id,
             email: this.$store.state.presentation.shareForm.email,
             accessLevel: this.$store.state.presentation.shareForm.accessLevel
