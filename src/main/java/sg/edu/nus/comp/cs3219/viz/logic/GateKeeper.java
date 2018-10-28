@@ -13,7 +13,6 @@ import sg.edu.nus.comp.cs3219.viz.common.util.Const;
 import sg.edu.nus.comp.cs3219.viz.storage.repository.PresentationAccessControlRepository;
 
 import java.util.Optional;
-import java.util.Set;
 
 @Component
 public class GateKeeper {
@@ -97,20 +96,8 @@ public class GateKeeper {
             return;
         }
 
-        if (!presentationAccessControlRepository.existsByPresentationAndUserIdentifierEqualsAndAccessLevelEquals(presentation, currentUser.getUserEmail(), accessLevel)) {
-
-            Set<PresentationAccessControl> presentationAccessControlList = presentation.getAccessControlList();
-
-            if (presentationAccessControlList != null) {
-                // Check presentation file's ACL to verify access level of non-owners
-                for (PresentationAccessControl accessControl : presentationAccessControlList) {
-                    // If the user can write, he/she can also read the file
-                    if (accessControl.getUserIdentifier().equals(currentUser.getUserEmail()) &&
-                            (accessControl.getAccessLevel().equals(accessLevel) || accessControl.equals(AccessLevel.CAN_WRITE))) {
-                        return;
-                    }
-                }
-            }
+        if (!presentationAccessControlRepository.existsByPresentationAndUserIdentifierEqualsAndAccessLevelEquals(presentation, currentUser.getUserEmail(), accessLevel)
+                && !presentationAccessControlRepository.existsByPresentationAndUserIdentifierEqualsAndAccessLevelEquals(presentation, currentUser.getUserEmail(), AccessLevel.CAN_WRITE)) {
             throw new UnauthorisedException();
         }
     }
