@@ -8,23 +8,12 @@ public class UserInfo {
 
     private String userNickname;
 
-    private boolean isAdmin;
-
     public String getUserEmail() {
         return userEmail;
     }
 
     public void setUserEmail(String userEmail) {
         this.userEmail = userEmail;
-    }
-
-    @JsonProperty("isAdmin")
-    public boolean isAdmin() {
-        return isAdmin;
-    }
-
-    public void setAdmin(boolean admin) {
-        isAdmin = admin;
     }
 
     public String getUserNickname() {

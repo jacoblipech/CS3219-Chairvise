@@ -4,8 +4,9 @@ import userInfo from './modules/userInfo'
 import mutations from './mutations'
 import accessControl from './modules/accessControl'
 import presentation from "./modules/presentation";
-import section from "./modules/section.js";
+import section from "./modules/section";
 import dbMetaData from "./modules/dbMetaData";
+import dataMapping from "./modules/dataMapping";
 
 Vue.use(Vuex);
 
@@ -27,6 +28,7 @@ export default new Vuex.Store({
     presentation,
     accessControl,
     section,
-    dbMetaData
+    dbMetaData,
+    dataMapping
   }
 })

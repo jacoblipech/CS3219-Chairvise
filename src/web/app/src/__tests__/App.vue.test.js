@@ -20,6 +20,11 @@ describe('App.vue', () => {
         isPageLoading: false,
         userInfo: {
           isApiError: false
+        },
+        dbMetaData: {
+          entitiesStatus: {
+            isLoading: false
+          }
         }
       }
     })

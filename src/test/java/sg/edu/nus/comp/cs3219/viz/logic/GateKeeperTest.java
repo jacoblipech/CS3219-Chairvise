@@ -25,17 +25,6 @@ public class GateKeeperTest extends BaseTestWithGAE {
         UserInfo currentUser = gateKeeper.getCurrentLoginUser().get();
         Assert.assertEquals("test@example.com", currentUser.getUserEmail());
         Assert.assertEquals("test@example.com", currentUser.getUserNickname());
-        Assert.assertFalse(currentUser.isAdmin());
-    }
-
-    @Test
-    public void testGetCurrentLoginUser_loginAdminUser_shouldReturnCorrectInfo() {
-        gaeSimulation.loginAsAdmin("test@example.com");
-
-        UserInfo currentUser = gateKeeper.getCurrentLoginUser().get();
-        Assert.assertEquals("test@example.com", currentUser.getUserEmail());
-        Assert.assertEquals("test@example.com", currentUser.getUserNickname());
-        Assert.assertTrue(currentUser.isAdmin());
     }
 
     @Test(expected = UnauthorisedException.class)
@@ -50,27 +39,6 @@ public class GateKeeperTest extends BaseTestWithGAE {
         gaeSimulation.loginUser("test@example.com");
 
         gateKeeper.verifyLoginAccess();
-    }
-
-    @Test(expected = UnauthorisedException.class)
-    public void testVerifyAdminAccess_notLoginUser_shouldThrowException() {
-        gaeSimulation.logoutUser();
-
-        gateKeeper.verifyAdminAccess();
-    }
-
-    @Test(expected = UnauthorisedException.class)
-    public void testVerifyAdminAccess_loginUserWithoutAdminAccess_shouldThrowException() {
-        gaeSimulation.loginUser("test@example.com");
-
-        gateKeeper.verifyAdminAccess();
-    }
-
-    @Test
-    public void testVerifyAdminAccess_loginUserWithAdminAccess_shouldNotThrowException() {
-        gaeSimulation.loginAsAdmin("test@example.com");
-
-        gateKeeper.verifyAdminAccess();
     }
 
     @Test

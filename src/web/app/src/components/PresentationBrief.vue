@@ -1,5 +1,6 @@
 <template>
-  <el-alert v-if="isError" :title="apiErrorMsg" type="error" show-icon class="errorMsg" />
+  <el-alert v-if="isNewPresentation && !isLogin" title="Please login to create new presentation" type="error" show-icon class="errorMsg" />
+  <el-alert v-else-if="isError" :title="apiErrorMsg" type="error" show-icon class="errorMsg" />
   <el-form v-else label-position="right" ref="presentationForm" label-width="120px" :rules="rules" :model="presentationForm" v-loading="isLoading">
     <el-alert v-if="isError" :title="apiErrorMsg" type="error" show-icon />
     <el-form-item label="Name" :prop=" isInEditMode ? 'name' : ''">
@@ -21,9 +22,7 @@
       <el-button type="primary" @click="changeEditMode(true)" v-if="!isInEditMode">Edit</el-button>
       <el-button type="primary" @click="addPresentation()" v-if="isInEditMode">Save</el-button>
       <el-button type="info" @click="changeEditMode(false)" v-if="isInEditMode && !isNewPresentation">Cancel</el-button>
-    </el-form-item>
-    <el-form-item v-if="!isNewPresentation">
-      <el-button type="danger" @click="deletePresentation()">Delete</el-button>
+      <el-button type="danger" v-if="!isNewPresentation && isLogin" @click="deletePresentation()" >Delete</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -155,7 +154,7 @@ export default {
           this.$router.replace({
               name: 'analyze',
               params: {
-                  id: "__NEW__"
+                  id: ID_NEW_PRESENTATION
               }
           });
           this.isEditing = false;
