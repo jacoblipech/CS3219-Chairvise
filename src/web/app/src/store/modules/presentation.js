@@ -92,7 +92,7 @@ export default {
     removeAccessControl(state, payload) {
       const accessControlList = state.presentationForm.accessControlList;
       accessControlList.splice(accessControlList.findIndex((element) => {
-            return JSON.stringify(element) === JSON.stringify(payload);
+            return element.id === payload.id;
           }), 1);
     },
 
@@ -166,7 +166,7 @@ export default {
 
     async addPermission({ commit, state }, payload) {
       commit('setPresentationFormLoading', true);
-      await axios.put('/api/presentations/' + payload.id + '/accessControl/' + payload.email + '/' + payload.accessLevel, state.presentationForm)
+      await axios.post('/api/presentations/' + payload.id + '/accessControl/' + payload.email + '/' + payload.accessLevel, state.presentationForm)
           .then(response => {
             commit('setNewAccessControl', response.data);
           })
@@ -178,9 +178,9 @@ export default {
           })
     },
 
-    async removePermission({ commit, state }, payload) {
+    async removePermission({ commit }, payload) {
       commit('setPresentationFormLoading', true);
-      await axios.put('/api/presentations/' + payload.id + '/' + payload.email, state.presentationForm)
+      await axios.delete('/api/presentations/' + payload.id + '/accessControl/' + payload.email)
           .then(response => {
             commit('removeAccessControl', response.data);
           })
@@ -194,7 +194,7 @@ export default {
 
     async updatePermission({ commit, state }, payload) {
       commit('setPresentationFormLoading', true);
-      await axios.put('/api/presentations/' + payload.id + '/newAccessControl/' + payload.email + '/' + payload.accessLevel, state.presentationForm)
+      await axios.put('/api/presentations/' + payload.id + '/accessControl/' + payload.email + '/' + payload.accessLevel, state.presentationForm)
           .then(response => {
             commit('updateAccessControl', response.data);
           })
