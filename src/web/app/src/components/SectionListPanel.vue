@@ -7,8 +7,8 @@
         show-icon>
       </el-alert>
     </el-row>
-    <div v-loading="isLoadingDBMetaData || isLoadingSectionList" v-if="!isNewPresentation && isLogin">
-      <el-row class="addRowRightAlign">
+    <div v-loading="isLoadingDBMetaData || isLoadingSectionList" v-if="!isNewPresentation">
+      <el-row class="addRowRightAlign" v-if="isLogin">
         <el-select v-model="selectedNewSection" placeholder="Please select a section">
           <el-option
             v-for="item in predefinedSections"

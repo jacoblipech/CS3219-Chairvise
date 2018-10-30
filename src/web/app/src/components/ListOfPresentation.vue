@@ -44,6 +44,8 @@
     computed: {
       isLoading() {
         return this.$store.state.presentation.presentationListStatus.isLoading
+          || this.$store.state.section.sectionListStatus.isLoading
+          || this.$store.state.section.sectionList.some(s => s.status.isLoading)
       },
       presentations() {
         return this.$store.state.presentation.presentationList

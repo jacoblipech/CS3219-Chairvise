@@ -56,6 +56,7 @@
 </template>
 
 <script>
+  import {ID_NEW_PRESENTATION} from "@/common/const";
   import {SPECIAL_IDENTIFIER_PUBLIC} from '@/common/const'
 
   export default {
@@ -95,13 +96,15 @@
             { required: true, message: 'Please give an access level', trigger: 'blur' },
           ]
         },
+        currentUrl: '',
       }
     },
 
+    beforeUpdate() {
+      this.currentUrl = window.location.href;
+    },
+
     computed: {
-      currentUrl() {
-        return window.location.href
-      },
 
       isAccessControlPanelLoading() {
         return this.$store.state.accessControl.accessControlListStatus.isLoading
@@ -207,6 +210,9 @@
       },
 
       fetchAccessControlList() {
+        if (this.presentationId === ID_NEW_PRESENTATION) {
+          return;
+        }
         this.$store.dispatch('fetchAccessControlList', this.presentationId)
       },
 

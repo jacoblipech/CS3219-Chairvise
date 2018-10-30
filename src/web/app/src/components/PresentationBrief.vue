@@ -1,11 +1,10 @@
 <template>
   <el-alert v-if="isNewPresentation && !isLogin" title="Please login to create new presentation" type="error" show-icon class="errorMsg" />
-  <el-alert v-else-if="isError" :title="apiErrorMsg" type="error" show-icon class="errorMsg" />
   <el-form v-else label-position="right" ref="presentationForm" label-width="120px" :rules="rules" :model="presentationForm" v-loading="isLoading">
-    <el-alert v-if="isError" :title="apiErrorMsg" type="error" show-icon />
+    <el-alert v-if="isError" :title="apiErrorMsg" type="error" show-icon class="errorMsg" />
     <el-form-item label="Name" :prop=" isInEditMode ? 'name' : ''">
-    <div v-if="!isInEditMode">{{ presentationForm.name }}</div>
-    <el-input v-model="presentationFormName" v-if="isInEditMode"/>
+      <div v-if="!isInEditMode">{{ presentationForm.name }}</div>
+      <el-input v-model="presentationFormName" v-if="isInEditMode"/>
     </el-form-item>
     <el-form-item label="Access Control" v-if="!isNewPresentation" >
       <el-tag>Created by {{ presentationForm.creatorIdentifier }}</el-tag>
@@ -112,7 +111,7 @@ export default {
   methods: {
     changeEditMode(isEditing) {
       if (isEditing === false) {
-          this.$store.dispatch('getPresentation', this.id);
+          this.updatePresentationForm();
       }
       this.isEditing = isEditing;
     },
@@ -131,6 +130,9 @@ export default {
           // add
           this.$store.dispatch('savePresentation')
               .then(() => {
+                if (this.isError) {
+                  return
+                }
                 // redirect to the newly added presentation
                 this.$router.push({
                   name: 'analyze',
@@ -143,6 +145,9 @@ export default {
           // edit
           this.$store.dispatch('updatePresentation')
               .then(() => {
+                if (this.isError) {
+                  return
+                }
                 this.isEditing = false
               })
         }
@@ -151,6 +156,9 @@ export default {
     deletePresentation() {
       this.$store.dispatch('deletePresentation', this.id)
         .then(() => {
+          if (this.isError) {
+            return
+          }
           this.$router.replace({
               name: 'analyze',
               params: {
@@ -161,10 +169,11 @@ export default {
         })
     },
     updatePresentationForm() {
-      this.$refs['presentationForm'].clearValidate();
-      if (this.id === ID_NEW_PRESENTATION) {
-        this.$store.commit('resetPresentationForm')
-      } else {
+      if (this.$refs['presentationForm']) {
+        this.$refs['presentationForm'].clearValidate();
+      }
+      this.$store.commit('resetPresentationForm');
+      if (this.id !== ID_NEW_PRESENTATION) {
         this.$store.dispatch('getPresentation', this.id)
       }
     }

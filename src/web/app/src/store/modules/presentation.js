@@ -22,6 +22,9 @@ export default {
   },
   mutations: {
     setPresentationListLoading(state, payload) {
+      if (payload) {
+        state.presentationListStatus.isApiError = false;
+      }
       state.presentationListStatus.isLoading = payload;
     },
 
@@ -70,6 +73,9 @@ export default {
       state.presentationForm.name = '';
       state.presentationForm.description = '';
       state.presentationForm.creatorIdentifier = '';
+      state.presentationFormStatus.isLoading = false;
+      state.presentationFormStatus.isApiError = false;
+      state.presentationFormStatus.apiErrorMsg = '';
     },
 
     setPresentationFormField(state, {field, value}) {
