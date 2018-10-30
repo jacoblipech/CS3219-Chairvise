@@ -96,10 +96,17 @@ public class GateKeeper {
             return;
         }
 
-        if (!presentationAccessControlRepository.existsByPresentationAndUserIdentifierEqualsAndAccessLevelEquals(presentation, currentUser.getUserEmail(), accessLevel)
-                && !presentationAccessControlRepository.existsByPresentationAndUserIdentifierEqualsAndAccessLevelEquals(presentation, currentUser.getUserEmail(), AccessLevel.CAN_WRITE)) {
-            throw new UnauthorisedException();
+        if (presentationAccessControlRepository.existsByPresentationAndUserIdentifierEqualsAndAccessLevelEquals(presentation, currentUser.getUserEmail(), accessLevel)) {
+           return;
         }
+
+        // can_write means can_read
+        if (accessLevel == AccessLevel.CAN_READ &&
+                presentationAccessControlRepository.existsByPresentationAndUserIdentifierEqualsAndAccessLevelEquals(presentation, currentUser.getUserEmail(), AccessLevel.CAN_WRITE)) {
+            return;
+        }
+
+        throw new UnauthorisedException();
     }
 
 

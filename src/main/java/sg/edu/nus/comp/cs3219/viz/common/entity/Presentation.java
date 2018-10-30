@@ -1,7 +1,5 @@
 package sg.edu.nus.comp.cs3219.viz.common.entity;
 
-import java.util.ArrayList;
-import java.util.Set;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.hibernate.annotations.GenericGenerator;
@@ -9,7 +7,6 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 
 @Entity
 public class Presentation extends BaseEntity {
@@ -21,9 +18,6 @@ public class Presentation extends BaseEntity {
     private Long id;
 
     private String name;
-
-    @OneToMany(mappedBy="presentation")
-    private Set<PresentationAccessControl> accessControlList;
 
     private String description;
 
@@ -59,13 +53,5 @@ public class Presentation extends BaseEntity {
 
     public void setCreatorIdentifier(String creatorIdentifier) {
         this.creatorIdentifier = creatorIdentifier;
-    }
-
-    public Set<PresentationAccessControl> getAccessControlList() {
-        return accessControlList;
-    }
-
-    public void setAccessControlList(Set<PresentationAccessControl> accessControlList) {
-        this.accessControlList = accessControlList;
     }
 }

@@ -9,7 +9,7 @@ import sg.edu.nus.comp.cs3219.viz.common.datatransfer.AccessLevel;
 import javax.persistence.*;
 
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames={"presentation_id", "user_identifier", "access_level"}))
+@Table(uniqueConstraints = @UniqueConstraint(columnNames={"presentation_id", "user_identifier"}))
 public class PresentationAccessControl extends BaseEntity {
 
     @Id
