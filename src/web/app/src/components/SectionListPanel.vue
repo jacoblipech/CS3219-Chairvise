@@ -1,30 +1,34 @@
 <template>
-  <el-row class="addRowRightAlign" v-if="isNewPresentation">
-    <el-alert
-      title="Please create presentation before adding sections"
-      type="info">
-    </el-alert>
-  </el-row>
-  <div v-loading="isLoadingDBMetaData || isLoadingSectionList" v-else>
-    <el-row class="addRowRightAlign">
-      <el-select v-model="selectedNewSection" placeholder="Please select a section">
-        <el-option
-          v-for="item in predefinedSections"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value">
-        </el-option>
-      </el-select>
-      <el-button class="addButtonLeft" type="success" @click="addNewSection">Add New Section</el-button>
+  <div>
+    <el-row class="addRowRightAlign" v-if="isNewPresentation">
+      <el-alert
+        title="Please create presentation before adding sections"
+        type="info"
+        show-icon>
+      </el-alert>
     </el-row>
-    <br/>
-    <el-alert
-      v-if="isSectionListApiError"
-      :title="sectionListApiErrorMsg"
-      type="error">
-    </el-alert>
-    <abstract-section-detail v-for="section in sectionList" :sectionDetail="section" :key="section.id" :presentationId="presentationId"/>
+    <div v-loading="isLoadingDBMetaData || isLoadingSectionList" v-if="!isNewPresentation && isLogin">
+      <el-row class="addRowRightAlign">
+        <el-select v-model="selectedNewSection" placeholder="Please select a section">
+          <el-option
+            v-for="item in predefinedSections"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+        <el-button class="addButtonLeft" type="success" @click="addNewSection">Add New Section</el-button>
+      </el-row>
+      <br/>
+      <el-alert
+        v-if="isSectionListApiError"
+        :title="sectionListApiErrorMsg"
+        type="error" show-icon>
+      </el-alert>
+      <abstract-section-detail v-for="section in sectionList" :sectionDetail="section" :key="section.id" :presentationId="presentationId"/>
+    </div>
   </div>
+
 </template>
 
 <script>
@@ -45,6 +49,10 @@ export default {
     }
   },
   computed: {
+    isLogin() {
+      return this.$store.state.userInfo.isLogin
+    },
+
     predefinedSections() {
       let sectionOptions = [];
       for (let key in PredefinedQueries) {

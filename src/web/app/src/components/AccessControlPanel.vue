@@ -1,9 +1,22 @@
 <template>
-  <div>
+  <div v-loading="isAccessControlPanelLoading">
+    <h4>Shareable Link</h4>
+    <el-input
+      :value="currentUrl"
+      @focus="$event.target.select()">
+      <template slot="prepend">Any one with the link</template>
+      <template slot="append">
+        <el-select :value="publicAccessLevel"  @change="modifyPublicAccessControl($event)" style="width: 150px">
+          <el-option label="Cannot Access" value="OFF"></el-option>
+          <el-option label="Can View" value="CAN_READ"></el-option>
+          <el-option label="Can Edit" value="CAN_WRITE"></el-option>
+        </el-select>
+      </template>
+    </el-input>
+    <h4>Specific Access Control</h4>
     <el-alert v-if="isAccessControlListApiError" :title="accessControlListApiErrorMsg" type="error" show-icon class="errorAlert" />
     <el-table
       :data="accessControlList"
-      v-loading="isAccessControlListLoading"
       style="width: 100%" emptyText="No Access Control for this Presentation!">
       <el-table-column
         prop="userIdentifier"
@@ -14,8 +27,8 @@
         <template slot-scope="scope">
           <el-select :value="scope.row.accessLevel" placeholder="Select the permission"
                      @change="updateAccessControl(scope.row, $event)">
-            <el-option label="View" value=CAN_READ></el-option>
-            <el-option label="Edit" value=CAN_WRITE></el-option>
+            <el-option label="View" value="CAN_READ"></el-option>
+            <el-option label="Edit" value="CAN_WRITE"></el-option>
           </el-select>&nbsp;
           <el-button
             type="danger"
@@ -25,7 +38,7 @@
     </el-table>
     <h4>Add New Access Control</h4>
     <el-alert v-if="isAccessControlFormApiError" :title="accessControlFormApiErrorMsg" type="error" show-icon class="errorAlert"/>
-    <el-form ref="accessControlForm" label-position="left" label-width="120px" v-loading="isAccessControlFormLoading" :model="accessControlForm" :rules="accessControlFormRule">
+    <el-form ref="accessControlForm" label-position="left" label-width="120px" :model="accessControlForm" :rules="accessControlFormRule">
       <el-form-item label="Email address" prop="userIdentifier">
         <el-input v-model="accessControlFormUserIdentifier" placeholder="Email of the user to share"></el-input>
       </el-form-item>
@@ -43,6 +56,8 @@
 </template>
 
 <script>
+  import {SPECIAL_IDENTIFIER_PUBLIC} from '@/common/const'
+
   export default {
     name: "AccessControlPanel",
 
@@ -79,13 +94,18 @@
           accessLevel: [
             { required: true, message: 'Please give an access level', trigger: 'blur' },
           ]
-        }
+        },
       }
     },
 
     computed: {
-      isAccessControlListLoading() {
+      currentUrl() {
+        return window.location.href
+      },
+
+      isAccessControlPanelLoading() {
         return this.$store.state.accessControl.accessControlListStatus.isLoading
+          || this.$store.state.accessControl.accessControlFormStatus.isLoading
       },
 
       isAccessControlListApiError() {
@@ -94,10 +114,6 @@
 
       accessControlListApiErrorMsg() {
         return this.$store.state.accessControl.accessControlListStatus.apiErrorMsg
-      },
-
-      isAccessControlFormLoading() {
-        return this.$store.state.accessControl.accessControlFormStatus.isLoading
       },
 
       isAccessControlFormApiError() {
@@ -110,7 +126,18 @@
 
 
       accessControlList() {
+        // filter out public access control in the ACL
         return this.$store.state.accessControl.accessControlList
+          .filter(ac => ac.userIdentifier !== SPECIAL_IDENTIFIER_PUBLIC)
+      },
+
+      publicAccessLevel() {
+        let publicAccessLevelControl =
+          this.$store.state.accessControl.accessControlList.find(ac => ac.userIdentifier === SPECIAL_IDENTIFIER_PUBLIC);
+        if (publicAccessLevelControl === undefined) {
+          return 'OFF'
+        }
+        return publicAccessLevelControl.accessLevel
       },
 
       accessControlForm() {
@@ -145,6 +172,40 @@
     },
 
     methods: {
+      modifyPublicAccessControl(accessLevel) {
+        let publicAccessControl =
+          this.$store.state.accessControl.accessControlList.find(ac => ac.userIdentifier === SPECIAL_IDENTIFIER_PUBLIC);
+
+        // delete
+        if (accessLevel === 'OFF' && publicAccessControl !== undefined) {
+          this.$store.dispatch('deleteAccessControl',
+            {
+              presentationId: this.presentationId,
+              id: publicAccessControl.id,
+            }
+          );
+          return;
+        }
+
+        if (publicAccessControl === undefined) {
+          // create if not exist
+          this.$store.dispatch('addAccessControl', {
+            presentationId: this.presentationId,
+            userIdentifier: SPECIAL_IDENTIFIER_PUBLIC,
+            accessLevel
+          })
+        } else {
+          // update if exist
+          this.$store.dispatch('updateAccessControl',
+            {
+              presentationId: this.presentationId,
+              id: publicAccessControl.id,
+              accessLevel
+            }
+          );
+        }
+      },
+
       fetchAccessControlList() {
         this.$store.dispatch('fetchAccessControlList', this.presentationId)
       },
@@ -171,7 +232,11 @@
           if (!valid) {
             return
           }
-          this.$store.dispatch('addAccessControl', {presentationId: this.presentationId,})
+          this.$store.dispatch('addAccessControl', {
+            presentationId: this.presentationId,
+            userIdentifier: this.accessControlFormUserIdentifier,
+            accessLevel: this.accessControlFormAccessLevel
+          })
             .then(() => {
               this.accessControlFormUserIdentifier = '';
               this.accessControlFormAccessLevel = '';

@@ -87,6 +87,11 @@ public class GateKeeper {
         if (presentationAccessControlRepository.existsByPresentationAndUserIdentifierEqualsAndAccessLevelEquals(presentation, Const.SpecialIdentifier.PUBLIC, accessLevel)) {
             return;
         }
+        // can_write means can_read
+        if (accessLevel == AccessLevel.CAN_READ &&
+                presentationAccessControlRepository.existsByPresentationAndUserIdentifierEqualsAndAccessLevelEquals(presentation, Const.SpecialIdentifier.PUBLIC, AccessLevel.CAN_WRITE)) {
+            return;
+        }
 
         UserInfo currentUser = getCurrentLoginUser()
                 .orElseThrow(UnauthorisedException::new);

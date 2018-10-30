@@ -32,7 +32,6 @@ public class PresentationAccessControlLogic {
     }
 
     public PresentationAccessControl updatePresentationAccessControl(PresentationAccessControl oldPresentationAccessControl, PresentationAccessControl newPresentationAccessControl) {
-        oldPresentationAccessControl.setUserIdentifier(newPresentationAccessControl.getUserIdentifier());
         oldPresentationAccessControl.setAccessLevel(newPresentationAccessControl.getAccessLevel());
 
         return presentationAccessControlRepository.save(oldPresentationAccessControl);

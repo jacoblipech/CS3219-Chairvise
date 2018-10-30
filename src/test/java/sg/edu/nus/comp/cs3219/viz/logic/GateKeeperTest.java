@@ -157,4 +157,16 @@ public class GateKeeperTest extends BaseTestWithGAE {
 
         gateKeeper.verifyAccessForPresentation(dataBundle.presentations.get("presentationB"), AccessLevel.CAN_WRITE);
     }
+
+    public void testVerifyAccessForPresentation_publicWriteAccessAndNoLogin_shouldHaveWriteAccess() {
+        gaeSimulation.logoutUser();
+
+        gateKeeper.verifyAccessForPresentation(dataBundle.presentations.get("presentationB"), AccessLevel.CAN_READ);
+    }
+
+    public void testVerifyAccessForPresentation_publicWriteAccessAndNoLogin_shouldHaveReadAccessAlso() {
+        gaeSimulation.logoutUser();
+
+        gateKeeper.verifyAccessForPresentation(dataBundle.presentations.get("presentationB"), AccessLevel.CAN_WRITE);
+    }
 }

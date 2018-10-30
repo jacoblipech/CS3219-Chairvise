@@ -87,9 +87,12 @@ export default {
         })
     },
 
-    async addAccessControl({ commit, state }, {presentationId}) {
+    async addAccessControl({ commit, state }, {presentationId, userIdentifier, accessLevel}) {
       commit('setAccessControlFormLoading', true);
-      await axios.post(`/api/presentations/${presentationId}/accessControl`, state.accessControlForm)
+      await axios.post(`/api/presentations/${presentationId}/accessControl`, {
+        userIdentifier,
+        accessLevel
+      })
         .then(response => {
           commit('addAccessControl', response.data);
         })

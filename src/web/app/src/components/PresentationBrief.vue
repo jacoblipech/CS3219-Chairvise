@@ -1,5 +1,5 @@
 <template>
-  <el-alert v-if="isError" :title="apiErrorMsgList" type="error" show-icon />
+  <el-alert v-if="isError" :title="apiErrorMsg" type="error" show-icon class="errorMsg" />
   <el-form v-else label-position="right" ref="presentationForm" label-width="120px" :rules="rules" :model="presentationForm" v-loading="isLoading">
     <el-alert v-if="isError" :title="apiErrorMsg" type="error" show-icon />
     <el-form-item label="Name" :prop=" isInEditMode ? 'name' : ''">
@@ -8,7 +8,7 @@
     </el-form-item>
     <el-form-item label="Access Control" v-if="!isNewPresentation" >
       <el-tag>Created by {{ presentationForm.creatorIdentifier }}</el-tag>
-      <el-button type="success" size="small" class="share_button_left_margin" icon="el-icon-view" @click="openAccessControlPanel()">SHARE</el-button>
+      <el-button type="success" size="small" class="share_button_left_margin" icon="el-icon-view" @click="openAccessControlPanel()" v-if="isLogin">SHARE</el-button>
     </el-form-item>
     <el-dialog title="Share with other users:" :visible.sync="isAccessControlDialogVisible" width="70%" :close-on-click-modal="false">
       <access-control-panel :presentationId="id"></access-control-panel>
@@ -46,6 +46,10 @@ export default {
     },
   },
   computed: {
+    isLogin() {
+      return this.$store.state.userInfo.isLogin
+    },
+
     presentationForm() {
       return {
         name: this.presentationFormName,
@@ -88,10 +92,10 @@ export default {
       return this.$store.state.presentation.presentationFormStatus.isLoading
     },
     isError() {
-      return this.$store.state.presentation.presentationListStatus.isApiError
+      return this.$store.state.presentation.presentationFormStatus.isApiError
     },
     apiErrorMsg() {
-      return this.$store.state.presentation.presentationListStatus.apiErrorMsg
+      return this.$store.state.presentation.presentationFormStatus.apiErrorMsg
     }
   },
   data() {
@@ -174,7 +178,11 @@ export default {
 </script>
 
 <style scoped>
-.share_button_left_margin {
-  margin-left: 10px;
-}
+  .share_button_left_margin {
+    margin-left: 10px;
+  }
+
+  .errorMsg {
+    margin-bottom: 18px;
+  }
 </style>
