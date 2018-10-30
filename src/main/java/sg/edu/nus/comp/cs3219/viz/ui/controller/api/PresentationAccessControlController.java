@@ -1,7 +1,9 @@
 package sg.edu.nus.comp.cs3219.viz.ui.controller.api;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,7 +34,7 @@ public class PresentationAccessControlController extends BaseRestController {
         this.gateKeeper = gateKeeper;
     }
 
-    @PutMapping("/presentations/{id}/accessControl/{email}/{accessLevel}")
+    @PostMapping("/presentations/{id}/accessControl/{email}/{accessLevel}")
     public ResponseEntity<?> addPermission(@RequestBody Presentation presentation, @PathVariable Long id, @PathVariable String email, @PathVariable String accessLevel) throws URISyntaxException {
         Presentation oldPresentation = presentationLogic.findById(id)
                 .orElseThrow(() -> new PresentationNotFoundException(id));
@@ -44,7 +46,7 @@ public class PresentationAccessControlController extends BaseRestController {
                 .body(newAccessControl);
     }
 
-    @PutMapping("/presentations/{id}/newAccessControl/{email}/{accessLevel}")
+    @PutMapping("/presentations/{id}/accessControl/{email}/{accessLevel}")
     public ResponseEntity<?> updatePermission(@RequestBody Presentation presentation, @PathVariable Long id, @PathVariable String email, @PathVariable String accessLevel) throws URISyntaxException {
         presentationLogic.findById(id)
             .orElseThrow(() -> new PresentationNotFoundException(id));
@@ -62,9 +64,9 @@ public class PresentationAccessControlController extends BaseRestController {
                 .body(updatedAccessControl);
     }
 
-    @PutMapping("/presentations/{id}/{email}")
-    public ResponseEntity<?> removePermission(@RequestBody Presentation presentation, @PathVariable Long id, @PathVariable String email) throws URISyntaxException {
-        presentationLogic.findById(id)
+    @DeleteMapping("/presentations/{id}/accessControl/{email}")
+    public ResponseEntity<?> removePermission(@PathVariable Long id, @PathVariable String email) throws URISyntaxException {
+        Presentation presentation = presentationLogic.findById(id)
             .orElseThrow(() -> new PresentationNotFoundException(id));
 
         PresentationAccessControl removedAccessControl = new PresentationAccessControl();
