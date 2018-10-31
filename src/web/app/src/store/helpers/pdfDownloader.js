@@ -12,13 +12,13 @@ import {
 
 let doc, marginTop;
 
-export function download(numberOfCharts, presentationFormName) {
+export function download(presentationFormName) {
   doc = new jsPDF("p", "mm", "a4");
   marginTop = PDF_CHART_MARGIN_TOP;
   doc.setFontSize(TITLE_FONT_SIZE);
   doc.text(TITLE_MARGIN_LEFT, TITLE_MARGIN_TOP, presentationFormName);
 
-  return createPDF(numberOfCharts, presentationFormName);
+  return createPDF(presentationFormName);
 }
 
 function getDescription() {
@@ -29,8 +29,8 @@ function getDescription() {
     });
 }
 
-function getChart(idx) {
-  return html2canvas(document.getElementById("presentation-section-" + idx)).then(element => {
+function getChart(chartElement, idx) {
+  return html2canvas(chartElement).then(element => {
       if (idx > 0 && idx % 2 == 0) {
         doc.addPage();
         marginTop = PDF_CHART_MARGIN_TOP;
@@ -42,10 +42,11 @@ function getChart(idx) {
     });
 }
 
-async function createPDF(numberOfCharts, pdfName) {
+async function createPDF(pdfName) {
   await getDescription();
-  for (let i = 0; i < numberOfCharts; i++) {
-    await getChart(i);
+  let chartElements = document.getElementsByClassName("presentation-section");
+  for (let i = 0; i < chartElements.length; i++) {
+    await getChart(chartElements[i], i);
   }
   doc.save(pdfName + ".pdf");
 }

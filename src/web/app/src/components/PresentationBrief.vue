@@ -162,9 +162,7 @@ export default {
       vm.$store.commit('setPageLoadingStatus', true);
 
       this.$nextTick(() => {
-        download(vm.$store.state.section.sectionList.length,
-            vm.presentationFormName,
-            vm.presentationFormDescription).then(() => {
+        download(vm.presentationFormName).then(() => {
           vm.$store.commit('setRenderForPDF', false);
           vm.$store.commit('setPageLoadingStatus', false);
         });

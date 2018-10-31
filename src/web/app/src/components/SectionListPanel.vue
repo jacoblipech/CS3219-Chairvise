@@ -23,7 +23,7 @@
       :title="sectionListApiErrorMsg"
       type="error">
     </el-alert>
-    <abstract-section-detail ref="presentationSection" :id="'presentation-section-' + idx" v-for="(section, idx) in sectionList" :sectionDetail="section" :key="section.id" :presentationId="presentationId"/>
+    <abstract-section-detail class="presentation-section" v-for="section in sectionList" :sectionDetail="section" :key="section.id" :presentationId="presentationId"/>
   </div>
 </template>
 
