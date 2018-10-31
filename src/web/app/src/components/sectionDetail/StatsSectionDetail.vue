@@ -55,7 +55,7 @@
     computed: {
       hasData() {
         return this.tableData.length !== 0;
-      },
+      }
     },
 
     methods: {

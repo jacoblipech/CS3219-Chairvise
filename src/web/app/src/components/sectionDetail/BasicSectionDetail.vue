@@ -3,8 +3,8 @@
     <el-form status-icon ref="editForm" label-position="left" :model="editForm" label-width="170px" :rules="editFormRule">
       <div class="title" v-if="!isEditing">
         {{ sectionDetail.title }}
-        <el-button type="primary" plain @click="changeEditMode(true)">Edit</el-button>
-        <el-button type="danger" icon="el-icon-delete" circle @click="deleteSectionDetail"></el-button>
+        <el-button type="primary" plain @click="changeEditMode(true)" v-if="!isRenderForPDF">Edit</el-button>
+        <el-button type="danger" icon="el-icon-delete" circle @click="deleteSectionDetail" v-if="!isRenderForPDF"></el-button>
       </div>
       <div class="title" v-else>
         <el-input v-model="editForm.title"></el-input>
@@ -272,6 +272,9 @@
       groupersFieldOptions() {
         return this.filtersFieldOptions;
       },
+      isRenderForPDF() {
+        return this.$store.state.isRenderForPDF;
+      }
     },
 
     methods: {

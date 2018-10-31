@@ -56,7 +56,7 @@ export default {
 
     clearTableType(state) {
       state.data.tableType = null;
-      state.tableTypeSelected = false;
+      state.hasTableTypeSelected = false;
     },
 
     setHasHeader(state, hasHeader) {

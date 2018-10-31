@@ -14,6 +14,7 @@ export default new Vuex.Store({
 
   state: {
     isPageLoading: true,
+    isRenderForPDF: false,
   },
 
   mutations: mutations,

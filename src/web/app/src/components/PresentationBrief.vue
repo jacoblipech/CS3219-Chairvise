@@ -11,10 +11,11 @@
       <el-button type="success" size="small" class="share_button_left_margin" icon="el-icon-view">SHARE</el-button>
     </el-form-item>
     <el-form-item label="Description">
-      <div v-if="!isInEditMode">{{ presentationForm.description }}</div>
+      <div v-if="!isInEditMode" id="presentation-description">{{ presentationForm.description }}</div>
       <el-input v-model="presentationFormDescription" v-if="isInEditMode"/>
     </el-form-item>
     <el-form-item>
+      <el-button type="primary" @click="downloadPDF()" v-if="!isInEditMode">Download as PDF</el-button>
       <el-button type="primary" @click="changeEditMode(true)" v-if="!isInEditMode">Edit</el-button>
       <el-button type="primary" @click="submitForm()" v-if="isInEditMode">Save</el-button>
       <el-button type="info" @click="changeEditMode(false)" v-if="isInEditMode && !isNewPresentation">Cancel</el-button>
@@ -25,6 +26,7 @@
 </template>
 
 <script>
+import {download} from "@/store/helpers/pdfDownloader"
 import {ID_NEW_PRESENTATION} from "@/common/const";
 
 export default {
@@ -153,6 +155,18 @@ export default {
       } else {
         this.$store.dispatch('getPresentation', this.id)
       }
+    },
+    downloadPDF() {
+      let vm = this;
+      vm.$store.commit('setRenderForPDF', true);
+      vm.$store.commit('setPageLoadingStatus', true);
+
+      this.$nextTick(() => {
+        download(vm.presentationFormName).then(() => {
+          vm.$store.commit('setRenderForPDF', false);
+          vm.$store.commit('setPageLoadingStatus', false);
+        });
+      });
     }
   }
 }
