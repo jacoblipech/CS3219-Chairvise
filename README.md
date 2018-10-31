@@ -6,7 +6,7 @@ This project is a tool to analyze paper submission information for conferences. 
 - Frontend: Vue.js + Vue Router + Vuex
 - Backend: Google App Engine as PaaS + Spring REST + Google Cloud SQL (MySQL 5.6)
 
-## Get started
+## Getting Started
 To get started, you should have installed the latest version of IntelliJ on your local machine. Then please follow the steps.
 
 - Environment setup
@@ -28,7 +28,7 @@ To get started, you should have installed the latest version of IntelliJ on your
   - Click `run` button (a green arrow) to run the application.
   - Access the application through [localhost](http://localhost:8080/web/home)
 
-## Test and deploy
+## Test and Deploy
 
 ### Test
 Here are two main components in this project's testing stage; front-end testing and backend testing.
@@ -81,3 +81,49 @@ You have two ways of deploying: locally and through continuous deployment.
 
 - Continuous deployment:
 Every time when `master` branch is updated, the new stable version will be automatically deployed to Google Cloud. 
+
+## Website Design
+
+### Architecture
+![High Level Architecture](images/highlevelArchitecture.png)
+
+Viz is a Web application that runs on Google App Engine (GAE). Given above is an overview of the main components.
+
+- **UI**: The UI seen by users consists of Web pages containing HTML, CSS (for styling) and JavaScript (for client-side interactions). It is generated using Vue through direct rendering of data straight to DOM. Vuex is used as a state management pattern to ensure data can only be mutated in a predictable state.
+- **Logic**: The main logic of the application is in Java with Spring framework.
+- **Storage**: The storage layer of the application uses the persistence framework provided by **Google App Engine PaaS**, using Google Cloud SQL, MySQL 5.6.
+- **Common**: The Common component contains utility code (data transfer objects, helper classes, etc.) used across the application.
+
+The diagram below shows how the code in each component is organized into packages and the dependencies between them.
+![Package Diagram](images/packageDiagram.png)
+
+### UI Component
+
+The UI component is the firs stop for all requests received by the web application. Such a request will go through the following steps:
+![UI Workflow](images/UiWorkflow.png)
+
+1. Request `Controller` to forward a request
+1. `BaseRestController` executes the action
+1. It checks the access rights of the user and interact with the `Logic` component as necessary.
+1. The Vue component uses the data and logic inside to generate teh HTML pages.
+1. The response will then be sent back to the browser to be rendered.  
+
+### Logic Component
+
+The `Logic` component handles the business logic. In particular, it is responsible for:
+- Managing relationships between entities, e.g. cascade logic for create/update/delete.
+- Managing transactions, e.g. ensuring atomicity of a transaction.
+- Providing a mechanism for checking access control rights.
+
+### Storage Component
+
+The `Storage` component performs CRUD (Create, Read, Update, Delete) operations on data entities individually.
+It contains minimal logic beyond what is directly relevant to CRUD operations.
+
+### Common Component
+
+The Common component basically contains common utilities used across the web application. 
+Package overview:
+- **`common.util`**: Contains utility classes.
+- **`common.exceptions`**: Contains custom exceptions.
+- **`common.datatransfer`**: Contains data transfer objects.
