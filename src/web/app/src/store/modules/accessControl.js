@@ -4,7 +4,7 @@ export default {
   state: {
     accessControlList: [],
     accessControlListStatus: {
-      isLoading: true,
+      isLoading: false,
       isApiError: false,
       apiErrorMsg: '',
     },
