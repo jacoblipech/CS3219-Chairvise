@@ -1,13 +1,8 @@
 <template>
   <div>
-    <el-alert
-        title="You need to login-in to view the page"
-        type="error"
-        v-if="!isLogin && !isAppLoading"
-    />
-    <div v-if="isLogin">
+    <div>
       <el-container>
-        <el-aside width="250px">
+        <el-aside width="250px" v-if="isLogin">
           <list-of-presentation />
         </el-aside>
         <el-main>

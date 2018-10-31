@@ -5,7 +5,7 @@ export default {
   state: {
     sectionList: [],
     sectionListStatus: {
-      isLoading: true,
+      isLoading: false,
       isApiError: false,
       apiErrorMsg: '',
     }
@@ -174,10 +174,10 @@ export default {
         })
     },
 
-    async sendPreviewAnalysisRequest({commit}, {id, dataSet, selections, involvedRecords, filters, joiners, groupers, sorters}) {
+    async sendPreviewAnalysisRequest({commit}, {presentationId, id, dataSet, selections, involvedRecords, filters, joiners, groupers, sorters}) {
       commit('setSectionDetailLoading', {id, isLoading: true});
 
-      await axios.post('/api/analysis', {
+      await axios.post(`/api/presentations/${presentationId}/analysis`, {
         dataSet,
         selections,
         involvedRecords,
@@ -197,11 +197,11 @@ export default {
         })
     },
 
-    async sendAnalysisRequest({state, commit}, payload) {
-      let sectionToAnalysis = findSectionDetailById(state.sectionList, payload);
+    async sendAnalysisRequest({state, commit}, {id, presentationId}) {
+      let sectionToAnalysis = findSectionDetailById(state.sectionList, id);
       commit('setSectionDetailLoading', {id: sectionToAnalysis.id, isLoading: true});
 
-      await axios.post('/api/analysis', {
+      await axios.post(`/api/presentations/${presentationId}/analysis`, {
         dataSet: sectionToAnalysis.dataSet,
         selections: sectionToAnalysis.selections,
         involvedRecords: sectionToAnalysis.involvedRecords,

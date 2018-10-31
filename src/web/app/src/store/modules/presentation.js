@@ -18,10 +18,13 @@ export default {
       isLoading: false,
       isApiError: false,
       apiErrorMsg: '',
-    }
+    },
   },
   mutations: {
     setPresentationListLoading(state, payload) {
+      if (payload) {
+        state.presentationListStatus.isApiError = false;
+      }
       state.presentationListStatus.isLoading = payload;
     },
 
@@ -70,12 +73,14 @@ export default {
       state.presentationForm.name = '';
       state.presentationForm.description = '';
       state.presentationForm.creatorIdentifier = '';
+      state.presentationFormStatus.isLoading = false;
+      state.presentationFormStatus.isApiError = false;
+      state.presentationFormStatus.apiErrorMsg = '';
     },
 
     setPresentationFormField(state, {field, value}) {
       state.presentationForm[field] = value
     },
-
   },
   actions: {
     async getPresentationList({ commit }) {
@@ -138,16 +143,16 @@ export default {
     async deletePresentation({ commit }, payload) {
       commit('setPresentationFormLoading', true);
       await axios.delete('/api/presentations/' + payload)
-          .then(() => {
-            commit('deleteFromPresentationList', payload);
-            commit('resetPresentationForm')
-          })
-          .catch(e => {
-            commit('setPresentationFormApiError', e.toString());
-          })
-          .finally(() => {
-            commit('setPresentationFormLoading', false);
-          })
+        .then(() => {
+          commit('deleteFromPresentationList', payload);
+          commit('resetPresentationForm')
+        })
+        .catch(e => {
+          commit('setPresentationFormApiError', e.toString());
+        })
+        .finally(() => {
+          commit('setPresentationFormLoading', false);
+        })
     }
   }
 };

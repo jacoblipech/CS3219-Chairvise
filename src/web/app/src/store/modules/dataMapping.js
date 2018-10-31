@@ -56,7 +56,7 @@ export default {
 
     clearTableType(state) {
       state.data.tableType = null;
-      state.tableTypeSelected = false;
+      state.hasTableTypeSelected = false;
     },
 
     setHasHeader(state, hasHeader) {
@@ -124,7 +124,7 @@ export default {
           break;
       }
       await axios.post("/api/record/" + endpoint, state.data.processedResult)
-        .then(response => {
+        .then(() => {
           commit("setPageLoadingStatus", false);
           commit("setUploadSuccess", true);
         })

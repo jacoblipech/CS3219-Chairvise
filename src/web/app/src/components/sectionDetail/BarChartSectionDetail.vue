@@ -150,7 +150,7 @@
       updateVisualisation({result, extraData}) {
         let toolTipFooterCallback = () => {};
         switch (extraData.type) {
-          case 'category':
+          case 'category': {
             this.partialResult = result.slice(0, extraData.numOfResultToDisplay);
             // process x axis
             this.labels = this.partialResult.map(record => record[extraData.xAxisFieldName]);
@@ -165,10 +165,11 @@
             // to display more data
             toolTipFooterCallback = (tooltipItems) => {
               let currentIndex = tooltipItems[0].index;
-              return extraData.fieldsShownInToolTips.map(f => this.partialResult[currentIndex][f]);
+              return extraData.fieldsShownInToolTips.map(f => `${f.label}: ${this.partialResult[currentIndex][f.field]}`);
             };
             break;
-          case 'group':
+          }
+          case 'group': {
             let {min, max, stepSize} = extraData.group;
 
             // process x axis
@@ -190,6 +191,7 @@
               label: extraData.dataSetLabel,
               data
             };
+          }
         }
 
         // process tooltip callback

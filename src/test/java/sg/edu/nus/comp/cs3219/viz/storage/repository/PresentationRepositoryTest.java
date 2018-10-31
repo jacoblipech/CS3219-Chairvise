@@ -29,4 +29,14 @@ public class PresentationRepositoryTest extends BaseTestWithDBAccess {
         actualList = presentationRepository.findByCreatorIdentifier("test3@viz.test");
         Assert.assertEquals(0, actualList.size());
     }
+
+    @Test
+    public void testDeletePresentation_withPresentationSectionAndACL_shouldDoCascadeDeletion() {
+        presentationRepository.delete(dataBundle.presentations.get("presentationA"));
+    }
+
+    @Test
+    public void testDeletePresentation_withNoPresentationSectionAndACL_shouldDeletionCorrectly() {
+        presentationRepository.delete(dataBundle.presentations.get("presentationB"));
+    }
 }
