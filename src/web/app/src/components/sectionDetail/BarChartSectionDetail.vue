@@ -165,7 +165,7 @@
             // to display more data
             toolTipFooterCallback = (tooltipItems) => {
               let currentIndex = tooltipItems[0].index;
-              return extraData.fieldsShownInToolTips.map(f => this.partialResult[currentIndex][f]);
+              return extraData.fieldsShownInToolTips.map(f => `${f.label}: ${this.partialResult[currentIndex][f.field]}`);
             };
             break;
           }

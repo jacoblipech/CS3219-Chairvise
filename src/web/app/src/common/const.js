@@ -8,6 +8,7 @@ export const ID_NEW_PRESENTATION = "__NEW__";
 export const SECTION_TYPE_WORD_CLOUD = 'word_cloud';
 export const SECTION_TYPE_BAR_CHART = 'bar_chart';
 export const SECTION_TYPE_PIE_CHART = 'pie_chart';
+export const SECTION_TYPE_LINE_CHART = 'line_chart';
 export const SECTION_TYPE_STATS = 'stats';
 
 export const REVIEW_TABLE_ID = 1;

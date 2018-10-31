@@ -122,7 +122,11 @@
         </el-form-item>
 
         <el-form-item label="Group (Aggregation)" prop="groupers" v-if="isInAdvancedMode" key="groupers">
-          <el-select placeholder="Groupers" v-model="editForm.groupers" multiple>
+          <el-select placeholder="Groupers" v-model="editForm.groupers"
+                     style="width: 100%"
+                     multiple
+                     filterable
+                     allow-create>
             <el-option-group
               v-for="group in groupersFieldOptions"
               :key="group.label"
