@@ -98,6 +98,13 @@ public class GateKeeperTest extends BaseTestWithGAE {
         gateKeeper.verifyAccessForPresentation(dataBundle.presentations.get("presentationA"), AccessLevel.CAN_WRITE);
     }
 
+    @Test
+    public void testVerifyAccessForPresentation_onlyWriteAccess_shouldHaveReadAccessAlso() {
+        gaeSimulation.loginUser("test2@viz.test");
+
+        gateKeeper.verifyAccessForPresentation(dataBundle.presentations.get("presentationA"), AccessLevel.CAN_READ);
+    }
+
     @Test(expected = UnauthorisedException.class)
     public void testVerifyAccessForPresentation_onlyReadAccess_shouldHaveNoWriteAccess() {
         gaeSimulation.loginUser("test1@viz.test");
@@ -114,6 +121,18 @@ public class GateKeeperTest extends BaseTestWithGAE {
 
     @Test(expected = UnauthorisedException.class)
     public void testVerifyAccessForPresentation_publicReadAccessAndNoLogin_shouldNotHaveWriteAccess() {
+        gaeSimulation.logoutUser();
+
+        gateKeeper.verifyAccessForPresentation(dataBundle.presentations.get("presentationB"), AccessLevel.CAN_WRITE);
+    }
+
+    public void testVerifyAccessForPresentation_publicWriteAccessAndNoLogin_shouldHaveWriteAccess() {
+        gaeSimulation.logoutUser();
+
+        gateKeeper.verifyAccessForPresentation(dataBundle.presentations.get("presentationB"), AccessLevel.CAN_READ);
+    }
+
+    public void testVerifyAccessForPresentation_publicWriteAccessAndNoLogin_shouldHaveReadAccessAlso() {
         gaeSimulation.logoutUser();
 
         gateKeeper.verifyAccessForPresentation(dataBundle.presentations.get("presentationB"), AccessLevel.CAN_WRITE);

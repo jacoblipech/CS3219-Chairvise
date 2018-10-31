@@ -32,10 +32,48 @@ public class AnalysisControllerTest extends BaseTestREST {
         analysisRequest.getInvolvedRecords().add(record);
 
         mvc.perform(
-                post("/api/analysis")
+                post("/api/presentations/1/analysis")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectToJson(analysisRequest)))
                 .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    public void testPostAnalyse_loginWithNoReadAccess_forbiddenError() throws Exception {
+        gaeSimulation.loginUser("random@people.com");
+
+        AnalysisRequest analysisRequest = new AnalysisRequest();
+
+        analysisRequest.setDataSet("test@example.com");
+
+        PresentationSection.Record record = new PresentationSection.Record();
+        record.setName("author_record");
+        analysisRequest.getInvolvedRecords().add(record);
+
+        mvc.perform(
+                post("/api/presentations/1/analysis")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectToJson(analysisRequest)))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    public void testPostAnalyse_loginWithReadAccess_shouldAccessAndPerformAnalysis() throws Exception {
+        gaeSimulation.loginUser("test@viz.test");
+
+        AnalysisRequest analysisRequest = new AnalysisRequest();
+
+        analysisRequest.setDataSet("test@example.com");
+
+        PresentationSection.Record record = new PresentationSection.Record();
+        record.setName("author_record");
+        analysisRequest.getInvolvedRecords().add(record);
+
+        mvc.perform(
+                post("/api/presentations/1/analysis")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectToJson(analysisRequest)))
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -49,7 +87,7 @@ public class AnalysisControllerTest extends BaseTestREST {
         analysisRequest.getInvolvedRecords().add(record);
 
         mvc.perform(
-                post("/api/analysis")
+                post("/api/presentations/1/analysis")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectToJson(analysisRequest)))
                 .andExpect(status().is4xxClientError());
@@ -66,7 +104,7 @@ public class AnalysisControllerTest extends BaseTestREST {
         Assert.assertTrue(analysisRequest.getInvolvedRecords().isEmpty());
 
         mvc.perform(
-                post("/api/analysis")
+                post("/api/presentations/1/analysis")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectToJson(analysisRequest)))
                 .andExpect(status().is4xxClientError());
@@ -98,7 +136,7 @@ public class AnalysisControllerTest extends BaseTestREST {
         joiner.setRight("a_submission_id");
 
         mvc.perform(
-                post("/api/analysis")
+                post("/api/presentations/1/analysis")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectToJson(analysisRequest)))
                 .andExpect(status().isOk())
