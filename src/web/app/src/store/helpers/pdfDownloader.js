@@ -1,4 +1,4 @@
-import jsPDF from "jspdf";
+import JavascriptPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { 
   PDF_CHART_MARGIN_LEFT, 
@@ -13,7 +13,7 @@ import {
 let doc, marginTop;
 
 export function download(presentationFormName) {
-  doc = new jsPDF("p", "mm", "a4");
+  doc = new JavascriptPDF("p", "mm", "a4");
   marginTop = PDF_CHART_MARGIN_TOP;
   doc.setFontSize(TITLE_FONT_SIZE);
   doc.text(TITLE_MARGIN_LEFT, TITLE_MARGIN_TOP, presentationFormName);
@@ -31,7 +31,7 @@ function getDescription() {
 
 function getChart(chartElement, idx) {
   return html2canvas(chartElement).then(element => {
-      if (idx > 0 && idx % 2 == 0) {
+      if (idx > 0 && idx % 2 === 0) {
         doc.addPage();
         marginTop = PDF_CHART_MARGIN_TOP;
       }
