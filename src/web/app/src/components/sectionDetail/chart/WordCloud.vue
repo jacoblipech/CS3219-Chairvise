@@ -28,9 +28,10 @@
 
     computed: {
       weightFactor() {
-        return this.data.reduce((previous, current) => {
+        // magic number
+        return 100.0 / this.data.reduce((previous, current) => {
           return Math.max(previous, current[1])
-        }, 0) / 4.0; // magic number
+        }, 0);
       }
     },
 

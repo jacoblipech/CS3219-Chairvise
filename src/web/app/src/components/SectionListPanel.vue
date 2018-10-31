@@ -28,7 +28,6 @@
       <abstract-section-detail v-for="section in sectionList" :sectionDetail="section" :key="section.id" :presentationId="presentationId"/>
     </div>
   </div>
-
 </template>
 
 <script>
