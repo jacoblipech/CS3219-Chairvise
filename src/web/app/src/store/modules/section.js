@@ -5,7 +5,7 @@ export default {
   state: {
     sectionList: [],
     sectionListStatus: {
-      isLoading: true,
+      isLoading: false,
       isApiError: false,
       apiErrorMsg: '',
     }
