@@ -165,8 +165,6 @@
 </template>
 
 <script>
-  import section from "../../store/modules/section";
-
   export default {
     props: {
       sectionDetail: {
