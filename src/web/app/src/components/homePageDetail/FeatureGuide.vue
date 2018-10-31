@@ -1,7 +1,7 @@
 <template>
   <div>
     <h3 id="element">A step by step general guide to use the system:</h3>
-    <img width="1000px"alt="Guiding Diagram" src="../../assets/GeneralGuide.png">
+    <img alt="Guiding Diagram" src="../../assets/GeneralGuide.png">
     <p>
       <ol>
         <li>Create an user account with us through "Login" button.</li>
