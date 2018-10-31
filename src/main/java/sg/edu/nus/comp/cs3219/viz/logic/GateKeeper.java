@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import sg.edu.nus.comp.cs3219.viz.common.datatransfer.AccessLevel;
 import sg.edu.nus.comp.cs3219.viz.common.datatransfer.UserInfo;
 import sg.edu.nus.comp.cs3219.viz.common.entity.Presentation;
+import sg.edu.nus.comp.cs3219.viz.common.entity.PresentationAccessControl;
 import sg.edu.nus.comp.cs3219.viz.common.exception.UnauthorisedException;
 import sg.edu.nus.comp.cs3219.viz.common.util.Const;
 import sg.edu.nus.comp.cs3219.viz.storage.repository.PresentationAccessControlRepository;
@@ -76,6 +77,11 @@ public class GateKeeper {
         if (presentationAccessControlRepository.existsByPresentationAndUserIdentifierEqualsAndAccessLevelEquals(presentation, Const.SpecialIdentifier.PUBLIC, accessLevel)) {
             return;
         }
+        // can_write means can_read
+        if (accessLevel == AccessLevel.CAN_READ &&
+                presentationAccessControlRepository.existsByPresentationAndUserIdentifierEqualsAndAccessLevelEquals(presentation, Const.SpecialIdentifier.PUBLIC, AccessLevel.CAN_WRITE)) {
+            return;
+        }
 
         UserInfo currentUser = getCurrentLoginUser()
                 .orElseThrow(UnauthorisedException::new);
@@ -85,9 +91,17 @@ public class GateKeeper {
             return;
         }
 
-        if (!presentationAccessControlRepository.existsByPresentationAndUserIdentifierEqualsAndAccessLevelEquals(presentation, currentUser.getUserEmail(), accessLevel)) {
-            throw new UnauthorisedException();
+        if (presentationAccessControlRepository.existsByPresentationAndUserIdentifierEqualsAndAccessLevelEquals(presentation, currentUser.getUserEmail(), accessLevel)) {
+           return;
         }
+
+        // can_write means can_read
+        if (accessLevel == AccessLevel.CAN_READ &&
+                presentationAccessControlRepository.existsByPresentationAndUserIdentifierEqualsAndAccessLevelEquals(presentation, currentUser.getUserEmail(), AccessLevel.CAN_WRITE)) {
+            return;
+        }
+
+        throw new UnauthorisedException();
     }
 
 

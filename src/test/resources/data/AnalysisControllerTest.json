@@ -1,4 +1,21 @@
 {
+  "presentations": {
+    "presentationA": {
+      "id": "1",
+      "name": "testA1",
+      "description": "test description 1",
+      "creatorIdentifier": "test@example.com"
+    }
+  },
+  "presentationAccessControls": {
+    "AC1": {
+      "presentation": {
+        "id": "1"
+      },
+      "userIdentifier": "test@viz.test",
+      "accessLevel": "CAN_READ"
+    }
+  },
   "submissionRecords": {
     "s1": {
       "id": 1,

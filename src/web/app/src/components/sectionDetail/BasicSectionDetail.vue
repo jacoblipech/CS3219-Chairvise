@@ -3,8 +3,8 @@
     <el-form status-icon ref="editForm" label-position="left" :model="editForm" label-width="170px" :rules="editFormRule">
       <div class="title" v-if="!isEditing">
         {{ sectionDetail.title }}
-        <el-button type="primary" plain @click="changeEditMode(true)">Edit</el-button>
-        <el-button type="danger" icon="el-icon-delete" circle @click="deleteSectionDetail"></el-button>
+        <el-button type="primary" plain @click="changeEditMode(true)" v-if="!isRenderForPDF">Edit</el-button>
+        <el-button type="danger" icon="el-icon-delete" circle @click="deleteSectionDetail" v-if="!isRenderForPDF"></el-button>
       </div>
       <div class="title" v-else>
         <el-input v-model="editForm.title"></el-input>
@@ -122,7 +122,11 @@
         </el-form-item>
 
         <el-form-item label="Group (Aggregation)" prop="groupers" v-if="isInAdvancedMode" key="groupers">
-          <el-select placeholder="Groupers" v-model="editForm.groupers" multiple>
+          <el-select placeholder="Groupers" v-model="editForm.groupers"
+                     style="width: 100%"
+                     multiple
+                     filterable
+                     allow-create>
             <el-option-group
               v-for="group in groupersFieldOptions"
               :key="group.label"
@@ -272,6 +276,9 @@
       groupersFieldOptions() {
         return this.filtersFieldOptions;
       },
+      isRenderForPDF() {
+        return this.$store.state.isRenderForPDF;
+      }
     },
 
     methods: {
@@ -365,6 +372,10 @@
               extraData: this.editForm.extraData
             })
               .then(() => {
+                // only update when there is no error in saving
+                if (this.sectionDetail.status.isApiError) {
+                  return
+                }
                 this.isEditing = false;
                 this.sendAnalysisRequest();
               });
@@ -389,6 +400,7 @@
           }
 
           this.$store.dispatch('sendPreviewAnalysisRequest', {
+            presentationId: this.presentationId,
             id: this.sectionDetail.id,
             dataSet: this.sectionDetail.dataSet,
             selections: this.editForm.selections,
@@ -414,9 +426,10 @@
       },
 
       sendAnalysisRequest() {
-        this.$store.dispatch('sendAnalysisRequest', this.sectionDetail.id)
+        this.$store.dispatch('sendAnalysisRequest', {id: this.sectionDetail.id, presentationId: this.presentationId})
           .then(() => {
             this.$emit('update-visualisation', {
+              presentationId: this.presentationId,
               selections: this.sectionDetail.selections,
               involvedRecords: this.sectionDetail.involvedRecords,
               filters: this.sectionDetail.filters,

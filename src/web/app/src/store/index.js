@@ -2,10 +2,11 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import userInfo from './modules/userInfo'
 import mutations from './mutations'
+import accessControl from './modules/accessControl'
 import presentation from "./modules/presentation";
-import section from "./modules/section.js";
-import dbMetaData from "./modules/dbMetaData.js";
-import dataMapping from "./modules/dataMapping.js";
+import section from "./modules/section";
+import dbMetaData from "./modules/dbMetaData";
+import dataMapping from "./modules/dataMapping";
 
 Vue.use(Vuex);
 
@@ -14,6 +15,7 @@ export default new Vuex.Store({
 
   state: {
     isPageLoading: true,
+    isRenderForPDF: false,
   },
 
   mutations: mutations,
@@ -25,6 +27,7 @@ export default new Vuex.Store({
   modules: {
     userInfo,
     presentation,
+    accessControl,
     section,
     dbMetaData,
     dataMapping

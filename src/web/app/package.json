@@ -12,14 +12,16 @@
     "axios": "^0.18.0",
     "chart.js": "^2.7.3",
     "element-ui": "^2.4.5",
+    "html2canvas": "^1.0.0-alpha.12",
+    "jspdf": "^1.4.1",
     "moment": "^2.22.2",
     "papaparse": "^4.6.1",
     "simple-statistics": "^6.1.1",
     "vue": "^2.5.17",
     "vue-chartjs": "^3.4.0",
     "vue-router": "^3.0.1",
-    "vuewordcloud": "^18.7.11",
-    "vuex": "^3.0.1"
+    "vuex": "^3.0.1",
+    "wordcloud": "^1.1.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.3",

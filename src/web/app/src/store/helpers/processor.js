@@ -4,41 +4,41 @@ import moment from 'moment';
 // this function includes some parsing logic
 export function processMapping(mapping, detail, data, dbFields, hasLabel) {
   // validate
-  var checkDateResult = dateCheck(mapping, dbFields);
+  let checkDateResult = dateCheck(mapping, dbFields);
   if (hasLabel) {
     data = data.slice(1);
   }
   if (checkDateResult != null) {
     throw checkDateResult;
   }
-  var result = [];
-  var map = {};
-  for (var i = 0; i < mapping.length; i++) {
+  let result = [];
+  let map = {};
+  for (let i = 0; i < mapping.length; i++) {
     map[mapping[i][0]] = mapping[mapping[i][1]]
   }
-  var dateField;
-  for (var idx in dbFields.fieldMetaDataList) {
-    if (dbFields.fieldMetaDataList[idx].type == "Date") {
+  let dateField;
+  for (let idx in dbFields.fieldMetaDataList) {
+    if (dbFields.fieldMetaDataList[idx].type === "Date") {
       dateField = dbFields.fieldMetaDataList[idx].jsonProperty
     }
   }
   // for each row of data
-  for (var i = 0; i < data.length; i++) {
-    var row = data[i];
-    var dataObject = {};
+  for (let i = 0; i < data.length; i++) {
+    let row = data[i];
+    let dataObject = {};
 
-    var usingDate = false;
-    var isSeperateDate = false;
-    var localDate, localTime;
+    let usingDate = false;
+    let isSeperateDate = false;
+    let localDate, localTime;
     // for each mapped database fields
-    for (var idx in mapping) {
-      var rawData = row[mapping[idx][1]];
-      var fieldType = dbFields.fieldMetaDataList[mapping[idx][0]].type;
+    for (let idx in mapping) {
+      let rawData = row[mapping[idx][1]];
+      let fieldType = dbFields.fieldMetaDataList[mapping[idx][0]].type;
 
       // if date is selected, directly parse date as usual
-      if (fieldType == "Date") {
+      if (fieldType === "Date") {
         rawData = moment(rawData, "YYYY-M-D H:m").format("YYYY-MM-DD hh:mm:ss");
-        if (rawData == "Invalid date") {
+        if (rawData === "Invalid date") {
           throw "invalid date format";
         }
         usingDate = true;
@@ -47,59 +47,59 @@ export function processMapping(mapping, detail, data, dbFields, hasLabel) {
 
       // if we are not using date and date time is not complete,
       // then store local date
-      if (!usingDate && fieldType == "LocalDate" && localTime == null) {
+      if (!usingDate && fieldType === "LocalDate" && localTime == null) {
         localDate = rawData;
         continue;
       }
 
       // similarly, store local time
-      if (!usingDate && fieldType == "LocalTime" && localDate == null) {
+      if (!usingDate && fieldType === "LocalTime" && localDate === null) {
         localTime = rawData;
         continue;
       }
 
       // then if date is complete, combine then together
-      if (!usingDate && fieldType == "LocalDate" && localTime != null) {
+      if (!usingDate && fieldType === "LocalDate" && localTime !== null) {
         rawData = moment(rawData + " " + localTime, "YYYY-M-D H:m").format("YYYY-MM-DD hh:mm:ss");
-        if (rawData == "Invalid date") {
+        if (rawData === "Invalid date") {
           throw "invalid date format";
         }
         isSeperateDate = true;
       }
 
-      if (!usingDate && fieldType == "LocalTime" && localDate != null) {
+      if (!usingDate && fieldType === "LocalTime" && localDate !== null) {
         rawData = moment(localDate + " " + rawData, "YYYY-M-D H:m").format("YYYY-MM-DD hh:mm:ss");
-        if (rawData == "Invalid date") {
+        if (rawData === "Invalid date") {
           throw "invalid date format";
         }
         isSeperateDate = true;
       }
 
       // parse integer
-      if (fieldType == "int") {
+      if (fieldType === "int") {
         rawData = parseInt(rawData);
       }
 
       // parse double
-      if (fieldType == "double") {
+      if (fieldType === "double") {
         rawData = parseFloat(rawData);
       }
 
       // parse boolean
-      if (fieldType == "boolean") {
-        var format = detail[idx].detail;
+      if (fieldType === "boolean") {
+        let format = detail[idx].detail;
         switch (format) {
         case "yes":
-          rawData = rawData == "yes" ? true : false;
+          rawData = rawData === "yes" ? true : false;
           break;
         case "true":
-          rawData = rawData == "true" ? true : false;
+          rawData = rawData === "true" ? true : false;
           break;
         case "ok":
-          rawData = rawData == "ok" ? true : false;
+          rawData = rawData === "ok" ? true : false;
           break;
         case "accept":
-          rawData = rawData == "accept" ? true : false;
+          rawData = rawData === "accept" ? true : false;
           break;
         default:
           throw "boolean format not supported";
@@ -121,17 +121,17 @@ export function processMapping(mapping, detail, data, dbFields, hasLabel) {
 }
 
 export function dateCheck(mapping, dbFields) {
-  var localDateExists = false;
-  var localTimeExists = false;
-  for (var idx in mapping) {
-    var dbLabelType = dbFields.fieldMetaDataList[mapping[idx][0]].type;
-    if (dbLabelType == "Date") {
+  let localDateExists = false;
+  let localTimeExists = false;
+  for (let idx in mapping) {
+    let dbLabelType = dbFields.fieldMetaDataList[mapping[idx][0]].type;
+    if (dbLabelType === "Date") {
       return null;
     }
-    if (dbLabelType == "LocalDate") {
+    if (dbLabelType === "LocalDate") {
       localDateExists = true;
     }
-    if (dbLabelType == "LocalTime") {
+    if (dbLabelType === "LocalTime") {
       localTimeExists = true;
     }
   }

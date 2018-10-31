@@ -11,6 +11,12 @@
             "name": "testB",
             "description": "test description 2",
             "creatorIdentifier": "test@viz.test"
+        },
+        "presentationC": {
+            "id": "3",
+            "name": "testC",
+            "description": "test description 3",
+            "creatorIdentifier": "test@viz.test"
         }
     },
     "presentationAccessControls": {
@@ -34,6 +40,13 @@
             },
             "userIdentifier": "%PUBLIC%",
             "accessLevel": "CAN_READ"
+        },
+        "AC4": {
+            "presentation": {
+                "id": "3"
+            },
+            "userIdentifier": "%PUBLIC%",
+            "accessLevel": "CAN_WRITE"
         }
     }
 }
