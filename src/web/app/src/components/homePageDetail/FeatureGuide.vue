@@ -1,7 +1,6 @@
 <template>
   <div>
     <h3 id="element">A step by step general guide to use the system:</h3>
-    <img alt="Guiding Diagram" src="../../assets/GeneralGuide.png">
     <p>
       <ol>
         <li>Create an user account with us through "Login" button.</li>
@@ -10,6 +9,7 @@
         <li>Share the presentation to your fellow friends to view or edit.</li>
       </ol>
     </p>  
+    <img alt="Guiding Diagram" src="../../assets/GeneralGuide.png">
     <h3>Currently, these are the pre-defined features that we support:</h3>
     <p>
       <ul>
