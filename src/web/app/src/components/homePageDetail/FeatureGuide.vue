@@ -3,8 +3,8 @@
     <h3 id="general-guide">A step by step general guide to use the system:</h3>
     <p>
       <ol>
-        <li>Create an user account with us through "Login" button.</li>
-        <li>Upload any number of csv files using the "Import Data" function.</li>
+        <li>Log in using your Google account through the "Login" button.</li>
+        <li>Upload any number of csv files under the "Import Data" tab.</li>
         <li>Create a new presentation and add visualizations using the data uploaded.</li>
         <li>Share the presentation to your fellow friends to view or edit.</li>
       </ol>
