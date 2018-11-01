@@ -1,18 +1,43 @@
 <template>
   <div>
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div>
+      <el-container>
+        <el-aside>
+          <ListOfGuide />
+        </el-aside>
+        <el-main>
+          <WelcomeMessage />
+          <FeatureGuide />
+          <br/>
+          <DetailedFeatureGuide />
+        </el-main>
+      </el-container>
+    </div>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import WelcomeMessage from '@/components/homePageDetail/WelcomeMessage.vue'
+import FeatureGuide from '@/components/homePageDetail/FeatureGuide.vue'
+import DetailedFeatureGuide from '@/components/homePageDetail/DetailedFeatureGuide.vue'
+import ListOfGuide from '@/components/homePageDetail/ListOfGuide.vue'
 
 export default {
   name: 'home',
   components: {
-    HelloWorld
+    WelcomeMessage,
+    FeatureGuide,
+    DetailedFeatureGuide,
+    ListOfGuide
   }
 }
 </script>
+<style scoped>
+  .el-aside {
+    width: "250px";
+  }
+  .el-main {
+    margin: 30px;
+  }
+</style>
