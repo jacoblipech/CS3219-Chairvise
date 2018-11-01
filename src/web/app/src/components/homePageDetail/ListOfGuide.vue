@@ -2,42 +2,42 @@
   <div>
     <h3 class="el-icon-document"> List of Information Available</h3>
     <el-menu>
-      <el-menu-item>
-        <li>
+      <li v-scroll-to="'#general-guide'">
+        <el-menu-item>
           <i class="el-icon-question"></i>
-          <span v-scroll-to="'#element'">
+          <span>
             General User Guide
           </span>
-        </li>
-      </el-menu-item>
-      <el-menu-item>
-        <li>
+        </el-menu-item>
+      </li>
+      <li v-scroll-to="'#features-available'">
+        <el-menu-item>
           <i class="el-icon-question"></i>
           <span>
             Features Supported
           </span>
-        </li>
-      </el-menu-item>
-      <li>
+        </el-menu-item>
+      </li>
+      <li v-scroll-to="'#import-guide'">
         <el-menu-item>
           <i class="el-icon-question"></i>
-          <span slot="title">
+          <span>
             How to Import Data
           </span>
         </el-menu-item>
       </li>
-      <li>
+      <li v-scroll-to="'#add-guide'">
         <el-menu-item>
           <i class="el-icon-question"></i>
-          <span slot="title">
+          <span>
             How to Add Presentation
           </span>
         </el-menu-item>
       </li>
-      <li>
+      <li v-scroll-to="'#share-guide'">
         <el-menu-item>
           <i class="el-icon-question"></i>
-          <span slot="title">
+          <span>
             How to Share Presentation
           </span>
         </el-menu-item>
@@ -54,8 +54,3 @@ export default {
   }
 }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-
-</style>

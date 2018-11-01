@@ -2,7 +2,7 @@
   <div>
     <ul>
       <li><h2>More Detailed User Guide</h2></li>
-      <li><h3>User Guide for Importing Data:</h3></li>
+      <li id="import-guide"><h3>User Guide for Importing Data:</h3></li>
       <p>
         Step 1. Upon logging in, click on the "Import Data" tab.<br/>
         Step 2. Upload or drag the csv file from your computer.<br/>
@@ -13,7 +13,7 @@
         <br/>
         <b>Note: </b> You can select any number of columns to map into the database. Please map all the data fields you need.
       </p>
-      <li><h3>User Guide for Adding Presentation:</h3></li>
+      <li id="add-guide"><h3>User Guide for Adding Presentation:</h3></li>
       <p>
         Step 1. Upon logging in, click on the "Analyze" tab.<br/>
         Step 2. Create a new presentation name (minimum 3 characters) with description (optional).<br/>
@@ -30,7 +30,7 @@
         <br/>
         <b>Note: </b>The default mode for users is basic mode. Advanced mode is for users to make SQL-like queries straight from the database. We will update a separate documentation on this in the later stage.
       </p>
-      <li><h3>User Guide for Sharing Presentation:</h3></li>
+      <li id="share-guide"><h3>User Guide for Sharing Presentation:</h3></li>
       <p>
         Step 1. Click on share button.<br/>
         Step 2. Enter the email address of the user to share to.<br/>

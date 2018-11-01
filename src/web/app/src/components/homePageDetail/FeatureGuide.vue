@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 id="element">A step by step general guide to use the system:</h3>
+    <h3 id="general-guide">A step by step general guide to use the system:</h3>
     <p>
       <ol>
         <li>Create an user account with us through "Login" button.</li>
@@ -10,7 +10,7 @@
       </ol>
     </p>  
     <img alt="Guiding Diagram" src="@/assets/GeneralGuide.png">
-    <h3>Currently, these are the pre-defined features that we support:</h3>
+    <h3 id="features-available">Currently, these are the pre-defined features that we support:</h3>
     <p>
       <ul>
         <li>Word cloud for all submissions keywords</li>
