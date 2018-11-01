@@ -2,17 +2,14 @@
   <div>
     <div>
       <el-container>
-        <el-aside width="250px">
+        <el-aside>
           <ListOfGuide />
         </el-aside>
         <el-main>
-          <div style="margin: 30px">
-            <WelcomeMessage />
-            <FeatureGuide />
-            <div style="padding: 20px 0 0 0">
-              <DetailedFeatureGuide />
-            </div>
-          </div>
+          <WelcomeMessage />
+          <FeatureGuide />
+          <br/>
+          <DetailedFeatureGuide />
         </el-main>
       </el-container>
     </div>
@@ -36,3 +33,11 @@ export default {
   }
 }
 </script>
+<style scoped>
+  .el-aside {
+    width: "250px";
+  }
+  .el-main {
+    margin: 30px;
+  }
+</style>

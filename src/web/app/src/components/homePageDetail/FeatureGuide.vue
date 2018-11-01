@@ -9,7 +9,7 @@
         <li>Share the presentation to your fellow friends to view or edit.</li>
       </ol>
     </p>  
-    <img alt="Guiding Diagram" src="../../assets/GeneralGuide.png">
+    <img alt="Guiding Diagram" src="@/assets/GeneralGuide.png">
     <h3>Currently, these are the pre-defined features that we support:</h3>
     <p>
       <ul>
@@ -21,7 +21,7 @@
         <li>Review Score Distribution</li>
         <li>Review weighted evaluation score statistic summary</li>
         <li>Reviewer Expertise Level Statistic Summary</li>
-        <li style="color:red">More options can be found under the presentation pre-defined dropdown.</li>
+        <li class="more_detail">More options can be found under the presentation pre-defined dropdown.</li>
       </ul>
     </p>
   </div>
@@ -44,6 +44,9 @@
   }
   p {
     font-size: 120%
+  }
+  .more_detail {
+    color: red;
   }
   
 </style>

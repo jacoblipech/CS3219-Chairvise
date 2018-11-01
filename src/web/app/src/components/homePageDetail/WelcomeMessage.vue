@@ -2,7 +2,7 @@
   <div>
     <!--can change to a better logo next time-->
     <center>
-      <img alt="Vue logo" src="../../assets/logo.png">
+      <img alt="Vue logo" src="@/assets/logo.png">
       <h2>Welcome to Conference Management System</h2>
       <h3>
         This project is designed to enable conference program chairpersons to visualize and share conference submission statistics.
