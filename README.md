@@ -5,5 +5,5 @@ This project is a tool to analyze paper submission information for conferences. 
 ##### Technology stack
 - Frontend: Vue.js + Vue Router + Vuex
 - Backend: Google App Engine as PaaS + Spring REST + Google Cloud SQL (MySQL 5.6)
-- [**Setting-up Guide**](setting-up.md)
-- [**Application Software Design**](design.md)
+- [**Setting-up Guide**](docs/setting-up.md)
+- [**Application Software Design**](docs/design.md)

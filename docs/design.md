@@ -1,7 +1,7 @@
 ## Website Design
 
 ### Architecture
-![High Level Architecture](images/highlevelArchitecture.png)
+![High Level Architecture](../images/highlevelArchitecture.png)
 
 Viz is a Web application that runs on Google App Engine (GAE). Given above is an overview of the main components.
 
@@ -12,7 +12,7 @@ Viz is a Web application that runs on Google App Engine (GAE). Given above is an
 
 ### Typical Sequence Diagram
 The diagram below showcases the workflow in the system of a typical request from the user.
-![Typical Sequence Diagram](images/typicalSequenceDiagram.png)
+![Typical Sequence Diagram](../images/typicalSequenceDiagram.png)
 
 1. Users will send a request to the browser for certain data or visualisation.
 1. `Browser` sends a HTTP request to the backend, specifically Java which uses the Spring framework.
@@ -24,7 +24,7 @@ The diagram below showcases the workflow in the system of a typical request from
 
 ### Backend Packages
 The diagram below showcases the backend package overview of the existing system.
-![Backend Package Overview](images/backendPackageOveriew.png) 
+![Backend Package Overview](../images/backendPackageOverview.png)
 
 #### UI Component
 
@@ -56,7 +56,7 @@ Package overview:
 
 ### Frontend Packages
 The diagram below showcases the frontend package overview of the existing system.
-![Frontend Package Overview](images/frontendPackageOverview.png)
+![Frontend Package Overview](../images/frontendPackageOverview.png)
 
 - **`view`**: The view is mainly in charge of displaying pages of the application.
 - **`component`**: The component contains reusable UI and display logic components which is called by multiple files.
@@ -65,4 +65,4 @@ The diagram below showcases the frontend package overview of the existing system
 
 ### Frontend Component Usage
 The diagram below showcases an existing usage of the front end packages in the web application.
-![Frontend Web Componnent](images/frontendWebComponent.png)
+![Frontend Web Componnent](../images/frontendWebComponent.png)
