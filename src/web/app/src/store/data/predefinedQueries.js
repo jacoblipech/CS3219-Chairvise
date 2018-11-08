@@ -57,6 +57,7 @@ export default {
       type: 'bar_chart',
       title: 'Submission Rank Author',
       dataSet: '${WILL_BE_REPLACED}',
+      description: 'This showcases a bar chart of the number submissions contributed by each author',
       selections: [
         {
           expression: 'COUNT(*)',
@@ -117,6 +118,7 @@ export default {
       type: 'pie_chart',
       title: 'Submission Rank Country',
       dataSet: '${WILL_BE_REPLACED}',
+      description: 'This showcases a pie chart of the number submissions contributed by each country.',
       selections: [
         {
           expression: 'COUNT(*)',
@@ -158,6 +160,7 @@ export default {
       type: 'pie_chart',
       title: 'Submission Rank Organization',
       dataSet: '${WILL_BE_REPLACED}',
+      description: 'This showcases a pie chart of the number submissions contributed by each organization.',
       selections: [
         {
           expression: 'COUNT(*)',
@@ -199,6 +202,7 @@ export default {
       type: 'bar_chart',
       title: 'Accepted Submission Organization Rank',
       dataSet: '${WILL_BE_REPLACED}',
+      description: 'This showcases a bar chart of the number accepted submissions contributed by each organization',
       selections: [
         {
           expression: 'COUNT(*)',
@@ -259,6 +263,7 @@ export default {
       type: 'bar_chart',
       title: 'Review Score Distribution',
       dataSet: '${WILL_BE_REPLACED}',
+      description: 'This bar chart shows the review score distribution of the papers. For the review scores, we are combining multiple entries at the same time. For the overall score of each paper, we will take all reviews for a particular paper, retrieve its overall score and the reviewer\'s confidence, then calculate the weighted average of the scores with respect to the confidence value.',
       selections: [
         {
           expression: '1',
@@ -306,6 +311,7 @@ export default {
     data: {
       type: 'stats',
       title: 'Review Weighted Evaluation Score Statistic Summary',
+      description: 'This table shows the weighted evaluation score based on the minimum, maximum value, the mean, median score and the standard deviation of the weighted review results.',
       dataSet: '${WILL_BE_REPLACED}',
       selections: [
         {
@@ -335,6 +341,7 @@ export default {
       type: 'stats',
       title: 'Reviewer Expertise Level Statistic Summary',
       dataSet: '${WILL_BE_REPLACED}',
+      description: 'This table shows the statistics of reviewer\'s expertise level in terms of the minimum, maximum value, the average, median score, and the standard deviation of the weighted reviewer\'s expertise level.',
       selections: [
         {
           expression: 'r_expertise_level',
@@ -368,6 +375,7 @@ export default {
       type: 'bar_chart',
       title: 'Submission Rank Track',
       dataSet: '${WILL_BE_REPLACED}',
+      description: 'This bar chart shows the number of papers submitted by each track',
       selections: [
         {
           expression: 'COUNT(*)',
@@ -414,6 +422,7 @@ export default {
       type: 'bar_chart',
       title: 'Acceptance Ratio Track',
       dataSet: '${WILL_BE_REPLACED}',
+      description: 'This bar chart shows the acceptance paper ratio of each tracks based on accepted over all submitted papers in each track, ',
       selections: [
         {
           expression: 'SUM(CASE WHEN s_is_accepted THEN 1 ELSE 0 END)/COUNT(*)',
@@ -460,6 +469,7 @@ export default {
       type: 'line_chart',
       title: 'Acceptance Ratio by Year',
       dataSet: '${WILL_BE_REPLACED}',
+      description: 'This bar chart shows the acceptance paper ratio of each year based on accepted over all submitted papers each year, ',
       selections: [
         {
           expression: 'SUM(CASE WHEN s_is_accepted THEN 1 ELSE 0 END)/COUNT(*)',
@@ -501,6 +511,7 @@ export default {
       type: 'pie_chart',
       title: 'Recommendation for Best Paper Distribution',
       dataSet: '${WILL_BE_REPLACED}',
+      description: 'This pie chart shows the distribution of papers categorized into recommended or not recommended for best paper.',
       selections: [
         {
           expression: "CASE WHEN r_has_recommended_for_best_paper THEN 'Recommended' ELSE 'Not Recommended' END",
@@ -536,6 +547,7 @@ export default {
     data: {
       type: 'stats',
       title: 'Review Count Summary for Each Submission',
+      description: 'This table shows the summary of the review count based on the minimum, maximum value, the average and median score.',
       dataSet: '${WILL_BE_REPLACED}',
       selections: [
         {
@@ -567,6 +579,7 @@ export default {
       type: 'bar_chart',
       title: 'Submission Acceptance Rate Rank Author',
       dataSet: '${WILL_BE_REPLACED}',
+      description: 'This bar chart shows the acceptance rate based on each author.',
       selections: [
         {
           expression: 'SUM(CASE WHEN s_is_accepted THEN 1 ELSE 0 END)/COUNT(*)',
@@ -656,6 +669,7 @@ export default {
       type: 'bar_chart',
       title: 'Submission Acceptance Rate Rank Organization',
       dataSet: '${WILL_BE_REPLACED}',
+      description: 'This bar chart shows the acceptance rate based on each organization.',
       selections: [
         {
           expression: 'SUM(CASE WHEN s_is_accepted THEN 1 ELSE 0 END)/COUNT(*)',
@@ -731,6 +745,7 @@ export default {
       type: 'bar_chart',
       title: 'Submission Acceptance Rate Rank Country',
       dataSet: '${WILL_BE_REPLACED}',
+      description: 'This bar chart shows the acceptance rate based on each country.',
       selections: [
         {
           expression: 'SUM(CASE WHEN s_is_accepted THEN 1 ELSE 0 END)/COUNT(*)',
@@ -806,6 +821,7 @@ export default {
       type: 'bar_chart',
       title: 'Reviewer Assignment Rank',
       dataSet: '${WILL_BE_REPLACED}',
+      description: 'This bar chart shows the average number of reviews each author has to make based on rank.',
       selections: [
         {
           expression: 'MAX(r_num_review_assignment)',
@@ -856,6 +872,7 @@ export default {
       type: 'bar_chart',
       title: 'Reviewer Average Expertise Level Rank',
       dataSet: '${WILL_BE_REPLACED}',
+      description: 'This bar chart shows the average expertise level of each author based on individual rank.',
       selections: [
         {
           expression: 'AVG(r_expertise_level)',
@@ -906,6 +923,7 @@ export default {
       type: 'bar_chart',
       title: 'Reviewer Average Expertise Level Rank',
       dataSet: '${WILL_BE_REPLACED}',
+      description: 'This bar chart shows the distribution of reviewer expertise level based on rank.',
       selections: [
         {
           expression: '1',
