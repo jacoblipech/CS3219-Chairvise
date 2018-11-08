@@ -106,13 +106,10 @@ export default {
         }
       ],
       extraData: {
-        type: 'category',
         dataSetLabel: 'Submission Counts',
         fieldsShownInToolTips: [{ label: 'Email', field: 'author_email'}],
         xAxisFieldName: 'author_name',
         yAxisFieldName: 'submission_count',
-
-        // specific to category type
         numOfResultToDisplay: 10,
       }
     }
@@ -165,7 +162,6 @@ export default {
         xAxisFieldName: 's_author_name',
         yAxisFieldName: 'paper_count',
 
-        // specific to category type
         numOfResultToDisplay: 10,
       }
     }
@@ -308,13 +304,10 @@ export default {
         }
       ],
       extraData: {
-        type: 'category',
         dataSetLabel: 'Accepted Counts',
         fieldsShownInToolTips: [],
         xAxisFieldName: 'a_organisation',
         yAxisFieldName: 'submission_count',
-
-        // specific to category type
         numOfResultToDisplay: 10,
       }
     }
@@ -328,44 +321,89 @@ export default {
       dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
-          expression: '1',
-          rename: 'submission_count'
+          expression: 'weighted_score_interval',
+          rename: 'weighted_score_interval'
         },
         {
-          expression: 'SUM(r_expertise_level * r_overall_evaluation_score) / SUM(r_expertise_level)',
-          rename: 'weighted_score'
-        },
+          expression: "COUNT(*)",
+          rename: 'submission_count',
+        }
       ],
       involvedRecords: [
         {
-          name: 'review_record',
-          customized: false,
+          name: "(SELECT CASE  \n" +
+            "  WHEN weighted_score <= -2.75 THEN 1\n" +
+            "  WHEN weighted_score <= -2.50 THEN 2\n" +
+            "  WHEN weighted_score <= -2.25 THEN 3\n" +
+            "  WHEN weighted_score <= -2.00 THEN 4\n" +
+            "  WHEN weighted_score <= -1.75 THEN 5\n" +
+            "  WHEN weighted_score <= -1.50 THEN 6\n" +
+            "  WHEN weighted_score <= -1.25 THEN 7\n" +
+            "  WHEN weighted_score <= -1.00 THEN 8\n" +
+            "  WHEN weighted_score <= -0.75 THEN 9\n" +
+            "  WHEN weighted_score <= -0.50 THEN 10\n" +
+            "  WHEN weighted_score <= -0.25 THEN 11\n" +
+            "  WHEN weighted_score <= 0.00 THEN 12\n" +
+            "  WHEN weighted_score <= 0.25 THEN 13\n" +
+            "  WHEN weighted_score <= 0.50 THEN 14\n" +
+            "  WHEN weighted_score <= 0.75 THEN 15\n" +
+            "  WHEN weighted_score <= 1.00 THEN 16\n" +
+            "  WHEN weighted_score <= 1.25 THEN 17\n" +
+            "  WHEN weighted_score <= 1.50 THEN 18\n" +
+            "  WHEN weighted_score <= 1.75 THEN 19\n" +
+            "  WHEN weighted_score <= 2.00 THEN 20\n" +
+            "  WHEN weighted_score <= 2.25 THEN 21\n" +
+            "  WHEN weighted_score <= 2.50 THEN 22\n" +
+            "  WHEN weighted_score <= 2.75 THEN 23\n" +
+            "  WHEN weighted_score <= 3.00 THEN 24\n" +
+            "END `weighted_score_interval_sort`, CASE  \n" +
+            "  WHEN weighted_score <= -2.75 THEN '-3.00 ~ -2.75'\n" +
+            "  WHEN weighted_score <= -2.50 THEN '-2.75 ~ -2.50'\n" +
+            "  WHEN weighted_score <= -2.25 THEN '-2.50 ~ -2.25'\n" +
+            "  WHEN weighted_score <= -2.00 THEN '-2.25 ~ -2.00'\n" +
+            "  WHEN weighted_score <= -1.75 THEN '-2.00 ~ -1.75'\n" +
+            "  WHEN weighted_score <= -1.50 THEN '-1.75 ~ -1.50'\n" +
+            "  WHEN weighted_score <= -1.25 THEN '-1.50 ~ -1.25'\n" +
+            "  WHEN weighted_score <= -1.00 THEN '-1.25 ~ -1.00'\n" +
+            "  WHEN weighted_score <= -0.75 THEN '-1.00 ~ -0.75'\n" +
+            "  WHEN weighted_score <= -0.50 THEN '-0.75 ~ -0.50'\n" +
+            "  WHEN weighted_score <= -0.25 THEN '-0.50 ~ -0.25'\n" +
+            "  WHEN weighted_score <= 0.00 THEN '-0.25 ~ 0.00'\n" +
+            "  WHEN weighted_score <= 0.25 THEN '0.00 ~ 0.25'\n" +
+            "  WHEN weighted_score <= 0.50 THEN '0.25 ~ 0.50'\n" +
+            "  WHEN weighted_score <= 0.75 THEN '0.50 ~ 0.75'\n" +
+            "  WHEN weighted_score <= 1.00 THEN '0.75 ~ 1.00'\n" +
+            "  WHEN weighted_score <= 1.25 THEN '1.00 ~ 1.25'\n" +
+            "  WHEN weighted_score <= 1.50 THEN '1.25 ~ 1.50'\n" +
+            "  WHEN weighted_score <= 1.75 THEN '1.50 ~ 1.75'\n" +
+            "  WHEN weighted_score <= 2.00 THEN '1.75 ~ 2.00'\n" +
+            "  WHEN weighted_score <= 2.25 THEN '2.00 ~ 2.25'\n" +
+            "  WHEN weighted_score <= 2.50 THEN '2.25 ~ 2.50'\n" +
+            "  WHEN weighted_score <= 2.75 THEN '2.50 ~ 2.75'\n" +
+            "  WHEN weighted_score <= 3.00 THEN '2.75 ~ 3.00'\n" +
+            "END AS `weighted_score_interval` FROM (SELECT r_submission_id, SUM(r_expertise_level * r_overall_evaluation_score) / SUM(r_expertise_level) AS `weighted_score` FROM review_record WHERE review_record.data_set = '${PLACEHOLDER_DATA_SET}' GROUP BY r_submission_id) AS `tmp1`) AS `tmp2`",
+          customized: true,
         }
       ],
       filters: [],
       joiners: [],
       groupers: [{
-        field: 'r_submission_id'
+        field: 'weighted_score_interval'
+      },{
+        field: 'weighted_score_interval_sort'
       }],
       sorters: [
         {
-          field: 'weighted_score',
+          field: 'weighted_score_interval_sort',
           order: 'ASC',
         }
       ],
       extraData: {
-        type: 'group',
         dataSetLabel: 'Num of Submission',
         fieldsShownInToolTips: [],
-        xAxisFieldName: 'weighted_score',
+        xAxisFieldName: 'weighted_score_interval',
         yAxisFieldName: 'submission_count',
-
-        // specific to category type
-        group: {
-          min: -3.0,
-          max: 3.0,
-          stepSize: 0.25,
-        }
+        numOfResultToDisplay: 50,
       }
     }
   },
@@ -471,13 +509,10 @@ export default {
         }
       ],
       extraData: {
-        type: 'category',
         dataSetLabel: 'Submission Count',
         fieldsShownInToolTips: [],
         xAxisFieldName: 's_track_name',
         yAxisFieldName: 'submission_count',
-
-        // specific to category type
         numOfResultToDisplay: 10,
       }
     }
@@ -519,13 +554,10 @@ export default {
         }
       ],
       extraData: {
-        type: 'category',
         dataSetLabel: 'Acceptance Ratio',
         fieldsShownInToolTips: [],
         xAxisFieldName: 's_track_name',
         yAxisFieldName: 'acceptance_ratio',
-
-        // specific to category type
         numOfResultToDisplay: 10,
       }
     }
@@ -711,7 +743,6 @@ export default {
         }
       ],
       extraData: {
-        type: 'category',
         dataSetLabel: 'Acceptance Rate',
         fieldsShownInToolTips: [
           {
@@ -729,8 +760,6 @@ export default {
         ],
         xAxisFieldName: 'author_name',
         yAxisFieldName: 'acceptance_rate',
-
-        // specific to category type
         numOfResultToDisplay: 10,
       }
     }
@@ -793,7 +822,6 @@ export default {
         }
       ],
       extraData: {
-        type: 'category',
         dataSetLabel: 'Acceptance Rate',
         fieldsShownInToolTips: [
           {
@@ -807,8 +835,6 @@ export default {
         ],
         xAxisFieldName: 'a_organisation',
         yAxisFieldName: 'acceptance_rate',
-
-        // specific to category type
         numOfResultToDisplay: 10,
       }
     }
@@ -871,7 +897,6 @@ export default {
         }
       ],
       extraData: {
-        type: 'category',
         dataSetLabel: 'Acceptance Rate',
         fieldsShownInToolTips: [
           {
@@ -885,8 +910,6 @@ export default {
         ],
         xAxisFieldName: 'a_country',
         yAxisFieldName: 'acceptance_rate',
-
-        // specific to category type
         numOfResultToDisplay: 10,
       }
     }
@@ -932,13 +955,10 @@ export default {
         }
       ],
       extraData: {
-        type: 'category',
         dataSetLabel: 'Average Num of Review Assignment',
         fieldsShownInToolTips: [],
         xAxisFieldName: 'r_reviewer_name',
         yAxisFieldName: 'review_assignment',
-
-        // specific to category type
         numOfResultToDisplay: 10,
       }
     }
@@ -984,13 +1004,10 @@ export default {
         }
       ],
       extraData: {
-        type: 'category',
         dataSetLabel: 'Average Num of Review Assignment',
         fieldsShownInToolTips: [],
         xAxisFieldName: 'r_reviewer_name',
         yAxisFieldName: 'avg_expertise_level',
-
-        // specific to category type
         numOfResultToDisplay: 30,
       }
     }
@@ -1004,46 +1021,68 @@ export default {
       dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
-          expression: '1',
-          rename: 'num_of_reviewer'
+          expression: 'avg_expertise_level_interval',
+          rename: 'avg_expertise_level_interval'
         },
         {
-          expression: 'AVG(r_expertise_level)',
-          rename: 'avg_expertise_level'
+          expression: "COUNT(*)",
+          rename: 'num_of_reviewer',
         }
       ],
       involvedRecords: [
         {
-          name: 'review_record',
-          customized: false,
+          name: "(SELECT CASE  \n" +
+            "  WHEN avg_expertise_level <= 0.25 THEN 1\n" +
+            "  WHEN avg_expertise_level <= 0.50 THEN 2\n" +
+            "  WHEN avg_expertise_level <= 0.75 THEN 3\n" +
+            "  WHEN avg_expertise_level <= 1.00 THEN 4\n" +
+            "  WHEN avg_expertise_level <= 1.25 THEN 5\n" +
+            "  WHEN avg_expertise_level <= 1.50 THEN 6\n" +
+            "  WHEN avg_expertise_level <= 1.75 THEN 7\n" +
+            "  WHEN avg_expertise_level <= 2.00 THEN 8\n" +
+            "  WHEN avg_expertise_level <= 2.25 THEN 9\n" +
+            "  WHEN avg_expertise_level <= 2.50 THEN 10\n" +
+            "  WHEN avg_expertise_level <= 2.75 THEN 11\n" +
+            "  WHEN avg_expertise_level <= 3.00 THEN 12\n" +
+            "END `avg_expertise_level_interval_sort`, CASE  \n" +
+            "  WHEN avg_expertise_level <= 0.25 THEN '0.00 ~ 0.25'\n" +
+            "  WHEN avg_expertise_level <= 0.50 THEN '0.25 ~ 0.50'\n" +
+            "  WHEN avg_expertise_level <= 0.75 THEN '0.50 ~ 0.75'\n" +
+            "  WHEN avg_expertise_level <= 1.00 THEN '0.75 ~ 1.00'\n" +
+            "  WHEN avg_expertise_level <= 1.25 THEN '1.00 ~ 1.25'\n" +
+            "  WHEN avg_expertise_level <= 1.50 THEN '1.25 ~ 1.50'\n" +
+            "  WHEN avg_expertise_level <= 1.75 THEN '1.50 ~ 1.75'\n" +
+            "  WHEN avg_expertise_level <= 2.00 THEN '1.75 ~ 2.00'\n" +
+            "  WHEN avg_expertise_level <= 2.25 THEN '2.00 ~ 2.25'\n" +
+            "  WHEN avg_expertise_level <= 2.50 THEN '2.25 ~ 2.50'\n" +
+            "  WHEN avg_expertise_level <= 2.75 THEN '2.50 ~ 2.75'\n" +
+            "  WHEN avg_expertise_level <= 3.00 THEN '2.75 ~ 3.00'\n" +
+            "END AS `avg_expertise_level_interval` FROM (SELECT AVG(r_expertise_level) AS `avg_expertise_level` FROM review_record WHERE review_record.data_set = '${PLACEHOLDER_DATA_SET}' GROUP BY r_reviewer_name) AS `tmp1`) AS `tmp2`",
+          customized: true,
         }
       ],
       filters: [],
       joiners: [],
       groupers: [
         {
-          field: "r_reviewer_name"
+          field: "avg_expertise_level_interval"
+        },
+        {
+          field: 'avg_expertise_level_interval_sort'
         }
       ],
       sorters: [
         {
-          field: 'avg_expertise_level',
+          field: 'avg_expertise_level_interval_sort',
           order: 'ASC',
         }
       ],
       extraData: {
-        type: 'group',
         dataSetLabel: 'Num of Reviewer',
         fieldsShownInToolTips: [],
         xAxisFieldName: 'avg_expertise_level',
         yAxisFieldName: 'num_of_reviewer',
-
-        // specific to category type
-        group: {
-          min: 1,
-          max: 5.0,
-          stepSize: 0.25,
-        }
+        numOfResultToDisplay: 30,
       }
     }
   },
