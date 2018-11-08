@@ -2,7 +2,7 @@
   "submissionRecords": {
     "s1": {
       "id": 1,
-      "authors": "Laxxx Kaxx",
+      "authors": ["Laxxx Kaxx"],
       "dataSet": "test@example.com",
       "isAccepted": "no",
       "isNotified": "yes",

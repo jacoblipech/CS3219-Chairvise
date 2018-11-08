@@ -39,6 +39,9 @@ public abstract class BaseTestWithDBAccess {
     @Autowired
     protected SubmissionRecordRepository submissionRecordRepository;
 
+    @Autowired
+    protected SubmissionAuthorRecordRepository submissionAuthorRecordRepository;
+
     protected abstract String getDataBundleName();
 
     @Before

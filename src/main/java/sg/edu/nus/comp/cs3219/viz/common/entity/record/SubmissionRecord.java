@@ -1,6 +1,7 @@
 package sg.edu.nus.comp.cs3219.viz.common.entity.record;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
@@ -8,6 +9,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Exportable(name = "Submission Record", nameInDB = "submission_record")
 @Entity
@@ -43,10 +45,14 @@ public class SubmissionRecord {
     private String title;
 
     // authors of the associated submission
-    // TODO use many-to-many relationship
     @Exportable(name = "Authors", nameInDB = "s_authors")
-    @Column(name = "s_authors", columnDefinition="TEXT")
-    private String authors;
+    @Transient
+    private List<String> authors;
+
+    // internal set of authors of the associated
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<SubmissionAuthorsRecord> authorSet;
 
     // time submitted
     @Exportable(name = "Submission Time", nameInDB = "s_submission_time")
@@ -136,12 +142,20 @@ public class SubmissionRecord {
         this.title = title;
     }
 
-    public String getAuthors() {
+    public List<String> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(String authors) {
+    public void setAuthors(List<String> authors) {
         this.authors = authors;
+    }
+
+    public List<SubmissionAuthorsRecord> getAuthorSet() {
+        return authorSet;
+    }
+
+    public void setAuthorSet(List<SubmissionAuthorsRecord> authorSet) {
+        this.authorSet = authorSet;
     }
 
     public Date getSubmissionTime() {

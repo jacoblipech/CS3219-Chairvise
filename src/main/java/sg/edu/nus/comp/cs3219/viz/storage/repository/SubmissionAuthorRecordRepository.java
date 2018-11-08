@@ -1,0 +1,15 @@
+package sg.edu.nus.comp.cs3219.viz.storage.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import sg.edu.nus.comp.cs3219.viz.common.entity.record.SubmissionAuthorsRecord;
+
+import java.util.List;
+
+public interface SubmissionAuthorRecordRepository extends JpaRepository<SubmissionAuthorsRecord, Long> {
+
+    List<SubmissionAuthorsRecord> findByDataSetEquals(String dataSet);
+
+    SubmissionAuthorsRecord findFirstByNameEqualsAndDataSetEquals(String name, String dataset);
+
+    void deleteAllByDataSetEquals(String dataSet);
+}

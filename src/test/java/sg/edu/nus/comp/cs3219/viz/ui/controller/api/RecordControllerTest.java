@@ -90,7 +90,7 @@ public class RecordControllerTest extends BaseTestREST {
         mvc.perform(
                 post("/api/record/submission")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectToJson(dataBundle.reviewRecords.values())))
+                        .content(objectToJson(dataBundle.submissionRecords.values())))
                 .andExpect(status().isCreated());
 
         Assert.assertEquals(1,

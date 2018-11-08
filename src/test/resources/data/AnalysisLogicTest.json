@@ -2,7 +2,7 @@
   "submissionRecords": {
     "s1": {
       "id": 1,
-      "authors": "Laxxx Kaxx",
+      "authors": ["Laxxx Kaxx"],
       "dataSet": "test@example.com",
       "isAccepted": "no",
       "isNotified": "yes",
@@ -18,7 +18,7 @@
     },
     "s1ByDifferentUser": {
       "id": 2,
-      "authors": "Laxxx Kaxx",
+      "authors": ["Laxxx Kaxx"],
       "dataSet": "test1@example.com",
       "isAccepted": "no",
       "isNotified": "yes",
@@ -34,7 +34,7 @@
     },
     "s2": {
       "id": 3,
-      "authors": "test",
+      "authors": ["test"],
       "dataSet": "test1@example.com",
       "isAccepted": "yes",
       "isNotified": "no",
@@ -46,7 +46,7 @@
       "submissionTime": "2018-10-12 10:04:02",
       "title": "Quantitative Approach for Coffee Rust, Production and Futures",
       "trackId": "3",
-      "trackName": "Posters and Demos"
+      "trackName": "test"
     }
   },
   "authorRecords": {

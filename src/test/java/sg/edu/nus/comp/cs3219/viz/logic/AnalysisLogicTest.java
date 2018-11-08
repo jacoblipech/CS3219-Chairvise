@@ -51,8 +51,8 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
         analysisRequest.getInvolvedRecords().add(submissionRecord);
 
         PresentationSection.Selection selection = new PresentationSection.Selection();
-        selection.setExpression("s_authors");
-        selection.setRename("authors");
+        selection.setExpression("s_track_name");
+        selection.setRename("trackName");
         analysisRequest.getSelections().add(selection);
 
         List<Map<String, Object>> result = analysisLogic.analyse(analysisRequest);
@@ -60,8 +60,8 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
         Assert.assertEquals(1, result.size());
         Assert.assertEquals(1, result.get(0).keySet().size());
         // should rename
-        Assert.assertNull(result.get(0).get("s_authors"));
-        Assert.assertEquals("Laxxx Kaxx", result.get(0).get("authors"));
+        Assert.assertNull(result.get(0).get("s_track_name"));
+        Assert.assertEquals("Posters and Demos", result.get(0).get("trackName"));
     }
 
     @Test
@@ -77,8 +77,8 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
         analysisRequest.getInvolvedRecords().add(submissionRecord);
 
         PresentationSection.Selection selection = new PresentationSection.Selection();
-        selection.setExpression("s_authors");
-        selection.setRename("authors");
+        selection.setExpression("s_track_name");
+        selection.setRename("trackName");
         analysisRequest.getSelections().add(selection);
         selection = new PresentationSection.Selection();
         selection.setExpression("s_is_accepted");
@@ -89,8 +89,8 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
 
         Assert.assertEquals(1, result.size());
         Assert.assertEquals(2, result.get(0).keySet().size());
-        Assert.assertNull(result.get(0).get("s_authors"));
-        Assert.assertEquals("Laxxx Kaxx", result.get(0).get("authors"));
+        Assert.assertNull(result.get(0).get("s_track_name"));
+        Assert.assertEquals("Posters and Demos", result.get(0).get("trackName"));
         Assert.assertNull(result.get(0).get("s_is_accepted"));
         Assert.assertEquals("no", result.get(0).get("isAccepted"));
     }
@@ -142,7 +142,7 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
         analysisRequest.getInvolvedRecords().add(submissionRecord);
 
         PresentationSection.Filter filter = new PresentationSection.Filter();
-        filter.setField("s_authors");
+        filter.setField("s_track_name");
         filter.setComparator("=");
         filter.setValue("test");
         analysisRequest.getFilters().add(filter);
@@ -150,7 +150,7 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
         List<Map<String, Object>> result = analysisLogic.analyse(analysisRequest);
 
         Assert.assertEquals(1, result.size());
-        Assert.assertEquals("test", result.get(0).get("s_authors"));
+        Assert.assertEquals("test", result.get(0).get("s_track_name"));
     }
 
     @Test
@@ -251,8 +251,8 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
         List<Map<String, Object>> result = analysisLogic.analyse(analysisRequest);
 
         Assert.assertEquals(2, result.size());
-        Assert.assertEquals("Laxxx Kaxx", result.get(0).get("s_authors"));
-        Assert.assertEquals("Laxxx Kaxx", result.get(1).get("s_authors"));
+        Assert.assertEquals("Posters and Demos", result.get(0).get("s_track_name"));
+        Assert.assertEquals("Posters and Demos", result.get(1).get("s_track_name"));
         Assert.assertNotEquals(result.get(0).get("r_review_comment"), result.get(1).get("r_review_comment"));
     }
 
