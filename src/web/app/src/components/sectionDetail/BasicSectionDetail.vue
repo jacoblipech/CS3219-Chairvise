@@ -45,7 +45,7 @@
         </el-form-item>
 
         <el-form-item label="Record Involved" prop="involvedRecords" v-if="isInAdvancedMode" key="involvedRecords">
-          <el-select v-model="editForm.involvedRecords" multiple placeholder="Please select">
+          <el-select v-model="editForm.involvedRecords" multiple placeholder="Please select" allow-create>
             <el-option
               v-for="option in involvedRecordsOptions"
               :key="option.value"
@@ -261,6 +261,12 @@
           value: entity.tableName
         }))
       },
+      editFormInvolvedRecords() {
+        return this.editForm.involvedRecords.map(r => ({
+          name: r,
+          customized: !this.$store.state.dbMetaData.entities.some(e => e.tableName === r)
+        }))
+      },
       filtersFieldOptions() {
         return this.$store.state.dbMetaData.entities
           .filter(entity => this.editForm.involvedRecords.includes(entity.tableName))
@@ -366,7 +372,7 @@
               description: this.editForm.description,
               dataSet: this.sectionDetail.dataSet,
               selections: this.editForm.selections,
-              involvedRecords: this.editForm.involvedRecords.map(s => ({name: s})),
+              involvedRecords: deepCopy(this.editFormInvolvedRecords),
               filters: this.editForm.filters.map(f => Object.assign({}, f)),
               joiners: this.editForm.joiners.map(j => Object.assign({}, j)),
               groupers: this.editForm.groupers.map(g => ({field: g})),
@@ -406,7 +412,7 @@
             id: this.sectionDetail.id,
             dataSet: this.sectionDetail.dataSet,
             selections: this.editForm.selections,
-            involvedRecords: this.editForm.involvedRecords.map(s => ({name: s})),
+            involvedRecords: this.editFormInvolvedRecords,
             filters: this.editForm.filters,
             joiners: this.editForm.joiners.map(j => Object.assign({}, j)),
             groupers: this.editForm.groupers.map(g => ({field: g})),
@@ -415,7 +421,7 @@
             .then(() => {
               this.$emit('update-visualisation', {
                 selections: this.editForm.selections,
-                involvedRecords: this.editForm.involvedRecords.map(s => ({name: s})),
+                involvedRecords: this.editFormInvolvedRecords,
                 filters: this.editForm.filters.map(f => Object.assign({}, f)),
                 joiners: this.editForm.joiners.map(j => Object.assign({}, j)),
                 groupers: this.editForm.groupers.map(g => ({field: g})),

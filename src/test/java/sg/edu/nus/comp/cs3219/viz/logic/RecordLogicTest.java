@@ -4,7 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import sg.edu.nus.comp.cs3219.viz.BaseTestWithDBAccess;
-import sg.edu.nus.comp.cs3219.viz.common.entity.record.SubmissionAuthorsRecord;
+import sg.edu.nus.comp.cs3219.viz.common.entity.record.SubmissionAuthorRecord;
 import sg.edu.nus.comp.cs3219.viz.common.entity.record.SubmissionRecord;
 
 import java.util.Arrays;
@@ -33,11 +33,11 @@ public class RecordLogicTest extends BaseTestWithDBAccess {
         recordLogic.removeAndPersistSubmissionRecordForDataSet("test",
                 Arrays.asList(typicalSubmissionRecord, typicalSubmissionRecord2));
 
-        List<SubmissionAuthorsRecord> submissionAuthorsRecordList =
+        List<SubmissionAuthorRecord> submissionAuthorRecordList =
                 submissionAuthorRecordRepository.findAll();
         Set<String> authorNameSet =
-                submissionAuthorsRecordList.stream()
-                        .map(SubmissionAuthorsRecord::getName)
+                submissionAuthorRecordList.stream()
+                        .map(SubmissionAuthorRecord::getName)
                         .collect(Collectors.toSet());
         Assert.assertEquals(4, authorNameSet.size());
         Assert.assertTrue(authorNameSet.contains("XP"));

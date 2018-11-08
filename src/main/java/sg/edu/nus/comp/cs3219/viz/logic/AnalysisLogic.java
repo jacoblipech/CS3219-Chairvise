@@ -74,6 +74,7 @@ public class AnalysisLogic {
                 .collect(Collectors.joining(" AND "));
 
         String dataSetFilter = analysisRequest.getInvolvedRecords().stream()
+                .filter(r -> !r.isCustomized())
                 .map(t -> String.format("%s.data_set = '%s'", t.getName(), analysisRequest.getDataSet()))
                 .collect(Collectors.joining(" AND "));
 
@@ -85,8 +86,11 @@ public class AnalysisLogic {
                 .map(s -> String.format("%s %s", s.getField(), s.getOrder()))
                 .collect(Collectors.joining(","));
 
-        String baseSQL = String.format("SELECT %s FROM %s WHERE %s",
-                selectionsStr, tablesStr, dataSetFilter);
+        String baseSQL = String.format("SELECT %s FROM %s", selectionsStr, tablesStr);
+
+        if (!dataSetFilter.isEmpty()) {
+            baseSQL += String.format(" WHERE %s", dataSetFilter);
+        }
 
         if (!joinersStr.isEmpty()) {
             baseSQL += String.format(" AND %s", joinersStr);

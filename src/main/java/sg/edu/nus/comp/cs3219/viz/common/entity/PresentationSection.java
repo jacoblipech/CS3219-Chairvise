@@ -104,12 +104,22 @@ public class PresentationSection {
     public static class Record {
         private String name;
 
+        private boolean isCustomized;
+
         public void setName(String name) {
             this.name = name;
         }
 
         public String getName() {
             return name;
+        }
+
+        public boolean isCustomized() {
+            return isCustomized;
+        }
+
+        public void setCustomized(boolean customized) {
+            isCustomized = customized;
         }
     }
 

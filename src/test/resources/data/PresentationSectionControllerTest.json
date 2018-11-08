@@ -41,10 +41,12 @@
       ],
       "involvedRecords": [
         {
-        "name": "record1"
+          "name": "record1",
+          "customized": true
         },
         {
-        "name": "record2"
+          "name": "record2",
+          "customized": true
         }
       ],
       "filters": [
@@ -106,7 +108,8 @@
       ],
       "involvedRecords": [
         {
-          "name": "record1_UPDATED"
+          "name": "record1_UPDATED",
+          "customized": false
         }
       ],
       "filters": [],

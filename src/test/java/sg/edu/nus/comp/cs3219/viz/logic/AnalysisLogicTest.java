@@ -330,6 +330,27 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
     }
 
     @Test
+    public void testAnalyse_withCustomizedInvolvedRecord_shouldQueryCorrectly() {
+        Assert.assertNotEquals(0,
+                reviewRecordRepository.findAll().stream()
+                        .filter(r -> !r.getDataSet().equals("test@example.com"))
+                        .count());
+
+        AnalysisRequest analysisRequest = new AnalysisRequest();
+
+        analysisRequest.setDataSet("test@example.com");
+
+        PresentationSection.Record reviewRecord = new PresentationSection.Record();
+        reviewRecord.setName("(SELECT * FROM review_record WHERE review_record.data_set = 'test@example.com') AS `tmp`");
+        reviewRecord.setCustomized(true);
+        analysisRequest.getInvolvedRecords().add(reviewRecord);
+
+        List<Map<String, Object>> result = analysisLogic.analyse(analysisRequest);
+
+        Assert.assertEquals(2, result.size());
+    }
+
+    @Test
     public void testWrapValue_typicalFieldName_shouldGenerateWrapperCorrectly() {
         Assert.assertEquals("'yes'", analysisLogic.wrapValue("a_is_corresponding", "yes"));
         Assert.assertEquals("21", analysisLogic.wrapValue("r_num_review_assignment", "21"));

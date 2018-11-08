@@ -52,7 +52,7 @@ public class SubmissionRecord {
     // internal set of authors of the associated
     @ManyToMany(cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<SubmissionAuthorsRecord> authorSet;
+    private List<SubmissionAuthorRecord> authorSet;
 
     // time submitted
     @Exportable(name = "Submission Time", nameInDB = "s_submission_time")
@@ -150,11 +150,11 @@ public class SubmissionRecord {
         this.authors = authors;
     }
 
-    public List<SubmissionAuthorsRecord> getAuthorSet() {
+    public List<SubmissionAuthorRecord> getAuthorSet() {
         return authorSet;
     }
 
-    public void setAuthorSet(List<SubmissionAuthorsRecord> authorSet) {
+    public void setAuthorSet(List<SubmissionAuthorRecord> authorSet) {
         this.authorSet = authorSet;
     }
 

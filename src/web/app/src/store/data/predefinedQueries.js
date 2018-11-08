@@ -5,7 +5,7 @@ export default {
     data: {
       type: 'word_cloud',
       title: 'Word Cloud for All Submissions',
-      dataSet: '${WILL_BE_REPLACED}',
+      dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
           expression: 's_keywords',
@@ -14,7 +14,8 @@ export default {
       ],
       involvedRecords: [
         {
-          name: 'submission_record'
+          name: 'submission_record',
+          customized: false,
         }
       ],
       filters: [],
@@ -32,7 +33,7 @@ export default {
     data: {
       type: 'word_cloud',
       title: 'Word Cloud for Reviewer Comment',
-      dataSet: '${WILL_BE_REPLACED}',
+      dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
           expression: 'r_review_comment',
@@ -41,7 +42,8 @@ export default {
       ],
       involvedRecords: [
         {
-          name: 'review_record'
+          name: 'review_record',
+          customized: false,
         }
       ],
       filters: [],
@@ -59,7 +61,7 @@ export default {
     data: {
       type: 'bar_chart',
       title: 'Submission Rank Author',
-      dataSet: '${WILL_BE_REPLACED}',
+      dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
           expression: 'COUNT(*)',
@@ -76,7 +78,8 @@ export default {
       ],
       involvedRecords: [
         {
-          name: 'author_record'
+          name: 'author_record',
+          customized: false,
         }
       ],
       filters: [],
@@ -114,13 +117,66 @@ export default {
       }
     }
   },
+  "submission_rank_paper_author": {
+    name: "Submission Rank Paper Author",
+    group: 'Submission Record',
+    data: {
+      type: 'bar_chart',
+      title: 'Submission Rank Paper Author',
+      dataSet: '${PLACEHOLDER_DATA_SET}',
+      selections: [
+        {
+          expression: 'COUNT(*)',
+          rename: 'paper_count'
+        },
+        {
+          expression: "s_author_name",
+          rename: 's_author_name'
+        }
+      ],
+      involvedRecords: [
+        {
+          name: "(SELECT s_author_name FROM submission_record, submission_record_author_set, submission_author_record " +
+            "WHERE s_id = submission_record_s_id AND author_set_s_author_id = s_author_id AND submission_record.data_set = '${PLACEHOLDER_DATA_SET}') AS `tmp`",
+          customized: true,
+        }
+      ],
+      filters: [],
+      joiners: [],
+      groupers: [
+        {
+          field: "s_author_name"
+        }
+      ],
+      sorters: [
+        {
+          field: 'paper_count',
+          order: 'DESC',
+        },
+        {
+          field: 's_author_name',
+          order: 'ASC',
+        }
+      ],
+      extraData: {
+        type: 'category',
+        dataSetLabel: 'Paper Counts',
+        fieldsShownInToolTips: [],
+        xAxisFieldName: 's_author_name',
+        yAxisFieldName: 'paper_count',
+
+        // specific to category type
+        numOfResultToDisplay: 10,
+      }
+    }
+  },
   "submission_rank_country": {
     name: "Submission Rank Country",
     group: 'Author Record',
     data: {
       type: 'pie_chart',
       title: 'Submission Rank Country',
-      dataSet: '${WILL_BE_REPLACED}',
+      dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
           expression: 'COUNT(*)',
@@ -133,7 +189,8 @@ export default {
       ],
       involvedRecords: [
         {
-          name: 'author_record'
+          name: 'author_record',
+          customized: false,
         }
       ],
       filters: [],
@@ -162,7 +219,7 @@ export default {
     data: {
       type: 'pie_chart',
       title: 'Submission Rank Organization',
-      dataSet: '${WILL_BE_REPLACED}',
+      dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
           expression: 'COUNT(*)',
@@ -175,7 +232,8 @@ export default {
       ],
       involvedRecords: [
         {
-          name: 'author_record'
+          name: 'author_record',
+          customized: false,
         }
       ],
       filters: [],
@@ -204,7 +262,7 @@ export default {
     data: {
       type: 'bar_chart',
       title: 'Accepted Submission Organization Rank',
-      dataSet: '${WILL_BE_REPLACED}',
+      dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
           expression: 'COUNT(*)',
@@ -217,10 +275,12 @@ export default {
       ],
       involvedRecords: [
         {
-          name: 'author_record'
+          name: 'author_record',
+          customized: false,
         },
         {
-          name: 'submission_record'
+          name: 'submission_record',
+          customized: false,
         }
       ],
       filters: [
@@ -265,7 +325,7 @@ export default {
     data: {
       type: 'bar_chart',
       title: 'Review Score Distribution',
-      dataSet: '${WILL_BE_REPLACED}',
+      dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
           expression: '1',
@@ -278,7 +338,8 @@ export default {
       ],
       involvedRecords: [
         {
-          name: 'review_record'
+          name: 'review_record',
+          customized: false,
         }
       ],
       filters: [],
@@ -314,7 +375,7 @@ export default {
     data: {
       type: 'stats',
       title: 'Review Weighted Evaluation Score Statistic Summary',
-      dataSet: '${WILL_BE_REPLACED}',
+      dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
           expression: 'SUM(r_expertise_level * r_overall_evaluation_score) / SUM(r_expertise_level)',
@@ -323,7 +384,8 @@ export default {
       ],
       involvedRecords: [
         {
-          name: 'review_record'
+          name: 'review_record',
+          customized: false,
         }
       ],
       filters: [],
@@ -343,7 +405,7 @@ export default {
     data: {
       type: 'stats',
       title: 'Reviewer Expertise Level Statistic Summary',
-      dataSet: '${WILL_BE_REPLACED}',
+      dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
           expression: 'r_expertise_level',
@@ -352,7 +414,8 @@ export default {
       ],
       involvedRecords: [
         {
-          name: 'review_record'
+          name: 'review_record',
+          customized: false,
         }
       ],
       filters: [],
@@ -377,7 +440,7 @@ export default {
     data: {
       type: 'bar_chart',
       title: 'Submission Rank Track',
-      dataSet: '${WILL_BE_REPLACED}',
+      dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
           expression: 'COUNT(*)',
@@ -390,7 +453,8 @@ export default {
       ],
       involvedRecords: [
         {
-          name: 'submission_record'
+          name: 'submission_record',
+          customized: false,
         }
       ],
       filters: [],
@@ -424,10 +488,10 @@ export default {
     data: {
       type: 'bar_chart',
       title: 'Acceptance Ratio Track',
-      dataSet: '${WILL_BE_REPLACED}',
+      dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
-          expression: 'SUM(CASE WHEN s_is_accepted THEN 1 ELSE 0 END)/COUNT(*)',
+          expression: "SUM(CASE WHEN s_is_accepted = 'yes' THEN 1 ELSE 0 END)/COUNT(*)",
           rename: 'acceptance_ratio'
         },
         {
@@ -437,7 +501,8 @@ export default {
       ],
       involvedRecords: [
         {
-          name: 'submission_record'
+          name: 'submission_record',
+          customized: false,
         }
       ],
       filters: [],
@@ -471,10 +536,10 @@ export default {
     data: {
       type: 'line_chart',
       title: 'Acceptance Ratio by Year',
-      dataSet: '${WILL_BE_REPLACED}',
+      dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
-          expression: 'SUM(CASE WHEN s_is_accepted THEN 1 ELSE 0 END)/COUNT(*)',
+          expression: "SUM(CASE WHEN s_is_accepted = 'yes' THEN 1 ELSE 0 END)/COUNT(*)",
           rename: 'acceptance_ratio'
         },
         {
@@ -484,7 +549,8 @@ export default {
       ],
       involvedRecords: [
         {
-          name: 'submission_record'
+          name: 'submission_record',
+          customized: false,
         }
       ],
       filters: [],
@@ -513,10 +579,10 @@ export default {
     data: {
       type: 'pie_chart',
       title: 'Recommendation for Best Paper Distribution',
-      dataSet: '${WILL_BE_REPLACED}',
+      dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
-          expression: "CASE WHEN r_has_recommended_for_best_paper THEN 'Recommended' ELSE 'Not Recommended' END",
+          expression: "CASE WHEN r_has_recommended_for_best_paper = 'yes' THEN 'Recommended' ELSE 'Not Recommended' END",
           rename: 'label'
         },
         {
@@ -526,7 +592,8 @@ export default {
       ],
       involvedRecords: [
         {
-          name: 'review_record'
+          name: 'review_record',
+          customized: false,
         }
       ],
       filters: [],
@@ -550,7 +617,7 @@ export default {
     data: {
       type: 'stats',
       title: 'Review Count Summary for Each Submission',
-      dataSet: '${WILL_BE_REPLACED}',
+      dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
           expression: 'COUNT(*)',
@@ -559,7 +626,8 @@ export default {
       ],
       involvedRecords: [
         {
-          name: 'review_record'
+          name: 'review_record',
+          customized: false,
         }
       ],
       filters: [],
@@ -581,10 +649,10 @@ export default {
     data: {
       type: 'bar_chart',
       title: 'Submission Acceptance Rate Rank Author',
-      dataSet: '${WILL_BE_REPLACED}',
+      dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
-          expression: 'SUM(CASE WHEN s_is_accepted THEN 1 ELSE 0 END)/COUNT(*)',
+          expression: "SUM(CASE WHEN s_is_accepted = 'yes' THEN 1 ELSE 0 END)/COUNT(*)",
           rename: 'acceptance_rate'
         },
         {
@@ -600,16 +668,18 @@ export default {
           rename: 'submitted'
         },
         {
-          expression: "SUM(CASE WHEN s_is_accepted THEN 1 ELSE 0 END)",
+          expression: "SUM(CASE WHEN s_is_accepted = 'yes' THEN 1 ELSE 0 END)",
           rename: 'accepted'
         }
       ],
       involvedRecords: [
         {
-          name: 'author_record'
+          name: 'author_record',
+          customized: false,
         },
         {
-          name: 'submission_record'
+          name: 'submission_record',
+          customized: false,
         }
       ],
       filters: [],
@@ -671,10 +741,10 @@ export default {
     data: {
       type: 'bar_chart',
       title: 'Submission Acceptance Rate Rank Organization',
-      dataSet: '${WILL_BE_REPLACED}',
+      dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
-          expression: 'SUM(CASE WHEN s_is_accepted THEN 1 ELSE 0 END)/COUNT(*)',
+          expression: "SUM(CASE WHEN s_is_accepted = 'yes' THEN 1 ELSE 0 END)/COUNT(*)",
           rename: 'acceptance_rate'
         },
         {
@@ -686,16 +756,18 @@ export default {
           rename: 'submitted'
         },
         {
-          expression: "SUM(CASE WHEN s_is_accepted THEN 1 ELSE 0 END)",
+          expression: "SUM(CASE WHEN s_is_accepted = 'yes' THEN 1 ELSE 0 END)",
           rename: 'accepted'
         }
       ],
       involvedRecords: [
         {
-          name: 'author_record'
+          name: 'author_record',
+          customized: false,
         },
         {
-          name: 'submission_record'
+          name: 'submission_record',
+          customized: false,
         }
       ],
       filters: [],
@@ -747,10 +819,10 @@ export default {
     data: {
       type: 'bar_chart',
       title: 'Submission Acceptance Rate Rank Country',
-      dataSet: '${WILL_BE_REPLACED}',
+      dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
-          expression: 'SUM(CASE WHEN s_is_accepted THEN 1 ELSE 0 END)/COUNT(*)',
+          expression: "SUM(CASE WHEN s_is_accepted = 'yes' THEN 1 ELSE 0 END)/COUNT(*)",
           rename: 'acceptance_rate'
         },
         {
@@ -762,16 +834,18 @@ export default {
           rename: 'submitted'
         },
         {
-          expression: "SUM(CASE WHEN s_is_accepted THEN 1 ELSE 0 END)",
+          expression: "SUM(CASE WHEN s_is_accepted = 'yes' THEN 1 ELSE 0 END)",
           rename: 'accepted'
         }
       ],
       involvedRecords: [
         {
-          name: 'author_record'
+          name: 'author_record',
+          customized: false,
         },
         {
-          name: 'submission_record'
+          name: 'submission_record',
+          customized: false,
         }
       ],
       filters: [],
@@ -823,7 +897,7 @@ export default {
     data: {
       type: 'bar_chart',
       title: 'Reviewer Assignment Rank',
-      dataSet: '${WILL_BE_REPLACED}',
+      dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
           expression: 'MAX(r_num_review_assignment)',
@@ -836,7 +910,8 @@ export default {
       ],
       involvedRecords: [
         {
-          name: 'review_record'
+          name: 'review_record',
+          customized: false,
         }
       ],
       filters: [],
@@ -874,7 +949,7 @@ export default {
     data: {
       type: 'bar_chart',
       title: 'Reviewer Average Expertise Level Rank',
-      dataSet: '${WILL_BE_REPLACED}',
+      dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
           expression: 'AVG(r_expertise_level)',
@@ -887,7 +962,8 @@ export default {
       ],
       involvedRecords: [
         {
-          name: 'review_record'
+          name: 'review_record',
+          customized: false,
         }
       ],
       filters: [],
@@ -925,7 +1001,7 @@ export default {
     data: {
       type: 'bar_chart',
       title: 'Reviewer Average Expertise Level Rank',
-      dataSet: '${WILL_BE_REPLACED}',
+      dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
           expression: '1',
@@ -938,7 +1014,8 @@ export default {
       ],
       involvedRecords: [
         {
-          name: 'review_record'
+          name: 'review_record',
+          customized: false,
         }
       ],
       filters: [],

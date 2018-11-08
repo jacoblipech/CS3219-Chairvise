@@ -3,7 +3,7 @@ package sg.edu.nus.comp.cs3219.viz.logic;
 import org.springframework.stereotype.Component;
 import sg.edu.nus.comp.cs3219.viz.common.entity.record.AuthorRecord;
 import sg.edu.nus.comp.cs3219.viz.common.entity.record.ReviewRecord;
-import sg.edu.nus.comp.cs3219.viz.common.entity.record.SubmissionAuthorsRecord;
+import sg.edu.nus.comp.cs3219.viz.common.entity.record.SubmissionAuthorRecord;
 import sg.edu.nus.comp.cs3219.viz.common.entity.record.SubmissionRecord;
 import sg.edu.nus.comp.cs3219.viz.storage.repository.AuthorRecordRepository;
 import sg.edu.nus.comp.cs3219.viz.storage.repository.ReviewRecordRepository;
@@ -69,11 +69,11 @@ public class RecordLogic {
             // should set dataSet
             s.setDataSet(dataSet);
             // create many to many relationship for authors
-            List<SubmissionAuthorsRecord> submissionAuthorsRecords = s.getAuthors().stream()
+            List<SubmissionAuthorRecord> submissionAuthorRecords = s.getAuthors().stream()
                     .map(authorName -> {
-                        SubmissionAuthorsRecord existing = submissionAuthorRecordRepository.findFirstByNameEqualsAndDataSetEquals(authorName, dataSet);
+                        SubmissionAuthorRecord existing = submissionAuthorRecordRepository.findFirstByNameEqualsAndDataSetEquals(authorName, dataSet);
                         if (existing == null) {
-                            existing = new SubmissionAuthorsRecord();
+                            existing = new SubmissionAuthorRecord();
                             existing.setDataSet(dataSet);
                             existing.setName(authorName);
                             existing = submissionAuthorRecordRepository.save(existing);
@@ -81,7 +81,7 @@ public class RecordLogic {
                         return existing;
                     })
                     .collect(Collectors.toList());
-            s.setAuthorSet(submissionAuthorsRecords);
+            s.setAuthorSet(submissionAuthorRecords);
             // the other field can be arbitrary
         }).collect(Collectors.toList()));
     }
