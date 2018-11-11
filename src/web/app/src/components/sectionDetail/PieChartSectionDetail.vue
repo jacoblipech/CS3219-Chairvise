@@ -104,7 +104,21 @@
             display: true
           },
           responsive: true,
-          maintainAspectRatio: false
+          maintainAspectRatio: false,
+          plugins: {
+            datalabels: {
+              // show both value and percentage
+              formatter: (value, ctx) => {
+                let sum = 0;
+                let dataArr = ctx.chart.data.datasets[0].data;
+                dataArr.map(data => {
+                  sum += data;
+                });
+                let percentage = (value * 100 / sum).toFixed(2) + "%";
+                return `${percentage} (${value})`;
+              },
+            }
+          }
         }
       }
     },

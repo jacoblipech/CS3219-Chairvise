@@ -103,7 +103,13 @@
             }]
           },
           responsive: true,
-          maintainAspectRatio: false
+          maintainAspectRatio: false,
+          plugins: {
+            datalabels: {
+              anchor: 'end',
+              align: 'end'
+            }
+          }
         }
       }
     },

@@ -199,6 +199,12 @@
             callbacks: {
               footer: toolTipFooterCallback
             }
+          },
+          plugins: {
+            datalabels: {
+              anchor: 'end',
+              align: 'end'
+            }
           }
         }
       },

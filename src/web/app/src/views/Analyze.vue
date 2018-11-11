@@ -15,6 +15,7 @@
 </template>
 
 <script>
+  import ChartJsPluginDataLabels from 'chartjs-plugin-datalabels';
   import ListOfPresentation from '@/components/ListOfPresentation.vue'
   import PresentationBrief from "@/components/PresentationBrief.vue";
   import SectionListPanel from "@/components/SectionListPanel.vue";
@@ -35,7 +36,8 @@
     components: {
       PresentationBrief,
       ListOfPresentation,
-      SectionListPanel
+      SectionListPanel,
+      ChartJsPluginDataLabels
     }
   }
 </script>
