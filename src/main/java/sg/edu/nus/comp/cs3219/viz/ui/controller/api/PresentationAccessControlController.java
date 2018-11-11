@@ -10,7 +10,6 @@ import sg.edu.nus.comp.cs3219.viz.common.exception.PresentationNotFoundException
 import sg.edu.nus.comp.cs3219.viz.logic.GateKeeper;
 import sg.edu.nus.comp.cs3219.viz.logic.PresentationAccessControlLogic;
 import sg.edu.nus.comp.cs3219.viz.logic.PresentationLogic;
-import sg.edu.nus.comp.cs3219.viz.storage.repository.PresentationAccessControlRepository;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -56,7 +55,7 @@ public class PresentationAccessControlController extends BaseRestController {
     @PutMapping("/presentations/{presentationId}/accessControl/{accessControlId}")
     public ResponseEntity<?> updatePermission(@RequestBody PresentationAccessControl presentationAccessControl, @PathVariable Long presentationId, @PathVariable Long accessControlId) throws URISyntaxException {
         Presentation presentation = presentationLogic.findById(presentationId)
-            .orElseThrow(() -> new PresentationNotFoundException(presentationId));
+                .orElseThrow(() -> new PresentationNotFoundException(presentationId));
         gateKeeper.verifyAccessForPresentation(presentation, AccessLevel.CAN_WRITE);
 
         PresentationAccessControl oldPresentationAccessControl = presentationAccessControlLogic.findById(accessControlId)

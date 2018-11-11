@@ -1,7 +1,5 @@
 package sg.edu.nus.comp.cs3219.viz.common.datatransfer;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public class UserInfo {
 
     private String userEmail;

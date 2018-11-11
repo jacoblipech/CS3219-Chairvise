@@ -18,7 +18,7 @@ public class PresentationLogic {
     }
 
     public List<Presentation> findAllForUser(UserInfo userInfo) {
-      return presentationRepository.findByCreatorIdentifier(userInfo.getUserEmail());
+        return presentationRepository.findByCreatorIdentifier(userInfo.getUserEmail());
     }
 
     public Optional<Presentation> findById(Long id) {

@@ -1,10 +1,8 @@
 package sg.edu.nus.comp.cs3219.viz.common.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
@@ -35,14 +33,14 @@ public class PresentationSection {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="presentation_id")
+    @JoinColumn(name = "presentation_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Presentation presentation;
 
     private String title;
 
-    @Column(columnDefinition="TEXT")
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     private String type;
@@ -52,31 +50,31 @@ public class PresentationSection {
     // The following field does not worth to be stored as relation in RDBMS
     // we store them as serialized json string
 
-    @Column(columnDefinition="TEXT")
+    @Column(columnDefinition = "TEXT")
     private String selections;
     //private List<Selection> selections = new ArrayList<>();
 
-    @Column(columnDefinition="TEXT")
+    @Column(columnDefinition = "TEXT")
     private String involvedRecords;
     //private List<Record> involvedRecords = new ArrayList<>();
 
-    @Column(columnDefinition="TEXT")
+    @Column(columnDefinition = "TEXT")
     private String filters;
     //private List<Filter> filters = new ArrayList<>();
 
-    @Column(columnDefinition="TEXT")
+    @Column(columnDefinition = "TEXT")
     private String joiners;
     //private List<Joiner> joiners = new ArrayList<>();
 
-    @Column(columnDefinition="TEXT")
+    @Column(columnDefinition = "TEXT")
     private String groupers;
     //private List<Grouper> joiners = new ArrayList<>();
 
-    @Column(columnDefinition="TEXT")
+    @Column(columnDefinition = "TEXT")
     private String sorters;
     //private List<Sorter> joiners = new ArrayList<>();
 
-    @Column(columnDefinition="TEXT")
+    @Column(columnDefinition = "TEXT")
     private String extraData;
 
     public static class Selection {
@@ -258,7 +256,8 @@ public class PresentationSection {
 
     public List<Selection> getSelections() {
         try {
-            return objectMapper.readValue(selections, new TypeReference<List<Selection>>(){});
+            return objectMapper.readValue(selections, new TypeReference<List<Selection>>() {
+            });
         } catch (IOException e) {
             log.severe(e.getMessage());
             return new ArrayList<>();
@@ -275,7 +274,8 @@ public class PresentationSection {
 
     public List<Record> getInvolvedRecords() {
         try {
-            return objectMapper.readValue(involvedRecords, new TypeReference<List<Record>>(){});
+            return objectMapper.readValue(involvedRecords, new TypeReference<List<Record>>() {
+            });
         } catch (IOException e) {
             log.severe(e.getMessage());
             return new ArrayList<>();
@@ -292,7 +292,8 @@ public class PresentationSection {
 
     public List<Filter> getFilters() {
         try {
-            return objectMapper.readValue(filters, new TypeReference<List<Filter>>(){});
+            return objectMapper.readValue(filters, new TypeReference<List<Filter>>() {
+            });
         } catch (IOException e) {
             log.severe(e.getMessage());
             return new ArrayList<>();
@@ -309,7 +310,8 @@ public class PresentationSection {
 
     public List<Joiner> getJoiners() {
         try {
-            return objectMapper.readValue(joiners, new TypeReference<List<Joiner>>(){});
+            return objectMapper.readValue(joiners, new TypeReference<List<Joiner>>() {
+            });
         } catch (IOException e) {
             log.severe(e.getMessage());
             return new ArrayList<>();
@@ -326,7 +328,8 @@ public class PresentationSection {
 
     public List<Grouper> getGroupers() {
         try {
-            return objectMapper.readValue(groupers, new TypeReference<List<Grouper>>(){});
+            return objectMapper.readValue(groupers, new TypeReference<List<Grouper>>() {
+            });
         } catch (IOException e) {
             log.severe(e.getMessage());
             return new ArrayList<>();
@@ -343,7 +346,8 @@ public class PresentationSection {
 
     public List<Sorter> getSorters() {
         try {
-            return objectMapper.readValue(sorters, new TypeReference<List<Sorter>>(){});
+            return objectMapper.readValue(sorters, new TypeReference<List<Sorter>>() {
+            });
         } catch (IOException e) {
             log.severe(e.getMessage());
             return new ArrayList<>();
@@ -360,7 +364,8 @@ public class PresentationSection {
 
     public Map<String, Object> getExtraData() {
         try {
-            return objectMapper.readValue(extraData, new TypeReference<Map<String, Object>>(){});
+            return objectMapper.readValue(extraData, new TypeReference<Map<String, Object>>() {
+            });
         } catch (IOException e) {
             log.severe(e.getMessage());
             return new HashMap<>();

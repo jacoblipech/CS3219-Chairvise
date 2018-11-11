@@ -16,12 +16,12 @@ public class SubmissionAuthorRecord {
     @GenericGenerator(name = "UseExistingIdOtherwiseGenerateUsingIdentity", strategy = "sg.edu.nus.comp.cs3219.viz.common.entity.UseExistingIdOtherwiseGenerateUsingIdentity")
     @GeneratedValue(generator = "UseExistingIdOtherwiseGenerateUsingIdentity")
     @JsonSerialize(using = ToStringSerializer.class)
-    @Column(name="s_author_id")
+    @Column(name = "s_author_id")
     private Long id;
 
     private String dataSet;
 
-    @Column(name="s_author_name")
+    @Column(name = "s_author_name")
     private String name;
 
     public Long getId() {

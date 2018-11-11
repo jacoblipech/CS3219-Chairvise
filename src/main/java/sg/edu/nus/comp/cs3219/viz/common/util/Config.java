@@ -5,7 +5,9 @@ import com.google.apphosting.api.ApiProxy;
 
 
 public class Config {
-    /** The value of the application URL, or null if no server instance is running. */
+    /**
+     * The value of the application URL, or null if no server instance is running.
+     */
     public static final String APP_URL;
 
     static {
