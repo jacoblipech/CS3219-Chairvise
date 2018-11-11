@@ -390,66 +390,6 @@ export default {
       }
     }
   },
-  "accepted_organization_rank": {
-    name: "Accepted Submission Organization Rank",
-    group: 'Author Record',
-    data: {
-      type: 'bar_chart',
-      title: 'Accepted Submission Organization Rank',
-      dataSet: '${PLACEHOLDER_DATA_SET}',
-      selections: [
-        {
-          expression: 'COUNT(*)',
-          rename: 'submission_count'
-        },
-        {
-          expression: "a_organisation",
-          rename: 'a_organisation'
-        }
-      ],
-      involvedRecords: [
-        {
-          name: 'author_record',
-          customized: false,
-        },
-        {
-          name: 'submission_record',
-          customized: false,
-        }
-      ],
-      filters: [
-        {
-          field: "s_is_accepted",
-          comparator: "=",
-          value: "true",
-        }
-      ],
-      joiners: [
-        {
-          left: "a_submission_id",
-          right: "s_submission_id",
-        }
-      ],
-      groupers: [
-        {
-          field: "a_organisation"
-        }
-      ],
-      sorters: [
-        {
-          field: 'submission_count',
-          order: 'DESC',
-        }
-      ],
-      extraData: {
-        dataSetLabel: 'Accepted Counts',
-        fieldsShownInToolTips: [],
-        xAxisFieldName: 'a_organisation',
-        yAxisFieldName: 'submission_count',
-        numOfResultToDisplay: 10,
-      }
-    }
-  },
   "review_weighted_score_distribution": {
     name: "Review Weighted Score Distribution",
     group: 'Review Record',
@@ -521,30 +461,30 @@ export default {
             "  WHEN weighted_score <= 3.00 THEN '2.75 ~ 3.00'\n" +
             "END AS `weighted_score_interval` FROM (SELECT SUM(r_confidence_level * r_overall_evaluation_score) / SUM(r_confidence_level) AS `weighted_score` " +
             "FROM review_record WHERE review_record.data_set = '${PLACEHOLDER_DATA_SET}' GROUP BY r_submission_id " +
-            "UNION SELECT -2.75\n" +
-            "UNION SELECT -2.50\n" +
-            "UNION SELECT -2.25\n" +
-            "UNION SELECT -2.00\n" +
-            "UNION SELECT -1.75\n" +
-            "UNION SELECT -1.50\n" +
-            "UNION SELECT -1.25\n" +
-            "UNION SELECT -1.00\n" +
-            "UNION SELECT -0.75\n" +
-            "UNION SELECT -0.50\n" +
-            "UNION SELECT -0.25\n" +
-            "UNION SELECT 0.00\n" +
-            "UNION SELECT 0.25\n" +
-            "UNION SELECT 0.50\n" +
-            "UNION SELECT 0.75\n" +
-            "UNION SELECT 1.00\n" +
-            "UNION SELECT 1.25\n" +
-            "UNION SELECT 1.50\n" +
-            "UNION SELECT 1.75\n" +
-            "UNION SELECT 2.00\n" +
-            "UNION SELECT 2.25\n" +
-            "UNION SELECT 2.50\n" +
-            "UNION SELECT 2.75\n" +
-            "UNION SELECT 3.00) AS `tmp1`) AS `tmp2`",
+            "UNION ALL SELECT -2.75\n" +
+            "UNION ALL SELECT -2.50\n" +
+            "UNION ALL SELECT -2.25\n" +
+            "UNION ALL SELECT -2.00\n" +
+            "UNION ALL SELECT -1.75\n" +
+            "UNION ALL SELECT -1.50\n" +
+            "UNION ALL SELECT -1.25\n" +
+            "UNION ALL SELECT -1.00\n" +
+            "UNION ALL SELECT -0.75\n" +
+            "UNION ALL SELECT -0.50\n" +
+            "UNION ALL SELECT -0.25\n" +
+            "UNION ALL SELECT 0.00\n" +
+            "UNION ALL SELECT 0.25\n" +
+            "UNION ALL SELECT 0.50\n" +
+            "UNION ALL SELECT 0.75\n" +
+            "UNION ALL SELECT 1.00\n" +
+            "UNION ALL SELECT 1.25\n" +
+            "UNION ALL SELECT 1.50\n" +
+            "UNION ALL SELECT 1.75\n" +
+            "UNION ALL SELECT 2.00\n" +
+            "UNION ALL SELECT 2.25\n" +
+            "UNION ALL SELECT 2.50\n" +
+            "UNION ALL SELECT 2.75\n" +
+            "UNION ALL SELECT 3.00) AS `tmp1`) AS `tmp2`",
           customized: true,
         }
       ],
@@ -621,14 +561,35 @@ export default {
       ],
       filters: [],
       joiners: [],
-      groupers: [
+      groupers: [],
+      sorters: [],
+      extraData: {
+        types: ['min', 'max', 'avg', 'median', 'std'],
+      }
+    }
+  },
+  "review_confidence_level_stats_summary": {
+    name: "Reviewer Confidence Level Statistic Summary",
+    group: 'Review Record',
+    data: {
+      type: 'stats',
+      title: 'Reviewer Confidence Level Statistic Summary',
+      dataSet: '${PLACEHOLDER_DATA_SET}',
+      selections: [
         {
-          field: 'r_expertise_level'
+          expression: 'r_confidence_level',
+          rename: 'r_confidence_level'
         },
+      ],
+      involvedRecords: [
         {
-          field: 'r_reviewer_name'
+          name: 'review_record',
+          customized: false,
         }
       ],
+      filters: [],
+      joiners: [],
+      groupers: [],
       sorters: [],
       extraData: {
         types: ['min', 'max', 'avg', 'median', 'std'],
@@ -847,7 +808,7 @@ export default {
       dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
-          expression: "SUM(CASE WHEN s_is_accepted = 'yes' THEN 1 ELSE 0 END)/COUNT(*)",
+          expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)/COUNT(*)",
           rename: 'acceptance_rate'
         },
         {
@@ -863,7 +824,7 @@ export default {
           rename: 'submitted'
         },
         {
-          expression: "SUM(CASE WHEN s_is_accepted = 'yes' THEN 1 ELSE 0 END)",
+          expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)",
           rename: 'accepted'
         }
       ],
@@ -928,15 +889,15 @@ export default {
     }
   },
   "submission_accepted_rank_author": {
-    name: "Submission Accepted Rate Rank Author",
+    name: "Submission Accepted Rank Author",
     group: 'Author Record + Submission Record',
     data: {
       type: 'bar_chart',
-      title: 'Submission Accepted Rate Rank Author',
+      title: 'Submission Accepted Rank Author',
       dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
-          expression: "SUM(CASE WHEN s_is_accepted = 'yes' THEN 1 ELSE 0 END)/COUNT(*)",
+          expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)/COUNT(*)",
           rename: 'acceptance_rate'
         },
         {
@@ -952,7 +913,7 @@ export default {
           rename: 'submitted'
         },
         {
-          expression: "SUM(CASE WHEN s_is_accepted = 'yes' THEN 1 ELSE 0 END)",
+          expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)",
           rename: 'accepted'
         }
       ],
@@ -1025,7 +986,7 @@ export default {
       dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
-          expression: "SUM(CASE WHEN s_is_accepted = 'yes' THEN 1 ELSE 0 END)/COUNT(*)",
+          expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)/COUNT(*)",
           rename: 'acceptance_rate'
         },
         {
@@ -1037,7 +998,7 @@ export default {
           rename: 'submitted'
         },
         {
-          expression: "SUM(CASE WHEN s_is_accepted = 'yes' THEN 1 ELSE 0 END)",
+          expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)",
           rename: 'accepted'
         }
       ],
@@ -1100,7 +1061,7 @@ export default {
       dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
-          expression: "SUM(CASE WHEN s_is_accepted = 'yes' THEN 1 ELSE 0 END)/COUNT(*)",
+          expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)/COUNT(*)",
           rename: 'acceptance_rate'
         },
         {
@@ -1112,7 +1073,7 @@ export default {
           rename: 'submitted'
         },
         {
-          expression: "SUM(CASE WHEN s_is_accepted = 'yes' THEN 1 ELSE 0 END)",
+          expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)",
           rename: 'accepted'
         }
       ],
@@ -1175,7 +1136,7 @@ export default {
       dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
-          expression: "SUM(CASE WHEN s_is_accepted = 'yes' THEN 1 ELSE 0 END)/COUNT(*)",
+          expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)/COUNT(*)",
           rename: 'acceptance_rate'
         },
         {
@@ -1187,7 +1148,7 @@ export default {
           rename: 'submitted'
         },
         {
-          expression: "SUM(CASE WHEN s_is_accepted = 'yes' THEN 1 ELSE 0 END)",
+          expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)",
           rename: 'accepted'
         }
       ],
@@ -1242,15 +1203,15 @@ export default {
     }
   },
   "submission_accepted_rank_country": {
-    name: "Submission Accepted Rate Rank Country",
+    name: "Submission Accepted Rank Country",
     group: 'Author Record + Submission Record',
     data: {
       type: 'bar_chart',
-      title: 'Submission Accepted Rate Rank Country',
+      title: 'Submission Accepted Rank Country',
       dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
-          expression: "SUM(CASE WHEN s_is_accepted = 'yes' THEN 1 ELSE 0 END)/COUNT(*)",
+          expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)/COUNT(*)",
           rename: 'acceptance_rate'
         },
         {
@@ -1262,7 +1223,7 @@ export default {
           rename: 'submitted'
         },
         {
-          expression: "SUM(CASE WHEN s_is_accepted = 'yes' THEN 1 ELSE 0 END)",
+          expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)",
           rename: 'accepted'
         }
       ],
@@ -1572,7 +1533,7 @@ export default {
       dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
-          expression: 'COUNT(*) - 1',
+          expression: 'COUNT(*)-1',
           rename: 'num_of_submission'
         },
         {
@@ -1581,20 +1542,20 @@ export default {
         }
       ],
       involvedRecords: [{
-        name: "(SELECT IF(COUNT(*) >= 10, CONVERT(COUNT(*), char), '>=10') AS `num_of_review` FROM review_record WHERE " +
+        name: "(SELECT IF(COUNT(*)<10, CONVERT(COUNT(*), char), '>=10') AS `num_of_review` FROM review_record WHERE " +
           "review_record.data_set = '${PLACEHOLDER_DATA_SET}' AND review_record.data_set = '${PLACEHOLDER_DATA_SET}' " +
           "GROUP BY r_submission_id " +
-          "UNION SELECT '0'" +
-          "UNION SELECT '1'" +
-          "UNION SELECT '2'" +
-          "UNION SELECT '3'" +
-          "UNION SELECT '4'" +
-          "UNION SELECT '5'" +
-          "UNION SELECT '6'" +
-          "UNION SELECT '7'" +
-          "UNION SELECT '8'" +
-          "UNION SELECT '9'" +
-          "UNION SELECT '>=10') AS `tmp`",
+          "UNION ALL SELECT '0'" +
+          "UNION ALL SELECT '1'" +
+          "UNION ALL SELECT '2'" +
+          "UNION ALL SELECT '3'" +
+          "UNION ALL SELECT '4'" +
+          "UNION ALL SELECT '5'" +
+          "UNION ALL SELECT '6'" +
+          "UNION ALL SELECT '7'" +
+          "UNION ALL SELECT '8'" +
+          "UNION ALL SELECT '9'" +
+          "UNION ALL SELECT '>=10') AS `tmp`",
         customized: true,
       }],
       filters: [],
@@ -1688,26 +1649,26 @@ export default {
             "  WHEN avg_expertise_level <= 5.00 THEN '4.75 ~ 5.00'\n" +
             "END AS `avg_expertise_level_interval`, avg_evaluation_score, avg_confidence_level FROM (SELECT AVG(r_confidence_level) AS `avg_confidence_level`, AVG(r_overall_evaluation_score) AS `avg_evaluation_score`, AVG(r_expertise_level) AS `avg_expertise_level` " +
             "FROM review_record WHERE review_record.data_set = '${PLACEHOLDER_DATA_SET}' GROUP BY r_reviewer_name " +
-            "UNION SELECT 0, 0, 0.25\n" +
-            "UNION SELECT 0, 0, 0.50\n" +
-            "UNION SELECT 0, 0, 0.75\n" +
-            "UNION SELECT 0, 0, 1.00\n" +
-            "UNION SELECT 0, 0, 1.25\n" +
-            "UNION SELECT 0, 0, 1.50\n" +
-            "UNION SELECT 0, 0, 1.75\n" +
-            "UNION SELECT 0, 0, 2.00\n" +
-            "UNION SELECT 0, 0, 2.25\n" +
-            "UNION SELECT 0, 0, 2.50\n" +
-            "UNION SELECT 0, 0, 2.75\n" +
-            "UNION SELECT 0, 0, 3.00\n" +
-            "UNION SELECT 0, 0, 3.25\n" +
-            "UNION SELECT 0, 0, 3.50\n" +
-            "UNION SELECT 0, 0, 3.75\n" +
-            "UNION SELECT 0, 0, 4.00\n" +
-            "UNION SELECT 0, 0, 4.25\n" +
-            "UNION SELECT 0, 0, 4.50\n" +
-            "UNION SELECT 0, 0, 4.75\n" +
-            "UNION SELECT 0, 0, 5.00) AS `tmp1`) AS `tmp2`",
+            "UNION ALL SELECT 0, 0, 0.25\n" +
+            "UNION ALL SELECT 0, 0, 0.50\n" +
+            "UNION ALL SELECT 0, 0, 0.75\n" +
+            "UNION ALL SELECT 0, 0, 1.00\n" +
+            "UNION ALL SELECT 0, 0, 1.25\n" +
+            "UNION ALL SELECT 0, 0, 1.50\n" +
+            "UNION ALL SELECT 0, 0, 1.75\n" +
+            "UNION ALL SELECT 0, 0, 2.00\n" +
+            "UNION ALL SELECT 0, 0, 2.25\n" +
+            "UNION ALL SELECT 0, 0, 2.50\n" +
+            "UNION ALL SELECT 0, 0, 2.75\n" +
+            "UNION ALL SELECT 0, 0, 3.00\n" +
+            "UNION ALL SELECT 0, 0, 3.25\n" +
+            "UNION ALL SELECT 0, 0, 3.50\n" +
+            "UNION ALL SELECT 0, 0, 3.75\n" +
+            "UNION ALL SELECT 0, 0, 4.00\n" +
+            "UNION ALL SELECT 0, 0, 4.25\n" +
+            "UNION ALL SELECT 0, 0, 4.50\n" +
+            "UNION ALL SELECT 0, 0, 4.75\n" +
+            "UNION ALL SELECT 0, 0, 5.00) AS `tmp1`) AS `tmp2`",
           customized: true,
         }
       ],
@@ -1816,26 +1777,26 @@ export default {
             "  WHEN avg_confidence_level <= 5.00 THEN '4.75 ~ 5.00'\n" +
             "END AS `avg_confidence_level_interval`, avg_evaluation_score, avg_expertise_level FROM (SELECT AVG(r_confidence_level) AS `avg_confidence_level`, AVG(r_overall_evaluation_score) AS `avg_evaluation_score`, AVG(r_expertise_level) AS `avg_expertise_level` " +
             "FROM review_record WHERE review_record.data_set = '${PLACEHOLDER_DATA_SET}' GROUP BY r_reviewer_name " +
-            "UNION SELECT 0.25, 0, 0\n" +
-            "UNION SELECT 0.50, 0, 0\n" +
-            "UNION SELECT 0.75, 0, 0\n" +
-            "UNION SELECT 1.00, 0, 0\n" +
-            "UNION SELECT 1.25, 0, 0\n" +
-            "UNION SELECT 1.50, 0, 0\n" +
-            "UNION SELECT 1.75, 0, 0\n" +
-            "UNION SELECT 2.00, 0, 0\n" +
-            "UNION SELECT 2.25, 0, 0\n" +
-            "UNION SELECT 2.50, 0, 0\n" +
-            "UNION SELECT 2.75, 0, 0\n" +
-            "UNION SELECT 3.00, 0, 0\n" +
-            "UNION SELECT 3.25, 0, 0\n" +
-            "UNION SELECT 3.50, 0, 0\n" +
-            "UNION SELECT 3.75, 0, 0\n" +
-            "UNION SELECT 4.00, 0, 0\n" +
-            "UNION SELECT 4.25, 0, 0\n" +
-            "UNION SELECT 4.50, 0, 0\n" +
-            "UNION SELECT 4.75, 0, 0\n" +
-            "UNION SELECT 5.00, 0, 0) AS `tmp1`) AS `tmp2`",
+            "UNION ALL SELECT 0.25, 0, 0\n" +
+            "UNION ALL SELECT 0.50, 0, 0\n" +
+            "UNION ALL SELECT 0.75, 0, 0\n" +
+            "UNION ALL SELECT 1.00, 0, 0\n" +
+            "UNION ALL SELECT 1.25, 0, 0\n" +
+            "UNION ALL SELECT 1.50, 0, 0\n" +
+            "UNION ALL SELECT 1.75, 0, 0\n" +
+            "UNION ALL SELECT 2.00, 0, 0\n" +
+            "UNION ALL SELECT 2.25, 0, 0\n" +
+            "UNION ALL SELECT 2.50, 0, 0\n" +
+            "UNION ALL SELECT 2.75, 0, 0\n" +
+            "UNION ALL SELECT 3.00, 0, 0\n" +
+            "UNION ALL SELECT 3.25, 0, 0\n" +
+            "UNION ALL SELECT 3.50, 0, 0\n" +
+            "UNION ALL SELECT 3.75, 0, 0\n" +
+            "UNION ALL SELECT 4.00, 0, 0\n" +
+            "UNION ALL SELECT 4.25, 0, 0\n" +
+            "UNION ALL SELECT 4.50, 0, 0\n" +
+            "UNION ALL SELECT 4.75, 0, 0\n" +
+            "UNION ALL SELECT 5.00, 0, 0) AS `tmp1`) AS `tmp2`",
           customized: true,
         }
       ],
@@ -1952,30 +1913,30 @@ export default {
             "  WHEN avg_evaluation_score <= 3.00 THEN '2.75 ~ 3.00'\n" +
             "END AS `avg_evaluation_score_interval`, avg_confidence_level, avg_expertise_level FROM (SELECT AVG(r_confidence_level) AS `avg_confidence_level`, AVG(r_overall_evaluation_score) AS `avg_evaluation_score`, AVG(r_expertise_level) AS `avg_expertise_level` " +
             "FROM review_record WHERE review_record.data_set = '${PLACEHOLDER_DATA_SET}' GROUP BY r_reviewer_name " +
-            "UNION SELECT 0, -2.75, 0\n" +
-            "UNION SELECT 0, -2.50, 0\n" +
-            "UNION SELECT 0, -2.25, 0\n" +
-            "UNION SELECT 0, -2.00, 0\n" +
-            "UNION SELECT 0, -1.75, 0\n" +
-            "UNION SELECT 0, -1.50, 0\n" +
-            "UNION SELECT 0, -1.25, 0\n" +
-            "UNION SELECT 0, -1.00, 0\n" +
-            "UNION SELECT 0, -0.75, 0\n" +
-            "UNION SELECT 0, -0.50, 0\n" +
-            "UNION SELECT 0, -0.25, 0\n" +
-            "UNION SELECT 0, 0.00, 0\n" +
-            "UNION SELECT 0, 0.25, 0\n" +
-            "UNION SELECT 0, 0.50, 0\n" +
-            "UNION SELECT 0, 0.75, 0\n" +
-            "UNION SELECT 0, 1.00, 0\n" +
-            "UNION SELECT 0, 1.25, 0\n" +
-            "UNION SELECT 0, 1.50, 0\n" +
-            "UNION SELECT 0, 1.75, 0\n" +
-            "UNION SELECT 0, 2.00, 0\n" +
-            "UNION SELECT 0, 2.25, 0\n" +
-            "UNION SELECT 0, 2.50, 0\n" +
-            "UNION SELECT 0, 2.75, 0\n" +
-            "UNION SELECT 0, 3.00, 0) AS `tmp1`) AS `tmp2`",
+            "UNION ALL SELECT 0, -2.75, 0\n" +
+            "UNION ALL SELECT 0, -2.50, 0\n" +
+            "UNION ALL SELECT 0, -2.25, 0\n" +
+            "UNION ALL SELECT 0, -2.00, 0\n" +
+            "UNION ALL SELECT 0, -1.75, 0\n" +
+            "UNION ALL SELECT 0, -1.50, 0\n" +
+            "UNION ALL SELECT 0, -1.25, 0\n" +
+            "UNION ALL SELECT 0, -1.00, 0\n" +
+            "UNION ALL SELECT 0, -0.75, 0\n" +
+            "UNION ALL SELECT 0, -0.50, 0\n" +
+            "UNION ALL SELECT 0, -0.25, 0\n" +
+            "UNION ALL SELECT 0, 0.00, 0\n" +
+            "UNION ALL SELECT 0, 0.25, 0\n" +
+            "UNION ALL SELECT 0, 0.50, 0\n" +
+            "UNION ALL SELECT 0, 0.75, 0\n" +
+            "UNION ALL SELECT 0, 1.00, 0\n" +
+            "UNION ALL SELECT 0, 1.25, 0\n" +
+            "UNION ALL SELECT 0, 1.50, 0\n" +
+            "UNION ALL SELECT 0, 1.75, 0\n" +
+            "UNION ALL SELECT 0, 2.00, 0\n" +
+            "UNION ALL SELECT 0, 2.25, 0\n" +
+            "UNION ALL SELECT 0, 2.50, 0\n" +
+            "UNION ALL SELECT 0, 2.75, 0\n" +
+            "UNION ALL SELECT 0, 3.00, 0) AS `tmp1`) AS `tmp2`",
           customized: true,
         }
       ],
@@ -2026,7 +1987,7 @@ export default {
           rename: 'weighted_score_interval'
         },
         {
-          expression: "SUM(CASE WHEN s_is_accepted = 'yes' THEN 1 ELSE 0 END)",
+          expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)",
           rename: 'accepted'
         },
         {
@@ -2034,7 +1995,7 @@ export default {
           rename: 'submitted'
         },
         {
-          expression: "SUM(CASE WHEN s_is_accepted = 'yes' THEN 1 ELSE 0 END) / (COUNT(*) - 1)",
+          expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END) / (COUNT(*) - 1)",
           rename: 'acceptance_rate'
         },
       ],
@@ -2093,30 +2054,30 @@ export default {
             "END AS `weighted_score_interval`, s_is_accepted FROM (SELECT SUM(r_confidence_level * r_overall_evaluation_score) / SUM(r_confidence_level) AS `weighted_score`, s_is_accepted " +
             "FROM review_record, submission_record WHERE review_record.data_set = '${PLACEHOLDER_DATA_SET}' AND submission_record.data_set = '${PLACEHOLDER_DATA_SET}' " +
             "AND review_record.r_submission_id = submission_record.s_submission_id GROUP BY r_submission_id, s_is_accepted " +
-            "UNION SELECT -2.75, 'no'\n" +
-            "UNION SELECT -2.50, 'no'\n" +
-            "UNION SELECT -2.25, 'no'\n" +
-            "UNION SELECT -2.00, 'no'\n" +
-            "UNION SELECT -1.75, 'no'\n" +
-            "UNION SELECT -1.50, 'no'\n" +
-            "UNION SELECT -1.25, 'no'\n" +
-            "UNION SELECT -1.00, 'no'\n" +
-            "UNION SELECT -0.75, 'no'\n" +
-            "UNION SELECT -0.50, 'no'\n" +
-            "UNION SELECT -0.25, 'no'\n" +
-            "UNION SELECT 0.00, 'no'\n" +
-            "UNION SELECT 0.25, 'no'\n" +
-            "UNION SELECT 0.50, 'no'\n" +
-            "UNION SELECT 0.75, 'no'\n" +
-            "UNION SELECT 1.00, 'no'\n" +
-            "UNION SELECT 1.25, 'no'\n" +
-            "UNION SELECT 1.50, 'no'\n" +
-            "UNION SELECT 1.75, 'no'\n" +
-            "UNION SELECT 2.00, 'no'\n" +
-            "UNION SELECT 2.25, 'no'\n" +
-            "UNION SELECT 2.50, 'no'\n" +
-            "UNION SELECT 2.75, 'no'\n" +
-            "UNION SELECT 3.00, 'no') AS `tmp1`) AS `tmp2`",
+            "UNION ALL SELECT -2.75, 'no'\n" +
+            "UNION ALL SELECT -2.50, 'no'\n" +
+            "UNION ALL SELECT -2.25, 'no'\n" +
+            "UNION ALL SELECT -2.00, 'no'\n" +
+            "UNION ALL SELECT -1.75, 'no'\n" +
+            "UNION ALL SELECT -1.50, 'no'\n" +
+            "UNION ALL SELECT -1.25, 'no'\n" +
+            "UNION ALL SELECT -1.00, 'no'\n" +
+            "UNION ALL SELECT -0.75, 'no'\n" +
+            "UNION ALL SELECT -0.50, 'no'\n" +
+            "UNION ALL SELECT -0.25, 'no'\n" +
+            "UNION ALL SELECT 0.00, 'no'\n" +
+            "UNION ALL SELECT 0.25, 'no'\n" +
+            "UNION ALL SELECT 0.50, 'no'\n" +
+            "UNION ALL SELECT 0.75, 'no'\n" +
+            "UNION ALL SELECT 1.00, 'no'\n" +
+            "UNION ALL SELECT 1.25, 'no'\n" +
+            "UNION ALL SELECT 1.50, 'no'\n" +
+            "UNION ALL SELECT 1.75, 'no'\n" +
+            "UNION ALL SELECT 2.00, 'no'\n" +
+            "UNION ALL SELECT 2.25, 'no'\n" +
+            "UNION ALL SELECT 2.50, 'no'\n" +
+            "UNION ALL SELECT 2.75, 'no'\n" +
+            "UNION ALL SELECT 3.00, 'no') AS `tmp1`) AS `tmp2`",
           customized: true,
         }
       ],
@@ -2215,20 +2176,31 @@ export default {
       ],
       involvedRecords: [
         {
-          name: "(SELECT IF(DATEDIFF(MIN(r_review_submission_time), s_submission_time) >= 10, CONVERT(DATEDIFF(MIN(r_review_submission_time), s_submission_time), char), '>=10')  AS `duration_get_reviewed` " +
+          name: "(SELECT IF(DATEDIFF(MIN(r_review_submission_time), s_submission_time) < 21, CONVERT(DATEDIFF(MIN(r_review_submission_time), s_submission_time), char), '>=21')  AS `duration_get_reviewed` " +
             "FROM review_record, submission_record WHERE review_record.data_set = '${PLACEHOLDER_DATA_SET}' AND submission_record.data_set = '${PLACEHOLDER_DATA_SET}' " +
             "AND review_record.r_submission_id = submission_record.s_submission_id GROUP BY r_submission_id, s_submission_time " +
-            "UNION SELECT '0'" +
-            "UNION SELECT '1'" +
-            "UNION SELECT '2'" +
-            "UNION SELECT '3'" +
-            "UNION SELECT '4'" +
-            "UNION SELECT '5'" +
-            "UNION SELECT '6'" +
-            "UNION SELECT '7'" +
-            "UNION SELECT '8'" +
-            "UNION SELECT '9'" +
-            "UNION SELECT '>=10') AS `tmp`",
+            "UNION ALL SELECT '0'" +
+            "UNION ALL SELECT '1'" +
+            "UNION ALL SELECT '2'" +
+            "UNION ALL SELECT '3'" +
+            "UNION ALL SELECT '4'" +
+            "UNION ALL SELECT '5'" +
+            "UNION ALL SELECT '6'" +
+            "UNION ALL SELECT '7'" +
+            "UNION ALL SELECT '8'" +
+            "UNION ALL SELECT '9'" +
+            "UNION ALL SELECT '10'" +
+            "UNION ALL SELECT '11'" +
+            "UNION ALL SELECT '12'" +
+            "UNION ALL SELECT '13'" +
+            "UNION ALL SELECT '14'" +
+            "UNION ALL SELECT '15'" +
+            "UNION ALL SELECT '16'" +
+            "UNION ALL SELECT '17'" +
+            "UNION ALL SELECT '18'" +
+            "UNION ALL SELECT '19'" +
+            "UNION ALL SELECT '20'" +
+            "UNION ALL SELECT '>=21') AS `tmp`",
           customized: true,
         }
       ],
@@ -2317,26 +2289,26 @@ export default {
             "(SELECT AVG(r_expertise_level) AS `avg_expertise_level` FROM review_record " +
             "WHERE review_record.data_set = '${PLACEHOLDER_DATA_SET}'" +
             "GROUP BY r_submission_id " +
-            "UNION SELECT 0.25\n" +
-            "UNION SELECT 0.50\n" +
-            "UNION SELECT 0.75\n" +
-            "UNION SELECT 1.00\n" +
-            "UNION SELECT 1.25\n" +
-            "UNION SELECT 1.50\n" +
-            "UNION SELECT 1.75\n" +
-            "UNION SELECT 2.00\n" +
-            "UNION SELECT 2.25\n" +
-            "UNION SELECT 2.50\n" +
-            "UNION SELECT 2.75\n" +
-            "UNION SELECT 3.00\n" +
-            "UNION SELECT 3.25\n" +
-            "UNION SELECT 3.50\n" +
-            "UNION SELECT 3.75\n" +
-            "UNION SELECT 4.00\n" +
-            "UNION SELECT 4.25\n" +
-            "UNION SELECT 4.50\n" +
-            "UNION SELECT 4.75\n" +
-            "UNION SELECT 5.00) AS `tmp1`) AS `tmp2`",
+            "UNION ALL SELECT 0.25\n" +
+            "UNION ALL SELECT 0.50\n" +
+            "UNION ALL SELECT 0.75\n" +
+            "UNION ALL SELECT 1.00\n" +
+            "UNION ALL SELECT 1.25\n" +
+            "UNION ALL SELECT 1.50\n" +
+            "UNION ALL SELECT 1.75\n" +
+            "UNION ALL SELECT 2.00\n" +
+            "UNION ALL SELECT 2.25\n" +
+            "UNION ALL SELECT 2.50\n" +
+            "UNION ALL SELECT 2.75\n" +
+            "UNION ALL SELECT 3.00\n" +
+            "UNION ALL SELECT 3.25\n" +
+            "UNION ALL SELECT 3.50\n" +
+            "UNION ALL SELECT 3.75\n" +
+            "UNION ALL SELECT 4.00\n" +
+            "UNION ALL SELECT 4.25\n" +
+            "UNION ALL SELECT 4.50\n" +
+            "UNION ALL SELECT 4.75\n" +
+            "UNION ALL SELECT 5.00) AS `tmp1`) AS `tmp2`",
           customized: true,
         }
       ],
@@ -2427,26 +2399,26 @@ export default {
             "(SELECT AVG(r_confidence_level) AS `avg_confidence_level` FROM review_record " +
             "WHERE review_record.data_set = '${PLACEHOLDER_DATA_SET}'" +
             "GROUP BY r_submission_id " +
-            "UNION SELECT 0.25\n" +
-            "UNION SELECT 0.50\n" +
-            "UNION SELECT 0.75\n" +
-            "UNION SELECT 1.00\n" +
-            "UNION SELECT 1.25\n" +
-            "UNION SELECT 1.50\n" +
-            "UNION SELECT 1.75\n" +
-            "UNION SELECT 2.00\n" +
-            "UNION SELECT 2.25\n" +
-            "UNION SELECT 2.50\n" +
-            "UNION SELECT 2.75\n" +
-            "UNION SELECT 3.00\n" +
-            "UNION SELECT 3.25\n" +
-            "UNION SELECT 3.50\n" +
-            "UNION SELECT 3.75\n" +
-            "UNION SELECT 4.00\n" +
-            "UNION SELECT 4.25\n" +
-            "UNION SELECT 4.50\n" +
-            "UNION SELECT 4.75\n" +
-            "UNION SELECT 5.00) AS `tmp1`) AS `tmp2`",
+            "UNION ALL SELECT 0.25\n" +
+            "UNION ALL SELECT 0.50\n" +
+            "UNION ALL SELECT 0.75\n" +
+            "UNION ALL SELECT 1.00\n" +
+            "UNION ALL SELECT 1.25\n" +
+            "UNION ALL SELECT 1.50\n" +
+            "UNION ALL SELECT 1.75\n" +
+            "UNION ALL SELECT 2.00\n" +
+            "UNION ALL SELECT 2.25\n" +
+            "UNION ALL SELECT 2.50\n" +
+            "UNION ALL SELECT 2.75\n" +
+            "UNION ALL SELECT 3.00\n" +
+            "UNION ALL SELECT 3.25\n" +
+            "UNION ALL SELECT 3.50\n" +
+            "UNION ALL SELECT 3.75\n" +
+            "UNION ALL SELECT 4.00\n" +
+            "UNION ALL SELECT 4.25\n" +
+            "UNION ALL SELECT 4.50\n" +
+            "UNION ALL SELECT 4.75\n" +
+            "UNION ALL SELECT 5.00) AS `tmp1`) AS `tmp2`",
           customized: true,
         }
       ],
@@ -2538,6 +2510,10 @@ export default {
           rename: 'avg_weighted_score'
         },
         {
+          expression: "COUNT(*)",
+          rename: 'submission_count'
+        },
+        {
           expression: "CONCAT(a_first_name, ' ', a_last_name)",
           rename: 'author_name'
         },
@@ -2580,7 +2556,15 @@ export default {
       extraData: {
         type: 'category',
         dataSetLabel: 'Average Weighted Score',
-        fieldsShownInToolTips: [{ label: 'Email', field: 'author_email'}],
+        fieldsShownInToolTips: [
+          {
+            label: 'Email',
+            field: 'author_email'},
+          {
+            label: 'Submission',
+            field: 'submission_count'
+          }
+          ],
         xAxisFieldName: 'author_name',
         yAxisFieldName: 'avg_weighted_score',
 
@@ -2599,6 +2583,10 @@ export default {
         {
           expression: 'AVG(weighted_score)',
           rename: 'avg_weighted_score'
+        },
+        {
+          expression: "COUNT(*)",
+          rename: 'submission_count'
         },
         {
           expression: "a_organisation",
@@ -2633,7 +2621,12 @@ export default {
       extraData: {
         type: 'category',
         dataSetLabel: 'Average Weighted Score',
-        fieldsShownInToolTips: [],
+        fieldsShownInToolTips: [
+          {
+            label: 'Submission',
+            field: 'submission_count'
+          }
+        ],
         xAxisFieldName: 'a_organisation',
         yAxisFieldName: 'avg_weighted_score',
 
@@ -2652,6 +2645,10 @@ export default {
         {
           expression: 'AVG(weighted_score)',
           rename: 'avg_weighted_score'
+        },
+        {
+          expression: "COUNT(*)",
+          rename: 'submission_count'
         },
         {
           expression: "a_country",
@@ -2686,7 +2683,12 @@ export default {
       extraData: {
         type: 'category',
         dataSetLabel: 'Average Weighted Score',
-        fieldsShownInToolTips: [],
+        fieldsShownInToolTips: [
+          {
+            label: 'Submission',
+            field: 'submission_count'
+          }
+        ],
         xAxisFieldName: 'a_country',
         yAxisFieldName: 'avg_weighted_score',
 
