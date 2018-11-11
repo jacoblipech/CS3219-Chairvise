@@ -1,6 +1,7 @@
 package sg.edu.nus.comp.cs3219.viz.common.entity.record;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
@@ -8,6 +9,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Exportable(name = "Submission Record", nameInDB = "submission_record")
 @Entity
@@ -17,36 +19,40 @@ public class SubmissionRecord {
     @GenericGenerator(name = "UseExistingIdOtherwiseGenerateUsingIdentity", strategy = "sg.edu.nus.comp.cs3219.viz.common.entity.UseExistingIdOtherwiseGenerateUsingIdentity")
     @GeneratedValue(generator = "UseExistingIdOtherwiseGenerateUsingIdentity")
     @JsonSerialize(using = ToStringSerializer.class)
-    @Column(name="s_id")
+    @Column(name = "s_id")
     private Long id;
 
     // each record will be imported by each user, dataSet is used to distinguished records submitted by different user
     private String dataSet;
 
     @Exportable(name = "Submission Id", nameInDB = "s_submission_id")
-    @Column(name="s_submission_id")
+    @Column(name = "s_submission_id")
     private String submissionId;
 
     // Track the submission is submitted to; like a full paper or just a poster
     @Exportable(name = "Track Id", nameInDB = "s_track_id", description = "Track the submission is submitted to")
-    @Column(name="s_track_id")
+    @Column(name = "s_track_id")
     private String trackId;
 
     // Name for the track referred in col2 (string)
     @Exportable(name = "Track Name", nameInDB = "s_track_name")
-    @Column(name="s_track_name")
+    @Column(name = "s_track_name")
     private String trackName;
 
     // Title of the submission
     @Exportable(name = "Title", nameInDB = "s_title")
-    @Column(name = "s_title", columnDefinition="TEXT")
+    @Column(name = "s_title", columnDefinition = "TEXT")
     private String title;
 
     // authors of the associated submission
-    // TODO use many-to-many relationship
     @Exportable(name = "Authors", nameInDB = "s_authors")
-    @Column(name = "s_authors", columnDefinition="TEXT")
-    private String authors;
+    @Transient
+    private List<String> authors;
+
+    // internal set of authors of the associated
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<SubmissionAuthorRecord> authorSet;
 
     // time submitted
     @Exportable(name = "Submission Time", nameInDB = "s_submission_time")
@@ -62,7 +68,7 @@ public class SubmissionRecord {
 
     // keywords associated with submissions as put by the authors
     @Exportable(name = "Keywords", nameInDB = "s_keywords")
-    @Column(name = "s_keywords", columnDefinition="TEXT")
+    @Column(name = "s_keywords", columnDefinition = "TEXT")
     private String keywords;
 
     // accept/reject decision
@@ -85,7 +91,7 @@ public class SubmissionRecord {
 
     // abstract of the submission.
     @Exportable(name = "Submission Abstract", nameInDB = "s_submission_abstract", description = "Abstract of the submission")
-    @Column(name = "s_submission_abstract", columnDefinition="TEXT")
+    @Column(name = "s_submission_abstract", columnDefinition = "TEXT")
     private String submissionAbstract;
 
     public Long getId() {
@@ -136,12 +142,20 @@ public class SubmissionRecord {
         this.title = title;
     }
 
-    public String getAuthors() {
+    public List<String> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(String authors) {
+    public void setAuthors(List<String> authors) {
         this.authors = authors;
+    }
+
+    public List<SubmissionAuthorRecord> getAuthorSet() {
+        return authorSet;
+    }
+
+    public void setAuthorSet(List<SubmissionAuthorRecord> authorSet) {
+        this.authorSet = authorSet;
     }
 
     public Date getSubmissionTime() {

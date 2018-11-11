@@ -46,7 +46,8 @@
             ],
             "involvedRecords": [
                 {
-                    "name": "record1"
+                    "name": "record1",
+                    "customized": false
                 }
             ],
             "filters": [],

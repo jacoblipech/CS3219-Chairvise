@@ -22,7 +22,8 @@ public class DBMetaDataLogicTest {
         String jsonString = new String(
                 Files.readAllBytes(Paths.get(TestProperties.TEST_DATA_FOLDER + "/DBMetaDataLogicTestExpected.json")));
         List<DBEntityMetaData> dbEntityMetaDataListExpected =
-                objectMapper.readValue(jsonString, new TypeReference<List<DBEntityMetaData>>(){});
+                objectMapper.readValue(jsonString, new TypeReference<List<DBEntityMetaData>>() {
+                });
 
         List<DBEntityMetaData> dbEntityMetaDataList = dbMetaDataLogic.getEntityMetaDataList();
 

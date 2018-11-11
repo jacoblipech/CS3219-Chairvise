@@ -55,7 +55,7 @@ public class PresentationSectionController extends BaseRestController {
 
     @PutMapping("/presentations/{presentationId}/sections/{sectionId}")
     public ResponseEntity<?> updatePresentationSection(@PathVariable Long presentationId, @PathVariable Long sectionId,
-                                                @RequestBody PresentationSection newPresentationSection) throws URISyntaxException {
+                                                       @RequestBody PresentationSection newPresentationSection) throws URISyntaxException {
         PresentationSection oldPresentationSection = presentationSectionLogic.findById(sectionId)
                 .orElseThrow(() -> new PresentationSectionNotFoundException(presentationId, sectionId));
 

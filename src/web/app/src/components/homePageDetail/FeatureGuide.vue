@@ -21,13 +21,13 @@
       <li class="more_detail">More options can be found under the presentation pre-defined dropdown.</li>
     </ul>
   </div>
-  
+
 </template>
 
 <script>
-    export default {
-        name: "FeatureGuide",
-    }
+  export default {
+    name: "FeatureGuide",
+  }
 </script>
 
 <style scoped>
@@ -35,9 +35,11 @@
     width: 100%;
     height: auto;
   }
+
   h3 {
     margin: 40px 0 0 0;
   }
+
   .more_detail {
     font-style: italic;
   }

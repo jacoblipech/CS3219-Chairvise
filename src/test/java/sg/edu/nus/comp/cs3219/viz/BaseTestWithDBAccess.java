@@ -39,6 +39,9 @@ public abstract class BaseTestWithDBAccess {
     @Autowired
     protected SubmissionRecordRepository submissionRecordRepository;
 
+    @Autowired
+    protected SubmissionAuthorRecordRepository submissionAuthorRecordRepository;
+
     protected abstract String getDataBundleName();
 
     @Before
@@ -65,7 +68,7 @@ public abstract class BaseTestWithDBAccess {
     protected static DataBundle loadDataBundle(String pathToJsonFileParam) {
         try {
             String jsonString = new String(
-                Files.readAllBytes(Paths.get(TestProperties.TEST_DATA_FOLDER + pathToJsonFileParam)));
+                    Files.readAllBytes(Paths.get(TestProperties.TEST_DATA_FOLDER + pathToJsonFileParam)));
             return new ObjectMapper().readValue(jsonString, DataBundle.class);
         } catch (IOException e) {
             throw new RuntimeException(e);

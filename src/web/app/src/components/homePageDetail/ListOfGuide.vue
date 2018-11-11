@@ -37,16 +37,16 @@
 </template>
 
 <script>
-export default {
-  name: 'ListOfGuide',
-  props: {
-    msg: String
-  },
+  export default {
+    name: 'ListOfGuide',
+    props: {
+      msg: String
+    },
 
-  methods: {
-    scrollToId(id) {
-      document.getElementById(id).scrollIntoView();
+    methods: {
+      scrollToId(id) {
+        document.getElementById(id).scrollIntoView();
+      }
     }
   }
-}
 </script>

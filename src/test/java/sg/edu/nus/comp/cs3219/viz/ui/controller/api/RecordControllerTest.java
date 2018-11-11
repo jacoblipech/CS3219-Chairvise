@@ -5,12 +5,9 @@ import org.junit.Test;
 import org.springframework.http.MediaType;
 import sg.edu.nus.comp.cs3219.viz.BaseTestREST;
 
-import javax.transaction.Transactional;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@Transactional
 public class RecordControllerTest extends BaseTestREST {
 
     @Override
@@ -90,7 +87,7 @@ public class RecordControllerTest extends BaseTestREST {
         mvc.perform(
                 post("/api/record/submission")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectToJson(dataBundle.reviewRecords.values())))
+                        .content(objectToJson(dataBundle.submissionRecords.values())))
                 .andExpect(status().isCreated());
 
         Assert.assertEquals(1,

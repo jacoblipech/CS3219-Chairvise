@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import {ID_NEW_PRESENTATION} from "./common/const";
+import {ID_NEW_PRESENTATION} from "@/common/const";
 
 Vue.use(Router)
 

@@ -93,7 +93,7 @@
                 display: true
               }
             }],
-            xAxes: [ {
+            xAxes: [{
               ticks: {
                 autoSkip: false
               },
@@ -103,7 +103,13 @@
             }]
           },
           responsive: true,
-          maintainAspectRatio: false
+          maintainAspectRatio: false,
+          plugins: {
+            datalabels: {
+              anchor: 'end',
+              align: 'end'
+            }
+          }
         }
       }
     },

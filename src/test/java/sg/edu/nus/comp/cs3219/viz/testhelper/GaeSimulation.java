@@ -13,7 +13,6 @@ import java.util.Map;
  *
  * <p>This is not the same as testing against the dev server.
  * When testing against the GAE simulation, there is no need for the dev server to be running.
- *
  */
 public class GaeSimulation {
 
@@ -43,7 +42,7 @@ public class GaeSimulation {
         LocalMailServiceTestConfig localMail = new LocalMailServiceTestConfig();
         LocalModulesServiceTestConfig localModules = new LocalModulesServiceTestConfig();
         helper = new LocalServiceTestHelper(localMail, localUserServices,
-                                            localTasks, localModules);
+                localTasks, localModules);
 
         helper.setEnvAttributes(this.getEnvironmentAttributesWithApplicationHostname());
         helper.setUp();

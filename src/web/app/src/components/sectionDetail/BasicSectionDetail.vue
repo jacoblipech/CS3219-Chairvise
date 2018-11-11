@@ -1,10 +1,12 @@
 <template>
   <el-row v-loading="sectionDetail.status.isLoading">
-    <el-form status-icon ref="editForm" label-position="left" :model="editForm" label-width="170px" :rules="editFormRule">
+    <el-form status-icon ref="editForm" label-position="left" :model="editForm" label-width="170px"
+             :rules="editFormRule">
       <div class="title" v-if="!isEditing">
         {{ sectionDetail.title }}
         <el-button type="primary" plain @click="changeEditMode(true)" v-if="isPresentationEditable">Edit</el-button>
-        <el-button type="danger" icon="el-icon-delete" circle @click="deleteSectionDetail" v-if="isPresentationEditable"></el-button>
+        <el-button type="danger" icon="el-icon-delete" circle @click="deleteSectionDetail"
+                   v-if="isPresentationEditable"></el-button>
       </div>
       <div class="title" v-else>
         <el-input v-model="editForm.title"></el-input>
@@ -36,7 +38,8 @@
           </el-switch>
         </el-form-item>
 
-        <el-form-item v-if="isInAdvancedMode" v-for="(selection, index) in editForm.selections" :label="'Selection ' + index"
+        <el-form-item v-if="isInAdvancedMode" v-for="(selection, index) in editForm.selections"
+                      :label="'Selection ' + index"
                       :key="'s' + index"
                       :prop="'selections.' + index" :rules="editFormSelectionsRule">
           <el-input v-model="selection.expression" placeholder="Expression" style="width: 300px"></el-input>&nbsp;
@@ -45,7 +48,7 @@
         </el-form-item>
 
         <el-form-item label="Record Involved" prop="involvedRecords" v-if="isInAdvancedMode" key="involvedRecords">
-          <el-select v-model="editForm.involvedRecords" multiple placeholder="Please select">
+          <el-select v-model="editForm.involvedRecords" multiple placeholder="Please select" allow-create>
             <el-option
               v-for="option in involvedRecordsOptions"
               :key="option.value"
@@ -58,7 +61,8 @@
         <el-form-item v-if="isInAdvancedMode" v-for="(joiner, index) in editForm.joiners" :label="'Joiner ' + index"
                       :key="'j' + index"
                       :prop="'joiners.' + index" :rules="editFormJoinersRule">
-          On <el-select placeholder="Left" v-model="joiner.left">
+          On
+          <el-select placeholder="Left" v-model="joiner.left">
             <el-option-group
               v-for="group in joinersFieldOptions"
               :key="group.label"
@@ -70,7 +74,8 @@
                 :value="item.value">
               </el-option>
             </el-option-group>
-          </el-select> Equals
+          </el-select>
+          Equals
           <el-select placeholder="Right" v-model="joiner.right">
             <el-option-group
               v-for="group in joinersFieldOptions"
@@ -104,9 +109,9 @@
             </el-option-group>
           </el-select>&nbsp;
           <el-select v-model="filter.comparator" style="width: 80px">
-            <el-option label=">" value=">" />
-            <el-option label="=" value="=" />
-            <el-option label="<" value="<" />
+            <el-option label=">" value=">"/>
+            <el-option label="=" value="="/>
+            <el-option label="<" value="<"/>
           </el-select>&nbsp;
           <el-input v-model="filter.value" placeholder="Value" style="width: 200px"></el-input>&nbsp;
           <el-button type="danger" icon="el-icon-delete" circle @click="removeFilter(filter)"></el-button>
@@ -146,13 +151,14 @@
                       :prop="'sorters.' + index" :rules="editFormSortersRule">
           <el-input v-model="sorter.field" placeholder="Field to Sort" style="width: 300px"></el-input>&nbsp;
           <el-select v-model="sorter.order" style="width: 80px" placeholder="Order">
-            <el-option label="Big to Small" value="DESC" />
-            <el-option label="Small to Big" value="ASC" />
+            <el-option label="Big to Small" value="DESC"/>
+            <el-option label="Small to Big" value="ASC"/>
           </el-select>&nbsp;
           <el-button type="danger" icon="el-icon-delete" circle @click="removeSorter(sorter)"></el-button>
         </el-form-item>
 
-        <slot name="extraFormItems" :editForm="editForm" :extraData="editForm.extraData" :isInAdvancedMode="isInAdvancedMode"></slot>
+        <slot name="extraFormItems" :editForm="editForm" :extraData="editForm.extraData"
+              :isInAdvancedMode="isInAdvancedMode"></slot>
 
         <el-form-item>
           <el-button type="primary" @click="previewAnalysisResult('editForm')" plain>Preview</el-button>
@@ -169,7 +175,7 @@
 </template>
 
 <script>
-  import { deepCopy } from "@/common/utility"
+  import {deepCopy} from "@/common/utility"
 
   export default {
     props: {
@@ -259,6 +265,12 @@
         return this.$store.state.dbMetaData.entities.map(entity => ({
           label: entity.name,
           value: entity.tableName
+        }))
+      },
+      editFormInvolvedRecords() {
+        return this.editForm.involvedRecords.map(r => ({
+          name: r,
+          customized: !this.$store.state.dbMetaData.entities.some(e => e.tableName === r)
         }))
       },
       filtersFieldOptions() {
@@ -366,7 +378,7 @@
               description: this.editForm.description,
               dataSet: this.sectionDetail.dataSet,
               selections: this.editForm.selections,
-              involvedRecords: this.editForm.involvedRecords.map(s => ({name: s})),
+              involvedRecords: deepCopy(this.editFormInvolvedRecords),
               filters: this.editForm.filters.map(f => Object.assign({}, f)),
               joiners: this.editForm.joiners.map(j => Object.assign({}, j)),
               groupers: this.editForm.groupers.map(g => ({field: g})),
@@ -406,7 +418,7 @@
             id: this.sectionDetail.id,
             dataSet: this.sectionDetail.dataSet,
             selections: this.editForm.selections,
-            involvedRecords: this.editForm.involvedRecords.map(s => ({name: s})),
+            involvedRecords: this.editFormInvolvedRecords,
             filters: this.editForm.filters,
             joiners: this.editForm.joiners.map(j => Object.assign({}, j)),
             groupers: this.editForm.groupers.map(g => ({field: g})),
@@ -415,7 +427,7 @@
             .then(() => {
               this.$emit('update-visualisation', {
                 selections: this.editForm.selections,
-                involvedRecords: this.editForm.involvedRecords.map(s => ({name: s})),
+                involvedRecords: this.editFormInvolvedRecords,
                 filters: this.editForm.filters.map(f => Object.assign({}, f)),
                 joiners: this.editForm.joiners.map(j => Object.assign({}, j)),
                 groupers: this.editForm.groupers.map(g => ({field: g})),
