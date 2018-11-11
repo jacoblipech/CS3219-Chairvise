@@ -93,7 +93,7 @@
                 display: true
               }
             }],
-            xAxes: [ {
+            xAxes: [{
               ticks: {
                 autoSkip: false
               },

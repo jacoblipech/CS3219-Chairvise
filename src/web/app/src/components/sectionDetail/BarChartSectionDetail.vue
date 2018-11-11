@@ -33,10 +33,12 @@
       <el-form-item label="Legend Label Name" prop="extraData.dataSetLabel" v-if="slotProps.isInAdvancedMode">
         <el-input v-model="slotProps.extraData.dataSetLabel" placeholder="Label Name"></el-input>
       </el-form-item>
-      <el-form-item label="Num of result to display" prop="extraData.numOfResultToDisplay" v-if="slotProps.isInAdvancedMode">
+      <el-form-item label="Num of result to display" prop="extraData.numOfResultToDisplay"
+                    v-if="slotProps.isInAdvancedMode">
         <el-slider v-model="slotProps.extraData.numOfResultToDisplay" :min="5" :max="30"></el-slider>
       </el-form-item>
-      <el-form-item v-if="slotProps.isInAdvancedMode" v-for="(tooltip, index) in slotProps.extraData.fieldsShownInToolTips" :label="'Tooltips ' + index"
+      <el-form-item v-if="slotProps.isInAdvancedMode"
+                    v-for="(tooltip, index) in slotProps.extraData.fieldsShownInToolTips" :label="'Tooltips ' + index"
                     :key="'tooltips' + index">
         <el-select placeholder="Field" v-model="tooltip.field">
           <el-option
@@ -47,10 +49,12 @@
           </el-option>
         </el-select>&nbsp;
         <el-input v-model="tooltip.label" placeholder="Label Name" style="width: 150px"></el-input>&nbsp;
-        <el-button type="danger" icon="el-icon-delete" circle @click="removeTooltip(slotProps.extraData.fieldsShownInToolTips, tooltip)"></el-button>
+        <el-button type="danger" icon="el-icon-delete" circle
+                   @click="removeTooltip(slotProps.extraData.fieldsShownInToolTips, tooltip)"></el-button>
       </el-form-item>
       <el-form-item v-if="slotProps.isInAdvancedMode">
-        <el-button type="success" plain @click="addTooltip(slotProps.extraData.fieldsShownInToolTips)">Add Tooltip</el-button>
+        <el-button type="success" plain @click="addTooltip(slotProps.extraData.fieldsShownInToolTips)">Add Tooltip
+        </el-button>
       </el-form-item>
     </template>
   </basic-section-detail>

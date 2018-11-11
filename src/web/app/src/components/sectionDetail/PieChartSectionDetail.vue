@@ -25,7 +25,8 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="Num of result to display" prop="extraData.numOfResultToDisplay" v-if="slotProps.isInAdvancedMode">
+      <el-form-item label="Num of result to display" prop="extraData.numOfResultToDisplay"
+                    v-if="slotProps.isInAdvancedMode">
         <el-slider v-model="slotProps.extraData.numOfResultToDisplay" :min="5" :max="30"></el-slider>
       </el-form-item>
     </template>

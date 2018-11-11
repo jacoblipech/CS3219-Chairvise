@@ -111,7 +111,7 @@ export default {
       ],
       extraData: {
         dataSetLabel: 'Submission Counts',
-        fieldsShownInToolTips: [{ label: 'Email', field: 'author_email'}],
+        fieldsShownInToolTips: [{label: 'Email', field: 'author_email'}],
         xAxisFieldName: 'author_name',
         yAxisFieldName: 'submission_count',
         numOfResultToDisplay: 10,
@@ -492,7 +492,7 @@ export default {
       joiners: [],
       groupers: [{
         field: 'weighted_score_interval'
-      },{
+      }, {
         field: 'weighted_score_interval_sort'
       }],
       sorters: [
@@ -2085,7 +2085,7 @@ export default {
       joiners: [],
       groupers: [{
         field: 'weighted_score_interval'
-      },{
+      }, {
         field: 'weighted_score_interval_sort'
       }],
       sorters: [
@@ -2316,7 +2316,7 @@ export default {
       joiners: [],
       groupers: [{
         field: 'avg_expertise_level_interval'
-      },{
+      }, {
         field: 'avg_expertise_level_interval_sort'
       }],
       sorters: [
@@ -2426,7 +2426,7 @@ export default {
       joiners: [],
       groupers: [{
         field: 'avg_confidence_level_interval'
-      },{
+      }, {
         field: 'avg_confidence_level_interval_sort'
       }],
       sorters: [
@@ -2559,12 +2559,13 @@ export default {
         fieldsShownInToolTips: [
           {
             label: 'Email',
-            field: 'author_email'},
+            field: 'author_email'
+          },
           {
             label: 'Submission',
             field: 'submission_count'
           }
-          ],
+        ],
         xAxisFieldName: 'author_name',
         yAxisFieldName: 'avg_weighted_score',
 

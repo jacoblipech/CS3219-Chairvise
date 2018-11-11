@@ -7,12 +7,16 @@
         <ul>
           <li>Step 1. Upon logging in, click on the "Import Data" tab.</li>
           <li>Step 2. Upload or drag the csv file from your computer.</li>
-          <li>Step 3. Choose the table types of the csv file uploaded (i.e. Author Record, Review Record, Submission Record).</li>
+          <li>Step 3. Choose the table types of the csv file uploaded (i.e. Author Record, Review Record, Submission
+            Record).
+          </li>
           <li>Step 4. Select if there is a header row in the uploaded csv file.<br/>
           <li>Step 5. For your selected table type, map the database fields to the imported data fields one by one.</li>
           <li>Step 6. Finally click upload to update the database accordingly.</li>
           <li class="without-bullets">&nbsp;</li>
-          <li><b>Note: </b> You can select any number of columns to map into the database. Please map all the data fields you need.</li>
+          <li><b>Note: </b> You can select any number of columns to map into the database. Please map all the data
+            fields you need.
+          </li>
         </ul>
       </li>
       <li id="add-guide"><h3>User Guide for Adding Presentation:</h3></li>
@@ -35,7 +39,9 @@
           <li>Step 7. Delete - Remove the visualization section from the presentation.</li>
           <li>Step 8. There is no limit to the number of visualizations to added by the users.</li>
           <li class="without-bullets">&nbsp;</li>
-          <li><b>Note: </b>The default mode for users is basic mode. Advanced mode is for users to make SQL-like queries straight from the database. We will update a separate documentation on this in the later stage.</li>
+          <li><b>Note: </b>The default mode for users is basic mode. Advanced mode is for users to make SQL-like queries
+            straight from the database. We will update a separate documentation on this in the later stage.
+          </li>
         </ul>
       </li>
       <li id="share-guide"><h3>User Guide for Sharing Presentation:</h3></li>
@@ -45,7 +51,9 @@
           <li>Step 2. Enter the email address of the user to share to.</li>
           <li>Step 3. Change the permission (view or edit) given to the user.</li>
           <li class="without-bullets">&nbsp;</li>
-          <li><b>Note: </b>There is also an option to give Public Access Control (view or edit). And you can view who has access to the presentation as well.</li>
+          <li><b>Note: </b>There is also an option to give Public Access Control (view or edit). And you can view who
+            has access to the presentation as well.
+          </li>
         </ul>
       </li>
     </ul>
@@ -53,9 +61,9 @@
 </template>
 
 <script>
-    export default {
-        name: "DetailedFeatureGuide",
-    }
+  export default {
+    name: "DetailedFeatureGuide",
+  }
 </script>
 
 <style scoped>

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { processMapping } from '../helpers/processor.js'
+import {processMapping} from '../helpers/processor.js'
 
 export default {
   state: {
@@ -89,9 +89,9 @@ export default {
         state.data.mappingResult = payload.map;
         state.mappingFinished = true;
         var processedResult = processMapping(payload.map,
-            state.data.uploadedData,
-            state.data.dbSchema,
-            state.data.hasHeader);
+          state.data.uploadedData,
+          state.data.dbSchema,
+          state.data.hasHeader);
         state.data.processedResult = processedResult;
       } catch (err) {
         state.error.push(err);

@@ -4,7 +4,7 @@
 
 <script>
   import renderWordCloudNative from 'wordcloud';
-  import { deepCopy } from "@/common/utility"
+  import {deepCopy} from "@/common/utility"
 
   export default {
     name: "WordCloud",
@@ -49,8 +49,8 @@
 </script>
 
 <style scoped>
-.canvasStyle {
-  width: 100%;
-  height: 300px;
-}
+  .canvasStyle {
+    width: 100%;
+    height: 300px;
+  }
 </style>
