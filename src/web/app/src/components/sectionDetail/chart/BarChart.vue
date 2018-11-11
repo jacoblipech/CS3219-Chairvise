@@ -14,6 +14,11 @@
     mounted () {
       // this.chartData is created in the mixin
       this.renderChart(this.chartData, this.options)
+    },
+    watch: {
+      options () {
+        this.renderChart(this.chartData, this.options);
+      }
     }
   }
 </script>
