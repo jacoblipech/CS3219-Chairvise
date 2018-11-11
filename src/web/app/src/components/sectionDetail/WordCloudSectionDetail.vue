@@ -17,6 +17,10 @@
           <el-option label="Space" value="\s" />
         </el-select>
       </el-form-item>
+      <el-form-item label="Word to Ignore" prop="extraData.ignoreWords" v-if="slotProps.isInAdvancedMode">
+        <el-select multiple v-model="slotProps.extraData.ignoreWords" filterable allow-create>
+        </el-select>
+      </el-form-item>
     </template>
   </basic-section-detail>
 </template>
@@ -100,20 +104,22 @@
         // will only require at least one selection
         // count the occurrence of word
         result.forEach(r => {
-          r[fieldName].split(delimiterRegex).forEach(w => {
-            // skip empty string
-            if (w.length === 0) {
-              return
-            }
-            // normalized word e.g. 'digital world' -> `Digital World`
-            let normalizedW = this.capitalizeFirstWord(w);
-            // put in the count map
-            if (wordsCount.hasOwnProperty(normalizedW)) {
-              wordsCount[normalizedW]++
-            } else {
-              wordsCount[normalizedW] = 1;
-            }
-          })
+          r[fieldName].split(delimiterRegex)
+            .filter(w => !extraData.ignoreWords.includes(w.toLowerCase())) // filter ignoreWords
+            .forEach(w => {
+              // skip empty string
+              if (w.length === 0) {
+                return
+              }
+              // normalized word e.g. 'digital world' -> `Digital World`
+              let normalizedW = this.capitalizeFirstWord(w);
+              // put in the count map
+              if (wordsCount.hasOwnProperty(normalizedW)) {
+                wordsCount[normalizedW]++
+              } else {
+                wordsCount[normalizedW] = 1;
+              }
+            })
         });
         // generate format as VueWordCloud required
         let words = [];

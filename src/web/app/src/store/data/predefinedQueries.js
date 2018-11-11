@@ -23,7 +23,8 @@ export default {
       groupers: [],
       sorters: [],
       extraData: {
-        delimiters: ['\\r', '\\n']
+        delimiters: ['\\r', '\\n'],
+        ignoreWords: [],
       }
     }
   },
@@ -51,7 +52,10 @@ export default {
       groupers: [],
       sorters: [],
       extraData: {
-        delimiters: ['\\r', '\\n', '\\s']
+        delimiters: ['\\r', '\\n', '\\s'],
+        ignoreWords: ["the", "to", "of", "and", "in", "a", "are", "is", "this", "it", "that", "on", "be", "have",
+          "for", "as", "an", "would", "some", "there", "from", "or", "by", "they", "can", "with", "should", "how", "what",
+          "at", "could", "if"],
       }
     }
   },
@@ -175,7 +179,7 @@ export default {
       dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
-          expression: "SUM(CASE WHEN s_is_accepted = 'yes' THEN 1 ELSE 0 END)",
+          expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)",
           rename: 'accepted'
         },
         {
@@ -183,7 +187,7 @@ export default {
           rename: 'submitted'
         },
         {
-          expression: "SUM(CASE WHEN s_is_accepted = 'yes' THEN 1 ELSE 0 END)/COUNT(*)",
+          expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)/COUNT(*)",
           rename: 'acceptance_rate'
         },
         {
@@ -242,7 +246,7 @@ export default {
       dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
-          expression: "SUM(CASE WHEN s_is_accepted = 'yes' THEN 1 ELSE 0 END)",
+          expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)",
           rename: 'accepted'
         },
         {
@@ -250,7 +254,7 @@ export default {
           rename: 'submitted'
         },
         {
-          expression: "SUM(CASE WHEN s_is_accepted = 'yes' THEN 1 ELSE 0 END)/COUNT(*)",
+          expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)/COUNT(*)",
           rename: 'acceptance_rate'
         },
         {
@@ -685,7 +689,7 @@ export default {
       dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
-          expression: "SUM(CASE WHEN s_is_accepted = 'yes' THEN 1 ELSE 0 END)/COUNT(*)",
+          expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)/COUNT(*)",
           rename: 'acceptance_ratio'
         },
         {
@@ -730,7 +734,7 @@ export default {
       dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
-          expression: "SUM(CASE WHEN s_is_accepted = 'yes' THEN 1 ELSE 0 END)/COUNT(*)",
+          expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)/COUNT(*)",
           rename: 'acceptance_ratio'
         },
         {
