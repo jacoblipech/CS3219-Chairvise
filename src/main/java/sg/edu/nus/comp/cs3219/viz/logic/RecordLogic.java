@@ -1,6 +1,7 @@
 package sg.edu.nus.comp.cs3219.viz.logic;
 
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import sg.edu.nus.comp.cs3219.viz.common.entity.record.AuthorRecord;
 import sg.edu.nus.comp.cs3219.viz.common.entity.record.ReviewRecord;
 import sg.edu.nus.comp.cs3219.viz.common.entity.record.SubmissionAuthorRecord;
@@ -10,7 +11,6 @@ import sg.edu.nus.comp.cs3219.viz.storage.repository.ReviewRecordRepository;
 import sg.edu.nus.comp.cs3219.viz.storage.repository.SubmissionAuthorRecordRepository;
 import sg.edu.nus.comp.cs3219.viz.storage.repository.SubmissionRecordRepository;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
