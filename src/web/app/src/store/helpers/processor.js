@@ -105,6 +105,20 @@ export function processMapping(mapping, data, dbFields, hasLabel) {
         rawData = processDouble(rawData);
       }
 
+      // parse authors
+      if (fieldType === "List") {
+        let dataList = rawData.split("and");
+        if (dataList.length === 1) {
+          rawData = dataList;
+        } else {
+          let lastAuthor = dataList[1];
+          let allAuthors = dataList[0].split(",");
+          allAuthors.push(lastAuthor);
+          rawData = allAuthors;
+        }
+        rawData = rawData.map(author => author.trim());
+      }
+
       // if is separate date format, assign using date field
       // else, assign directly using date field
       if (isSeperateDate) {
