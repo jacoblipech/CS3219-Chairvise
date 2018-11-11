@@ -1,8 +1,28 @@
 import moment from 'moment';
 
-// This is a rather comoplex function
+function processDouble(raw) {
+  if (!isNaN(parseFloat(raw))) {
+    return parseFloat(raw);
+  }
+  // if not even string, return default value 0
+  if (typeof(raw) !== "string") {
+    return 0;
+  }
+  let rawStringList = raw.toLocaleLowerCase().split("\n");
+  for (let i = 0; i < rawStringList.length; i++) {
+    let rawString = rawStringList[i];
+    if (rawString.includes("confidence:")) {
+      // hard code the processing
+      let confidenceValueString = rawString.trim().split(":")[1];
+      return parseFloat(confidenceValueString);
+    }
+  }
+  return 0;
+}
+
+// This is a rather complex function
 // this function includes some parsing logic
-export function processMapping(mapping, detail, data, dbFields, hasLabel) {
+export function processMapping(mapping, data, dbFields, hasLabel) {
   // validate
   let checkDateResult = dateCheck(mapping, dbFields);
   if (hasLabel) {
@@ -82,31 +102,10 @@ export function processMapping(mapping, detail, data, dbFields, hasLabel) {
 
       // parse double
       if (fieldType === "double") {
-        rawData = parseFloat(rawData);
+        rawData = processDouble(rawData);
       }
 
-      // parse boolean
-      if (fieldType === "boolean") {
-        let format = detail[idx].detail;
-        switch (format) {
-        case "yes":
-          rawData = rawData === "yes" ? true : false;
-          break;
-        case "true":
-          rawData = rawData === "true" ? true : false;
-          break;
-        case "ok":
-          rawData = rawData === "ok" ? true : false;
-          break;
-        case "accept":
-          rawData = rawData === "accept" ? true : false;
-          break;
-        default:
-          throw "boolean format not supported";
-        }
-      }
-
-      // if is seperate date format, assign using date field
+      // if is separate date format, assign using date field
       // else, assign directly using date field
       if (isSeperateDate) {
         dataObject[dateField] = rawData;

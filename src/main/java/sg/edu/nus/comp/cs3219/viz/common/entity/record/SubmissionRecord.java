@@ -69,19 +69,19 @@ public class SubmissionRecord {
     @Exportable(name = "Is Accepted", nameInDB = "s_is_accepted", description = "Accept/Reject decision")
     @Column(name = "s_is_accepted")
     @JsonProperty("isAccepted")
-    private boolean isAccepted;
+    private String isAccepted;
 
     // acceptance/rejection mail sent to authors or not?
     @Exportable(name = "Is Notified", nameInDB = "s_is_notified", description = "Acceptance/rejection mail sent to authors or not?")
     @Column(name = "s_is_notified")
     @JsonProperty("isNotified")
-    private boolean isNotified;
+    private String isNotified;
 
     // review sent in the mails or not?
     @Exportable(name = "Is Reviews Sent", nameInDB = "s_is_reviews_sent", description = "Review sent in the mails or not?")
     @Column(name = "s_is_reviews_sent")
     @JsonProperty("isReviewsSent")
-    private boolean isReviewsSent;
+    private String isReviewsSent;
 
     // abstract of the submission.
     @Exportable(name = "Submission Abstract", nameInDB = "s_submission_abstract", description = "Abstract of the submission")
@@ -168,28 +168,28 @@ public class SubmissionRecord {
         this.keywords = keywords;
     }
 
-    public boolean isAccepted() {
+    public String getIsAccepted() {
         return isAccepted;
     }
 
-    public void setAccepted(boolean accepted) {
-        isAccepted = accepted;
+    public void setIsAccepted(String isAccepted) {
+        this.isAccepted = isAccepted;
     }
 
-    public boolean isNotified() {
+    public String getIsNotified() {
         return isNotified;
     }
 
-    public void setNotified(boolean notified) {
-        isNotified = notified;
+    public void setIsNotified(String isNotified) {
+        this.isNotified = isNotified;
     }
 
-    public boolean isReviewsSent() {
+    public String getIsReviewsSent() {
         return isReviewsSent;
     }
 
-    public void setReviewsSent(boolean reviewsSent) {
-        isReviewsSent = reviewsSent;
+    public void setIsReviewsSent(String isReviewsSent) {
+        this.isReviewsSent = isReviewsSent;
     }
 
     public String getSubmissionAbstract() {

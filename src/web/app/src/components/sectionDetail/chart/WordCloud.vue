@@ -4,6 +4,7 @@
 
 <script>
   import renderWordCloudNative from 'wordcloud';
+  import { deepCopy } from "@/common/utility"
 
   export default {
     name: "WordCloud",
@@ -38,7 +39,7 @@
     methods: {
       renderWordCloud() {
         renderWordCloudNative(this.$el, {
-          list: JSON.parse(JSON.stringify(this.data)),
+          list: deepCopy(this.data),
           weightFactor: this.weightFactor,
           rotateRatio: 0
         })

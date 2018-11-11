@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { deepCopy } from "@/common/utility"
 
 export default {
   state: {
@@ -19,6 +20,7 @@ export default {
       isApiError: false,
       apiErrorMsg: '',
     },
+    isPresentationEditable: false
   },
   mutations: {
     setPresentationListLoading(state, payload) {
@@ -81,6 +83,10 @@ export default {
     setPresentationFormField(state, {field, value}) {
       state.presentationForm[field] = value
     },
+
+    setIsPresentationEditable(state, isPresentationEditable) {
+      state.isPresentationEditable = isPresentationEditable;
+    }
   },
   actions: {
     async getPresentationList({ commit }) {
@@ -97,9 +103,9 @@ export default {
           })
     },
 
-    async getPresentation({commit}, payload) {
+    async getPresentation({commit}, presentationId) {
       commit('setPresentationFormLoading', true);
-      axios.get('/api/presentations/' + payload)
+      await axios.get(`/api/presentations/${presentationId}`)
           .then(response => {
             commit('setPresentationForm', response.data)
           })
@@ -108,15 +114,15 @@ export default {
           })
           .finally(() => {
             commit('setPresentationFormLoading', false);
-          })
+          });
     },
 
     async savePresentation({ commit, state }) {
       commit('setPresentationFormLoading', true);
       await axios.post('/api/presentations', state.presentationForm)
           .then(response => {
-            commit('addToPresentationList', response.data);
-            commit('setPresentationForm', response.data)
+            commit('addToPresentationList', deepCopy(response.data));
+            commit('setPresentationForm', deepCopy(response.data))
           })
           .catch(e => {
             commit('setPresentationFormApiError', e.toString());

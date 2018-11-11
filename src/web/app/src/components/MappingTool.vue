@@ -8,7 +8,7 @@
         <transition-group name="tags-group" tag="div">
           <div class="tag" v-for="(item, idx) in dbList.fieldMetaDataList"
                v-bind:key="idx"
-               v-bind:class="[ idx == selectedDBTag ? 'active' : '', mappedDBTag.includes(idx) ? 'hidden' : '' ]"
+               v-bind:class="[ idx === selectedDBTag ? 'active' : '', mappedDBTag.includes(idx) ? 'hidden' : '' ]"
                v-on:click="dbTagClicked(idx)">
             {{ item.name }}
           </div>
@@ -22,7 +22,7 @@
         <transition-group name="tags-group" tag="div">
           <div class="tag" v-for="(item, idx) in importList"
                v-bind:key="idx"
-               v-bind:class="[ idx == selectedImportTag ? 'active' : '', mappedImportTag.includes(idx) ? 'hidden' : '' ]"
+               v-bind:class="[ idx === selectedImportTag ? 'active' : '', mappedImportTag.includes(idx) ? 'hidden' : '' ]"
                v-on:click="importTagClicked(idx)">
             {{ item }}
           </div>
@@ -52,14 +52,10 @@
             <i class="el-icon-caret-right"></i>
             {{ importList[item[1]] }}
           </p><i class="el-icon-close" v-on:click="removeMapClicked(index)"></i><br>
-          <el-input placeholder="true value format (e.g. yes)" size="mini"
-              v-model="typeDetails[index].detail"
-              v-if="dbList.fieldMetaDataList[item[0]].type == 'boolean'">
-          </el-input>
         </div>
       </transition-group>
       <transition name="fade" mode="out-in">
-        <div class="no-map-info" v-show="mappedPairs.length == 0">
+        <div class="no-map-info" v-show="mappedPairs.length === 0">
           <p>No mapping specified!</p>
         </div>
       </transition>
@@ -91,20 +87,20 @@
 </template>
 
 <script>
+  import { deepCopy, filterPredefinedMap } from "@/common/utility"
+
 export default {
   name: "MappingTool",
   data() {
     return {
-      // currently selected databaes tag and
-      // imported tag
+      // currently selected database tag and imported tag
       selectedDBTag: -1,
       selectedImportTag: -1,
 
       // ordered list of tags that have been
       // mapped with their data type details
-      mappedDBTag: [],
-      mappedImportTag: [],
-      typeDetails: [],
+      mappedDBTag: filterPredefinedMap(deepCopy(this.$store.state.dataMapping.data.predefinedMapping.dbTagIndices), this.$store.state.dataMapping.data.dbSchema.fieldMetaDataList),
+      mappedImportTag: filterPredefinedMap(deepCopy(this.$store.state.dataMapping.data.predefinedMapping.importedTagIndices), this.$store.state.dataMapping.data.uploadedLabel),
 
       hasSubmitted: false,
       tableType: ""
@@ -118,10 +114,9 @@ export default {
     // the mapped pairs are indexes.
     mappedPairs: function() {
       var temp = this.mappedImportTag;
-      var result = this.mappedDBTag.map(function(e, i) {
+      return this.mappedDBTag.map(function(e, i) {
         return [e, temp[i]];
       });
-      return result;
     },
 
     // generates imported tags.
@@ -161,41 +156,34 @@ export default {
   },
   methods: {
     dbTagClicked: function(idx) {
-      if (idx == this.selectedDBTag) {
+      if (idx === this.selectedDBTag) {
         this.selectedDBTag = -1;
         return;
       }
       this.selectedDBTag = idx;
-      if (this.selectedImportTag != -1 && this.selectedDBTag != -1) {
+      if (this.selectedImportTag !== -1 && this.selectedDBTag !== -1) {
         this.mappedDBTag.push(this.selectedDBTag);
         this.mappedImportTag.push(this.selectedImportTag);
         this.selectedDBTag = -1;
         this.selectedImportTag = -1;
-        var newTypeObject = {};
-        newTypeObject[this.typeDetails.length] = { detail: "" };
-        this.typeDetails.push(newTypeObject);
       }
     },
     importTagClicked: function(idx) {
-      if (idx == this.selectedImportTag) {
+      if (idx === this.selectedImportTag) {
         this.selectedImportTag = -1;
         return;
       }
       this.selectedImportTag = idx;
-      if (this.selectedImportTag != -1 && this.selectedDBTag != -1) {
+      if (this.selectedImportTag !== -1 && this.selectedDBTag !== -1) {
         this.mappedDBTag.push(this.selectedDBTag);
         this.mappedImportTag.push(this.selectedImportTag);
         this.selectedDBTag = -1;
         this.selectedImportTag = -1;
-        var newTypeObject = {};
-        newTypeObject[this.typeDetails.length] = { detail: "" };
-        this.typeDetails.push(newTypeObject);
       }
     },
     removeMapClicked: function(idx) {
       this.mappedDBTag.splice(idx, 1);
       this.mappedImportTag.splice(idx, 1);
-      this.typeDetails.splice(idx, 1);
     },
     backClicked: function() {
       this.$store.commit("clearDBSchema");
@@ -203,11 +191,11 @@ export default {
       this.$store.commit("clearTableType");
       this.$store.commit("clearHasHeader");
       this.$store.commit("clearMapping");
+      this.$store.commit("clearPredefinedMapping");
     },
     uploadClicked: function() {
-      var map = JSON.parse(JSON.stringify(this.mappedPairs));
-      var types = JSON.parse(JSON.stringify(this.typeDetails));
-      this.$store.commit("setMapping", { "map": map, "types": types });
+      var map = deepCopy(this.mappedPairs);
+      this.$store.commit("setMapping", { "map": map });
       if (this.errors.length == 0) {
         this.hasSubmitted = true;
       }
@@ -224,6 +212,7 @@ export default {
       this.$store.commit("clearHasHeader");
       this.$store.commit("clearMapping");
       this.$store.commit("clearError");
+      this.$store.commit("clearPredefinedMapping");
     }
   },
   mounted() {},

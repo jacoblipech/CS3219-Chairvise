@@ -3,8 +3,8 @@
     <el-form status-icon ref="editForm" label-position="left" :model="editForm" label-width="170px" :rules="editFormRule">
       <div class="title" v-if="!isEditing">
         {{ sectionDetail.title }}
-        <el-button type="primary" plain @click="changeEditMode(true)" v-if="!isRenderForPDF">Edit</el-button>
-        <el-button type="danger" icon="el-icon-delete" circle @click="deleteSectionDetail" v-if="!isRenderForPDF"></el-button>
+        <el-button type="primary" plain @click="changeEditMode(true)" v-if="isPresentationEditable">Edit</el-button>
+        <el-button type="danger" icon="el-icon-delete" circle @click="deleteSectionDetail" v-if="isPresentationEditable"></el-button>
       </div>
       <div class="title" v-else>
         <el-input v-model="editForm.title"></el-input>
@@ -169,6 +169,8 @@
 </template>
 
 <script>
+  import { deepCopy } from "@/common/utility"
+
   export default {
     props: {
       sectionDetail: {
@@ -276,8 +278,8 @@
       groupersFieldOptions() {
         return this.filtersFieldOptions;
       },
-      isRenderForPDF() {
-        return this.$store.state.isRenderForPDF;
+      isPresentationEditable() {
+        return this.$store.state.presentation.isPresentationEditable;
       }
     },
 
@@ -296,13 +298,13 @@
         this.editForm.title = this.sectionDetail.title;
         this.editForm.description = this.sectionDetail.description;
         this.editForm.dataSet = this.sectionDetail.dataSet;
-        this.editForm.selections = JSON.parse(JSON.stringify(this.sectionDetail.selections)); // deep copy
+        this.editForm.selections = deepCopy(this.sectionDetail.selections); // deep copy
         this.editForm.involvedRecords = this.sectionDetail.involvedRecords.map(r => r.name);
         this.editForm.filters = this.sectionDetail.filters.map(f => Object.assign({}, f));
         this.editForm.joiners = this.sectionDetail.joiners.map(f => Object.assign({}, f));
         this.editForm.groupers = this.sectionDetail.groupers.map(r => r.field);
-        this.editForm.sorters = JSON.parse(JSON.stringify(this.sectionDetail.sorters)); // deep copy
-        this.editForm.extraData = JSON.parse(JSON.stringify(this.sectionDetail.extraData)) // deep copy
+        this.editForm.sorters = deepCopy(this.sectionDetail.sorters); // deep copy
+        this.editForm.extraData = deepCopy(this.sectionDetail.extraData) // deep copy
       },
 
       addSelection() {

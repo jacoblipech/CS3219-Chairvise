@@ -1,6 +1,6 @@
 <template>
 <div>
-  <h4>List of Presentations</h4>
+  <h4>Presentations created by me</h4>
   <el-menu :default-active="$route.path" v-loading="isLoading" router>
     <li key="__NEW__">
       <el-menu-item :index="'/analyze/__NEW__'">
@@ -44,6 +44,7 @@
     computed: {
       isLoading() {
         return this.$store.state.presentation.presentationListStatus.isLoading
+          || this.$store.state.presentation.presentationFormStatus.isLoading
           || this.$store.state.section.sectionListStatus.isLoading
           || this.$store.state.section.sectionList.some(s => s.status.isLoading)
       },

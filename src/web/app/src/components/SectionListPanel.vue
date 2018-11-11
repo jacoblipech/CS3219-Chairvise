@@ -8,14 +8,19 @@
       </el-alert>
     </el-row>
     <div v-loading="isLoadingDBMetaData || isLoadingSectionList" v-if="!isNewPresentation">
-      <el-row class="addRowRightAlign" v-if="isLogin">
-        <el-select v-model="selectedNewSection" placeholder="Please select a section">
-          <el-option
-            v-for="item in predefinedSections"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
+      <el-row class="addRowRightAlign" v-if="isLogin && isPresentationEditable">
+        <el-select v-model="selectedNewSection" placeholder="Please select a section to add" style="width: 300px">
+          <el-option-group
+            v-for="group in predefinedSections"
+            :key="group.label"
+            :label="group.label">
+            <el-option
+              v-for="item in group.options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-option-group>
         </el-select>
         <el-button class="addButtonLeft" type="success" @click="addNewSection">Add New Section</el-button>
       </el-row>
@@ -52,15 +57,37 @@ export default {
       return this.$store.state.userInfo.isLogin
     },
 
+    isPresentationEditable() {
+      return this.$store.state.presentation.isPresentationEditable;
+    },
+
     predefinedSections() {
-      let sectionOptions = [];
+      let sectionOptionsGroup = {};
+      // grouping the predefined queries
       for (let key in PredefinedQueries) {
-        if (PredefinedQueries.hasOwnProperty(key)) {
-          sectionOptions.push({
-            value: key,
-            label: PredefinedQueries[key].name,
-          })
+        if (!PredefinedQueries.hasOwnProperty(key)) {
+          continue;
         }
+        let groupName = PredefinedQueries[key].group;
+        if (sectionOptionsGroup[groupName] === undefined) {
+          sectionOptionsGroup[groupName] = [];
+        }
+        sectionOptionsGroup[groupName].push({
+          value: key,
+          label: PredefinedQueries[key].name,
+        })
+      }
+
+      // generate to format that element ui requires
+      let sectionOptions = [];
+      for (let groupName in sectionOptionsGroup) {
+        if (!sectionOptionsGroup.hasOwnProperty(groupName)) {
+          continue;
+        }
+        sectionOptions.push({
+          label: groupName,
+          options: sectionOptionsGroup[groupName]
+        })
       }
       return sectionOptions;
     },
@@ -94,7 +121,9 @@ export default {
   },
   methods: {
     fetchSectionList() {
-      if (!this.isNewPresentation) {
+      if (this.isNewPresentation) {
+        this.$store.commit('clearSectionList');
+      } else {
         this.$store.dispatch('fetchSectionList', this.presentationId)
       }
     },

@@ -30,6 +30,13 @@
           <el-option :key="'Yes'" :label="'Yes'" :value="true"></el-option>
           <el-option :key="'No'" :label="'No'" :value="false"></el-option>
         </el-select>
+        <el-select v-if="uploaded" v-model="predefinedMappingId" placeholder="Predefined Mapping">
+          <el-option v-for="(mapping, idx) in predefinedMappings"
+                     :key="mapping.name"
+                     :label="mapping.name"
+                     :value="idx">
+          </el-option>
+        </el-select>
       </div>
     </div>
   </div>
@@ -38,12 +45,16 @@
 <script>
 import MappingTool from "@/components/MappingTool.vue";
 import Papa from "papaparse";
-import { REVIEW_DATE_DAY_FIELD, REVIEW_DATE_TIME_FIELD, REVIEW_TABLE_ID } from "../common/const.js"
+import { REVIEW_DATE_DAY_FIELD, REVIEW_DATE_TIME_FIELD, REVIEW_TABLE_ID } from "@/common/const"
+import { deepCopy } from "@/common/utility"
+import PredefinedMappings from "@/store/data/predefinedMapping"
 
 export default {
   name: "ImportData",
   data() {
-    return {};
+    return {
+      predefinedMappings: PredefinedMappings
+    };
   },
   mounted() {
     // When page is loaded, fetch all the database fields
@@ -64,8 +75,8 @@ export default {
         return this.$store.state.dataMapping.data.tableType;
       },
       set: function(newValue) {
-        let dbSchema = JSON.parse(JSON.stringify(this.dbSchemas[newValue]));
-        if (newValue == REVIEW_TABLE_ID) {
+        let dbSchema = deepCopy(this.dbSchemas[newValue]);
+        if (newValue === REVIEW_TABLE_ID) {
           dbSchema.fieldMetaDataList.push(REVIEW_DATE_DAY_FIELD);
           dbSchema.fieldMetaDataList.push(REVIEW_DATE_TIME_FIELD);
         }
@@ -81,10 +92,19 @@ export default {
         this.$store.commit("setHasHeader", newValue);
       }
     },
+    predefinedMappingId: {
+      get: function() {
+        return this.$store.state.dataMapping.data.predefinedMappingId;
+      },
+      set: function(newValue) {
+        this.$store.commit("setPredefinedMapping", { id: newValue, mapping: PredefinedMappings[newValue].mapping});
+      }
+    },
     isReadyForMapping: function() {
       return this.$store.state.dataMapping.hasFileUploaded
         && this.$store.state.dataMapping.hasTableTypeSelected
-        && this.$store.state.dataMapping.hasHeaderSpecified;
+        && this.$store.state.dataMapping.hasHeaderSpecified
+        && this.$store.state.dataMapping.hasPredefinedSpecified;
     },
     uploaded: function() {
       return this.$store.state.dataMapping.hasFileUploaded;

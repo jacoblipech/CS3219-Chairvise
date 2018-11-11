@@ -92,7 +92,7 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
         Assert.assertNull(result.get(0).get("s_authors"));
         Assert.assertEquals("Laxxx Kaxx", result.get(0).get("authors"));
         Assert.assertNull(result.get(0).get("s_is_accepted"));
-        Assert.assertEquals(false, result.get(0).get("isAccepted"));
+        Assert.assertEquals("no", result.get(0).get("isAccepted"));
     }
 
     @Test
@@ -154,41 +154,6 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
     }
 
     @Test
-    public void testAnalyse_queryOnlySubmissionRecordWithBooleanFilter_shouldQueryCorrectly() {
-        Assert.assertNotEquals(
-                0,
-                submissionRecordRepository.findByDataSetEquals("test1@example.com").stream()
-                        .filter(s -> s.isNotified() == true)
-                        .count()
-        );
-        Assert.assertNotEquals(
-                0,
-                submissionRecordRepository.findByDataSetEquals("test1@example.com").stream()
-                        .filter(s -> s.isNotified() == false)
-                        .count()
-        );
-
-        AnalysisRequest analysisRequest = new AnalysisRequest();
-
-        analysisRequest.setDataSet("test1@example.com");
-
-        PresentationSection.Record submissionRecord = new PresentationSection.Record();
-        submissionRecord.setName("submission_record");
-        analysisRequest.getInvolvedRecords().add(submissionRecord);
-
-        PresentationSection.Filter filter = new PresentationSection.Filter();
-        filter.setField("s_is_notified");
-        filter.setComparator("=");
-        filter.setValue("false");
-        analysisRequest.getFilters().add(filter);
-
-        List<Map<String, Object>> result = analysisLogic.analyse(analysisRequest);
-
-        Assert.assertEquals(1, result.size());
-        Assert.assertEquals(false, result.get(0).get("s_is_notified"));
-    }
-
-    @Test
     public void testAnalyse_queryOnlyReviewRecordWithNumberFilter_shouldQueryCorrectly() {
         Assert.assertNotEquals(
                 0,
@@ -223,7 +188,7 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
                 0,
                 reviewRecordRepository.findByDataSetEquals("test@example.com").stream()
                         .filter(s -> s.getNumReviewAssignment() == 47)
-                        .filter(s -> s.isHasRecommendedForBestPaper() == false)
+                        .filter(s -> s.getHasRecommendedForBestPaper().equals("no"))
                         .filter(s -> s.getReviewerName().equals("Juxxxx Bruxxxx"))
                         .count()
         );
@@ -244,7 +209,7 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
         filter = new PresentationSection.Filter();
         filter.setField("r_has_recommended_for_best_paper");
         filter.setComparator("=");
-        filter.setValue("false");
+        filter.setValue("no");
         filter = new PresentationSection.Filter();
         filter.setField("r_reviewer_name");
         filter.setComparator("=");
@@ -255,7 +220,7 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
 
         Assert.assertEquals(1, result.size());
         Assert.assertEquals(47, result.get(0).get("r_num_review_assignment"));
-        Assert.assertEquals(false, result.get(0).get("r_has_recommended_for_best_paper"));
+        Assert.assertEquals("no", result.get(0).get("r_has_recommended_for_best_paper"));
         Assert.assertEquals("Juxxxx Bruxxxx", result.get(0).get("r_reviewer_Name"));
     }
 
@@ -366,7 +331,7 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
 
     @Test
     public void testWrapValue_typicalFieldName_shouldGenerateWrapperCorrectly() {
-        Assert.assertEquals("true", analysisLogic.wrapValue("a_is_corresponding", "true"));
+        Assert.assertEquals("'yes'", analysisLogic.wrapValue("a_is_corresponding", "yes"));
         Assert.assertEquals("21", analysisLogic.wrapValue("r_num_review_assignment", "21"));
         Assert.assertEquals("21.0", analysisLogic.wrapValue("r_overall_evaluation_score", "21.0"));
         Assert.assertEquals("22.0", analysisLogic.wrapValue("r_expertise_level", "22.0"));

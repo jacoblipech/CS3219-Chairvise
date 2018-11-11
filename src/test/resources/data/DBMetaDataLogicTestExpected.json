@@ -53,7 +53,7 @@
   }, {
     "fieldName" : "a_is_corresponding",
     "jsonProperty" : "isCorresponding",
-    "type" : "boolean",
+    "type" : "String",
     "name" : "Is Corresponding",
     "description" : "Is the author corresponding author for the submission"
   } ]
@@ -90,7 +90,13 @@
     "jsonProperty" : "expertiseLevel",
     "type" : "double",
     "name" : "Expertise Level",
-    "description" : "Reviewer selects a field 1-5 to indicate expertise while submitting the review."
+    "description" : "Reviewer selects a field 1-5 to indicate expertise when submitting the review."
+  }, {
+    "fieldName" : "r_confidence_level",
+    "jsonProperty" : "confidenceLevel",
+    "type" : "double",
+    "name" : "Confidence Level",
+    "description" : "Reviewer selects a field 1-5 to indicate confidence level for the review."
   }, {
     "fieldName" : "r_review_comment",
     "jsonProperty" : "reviewComment",
@@ -112,7 +118,7 @@
   }, {
     "fieldName" : "r_has_recommended_for_best_paper",
     "jsonProperty" : "hasRecommendedForBestPaper",
-    "type" : "boolean",
+    "type" : "String",
     "name" : "Has Recommended for the Best Paper",
     "description" : ""
   } ]
@@ -171,19 +177,19 @@
   }, {
     "fieldName" : "s_is_accepted",
     "jsonProperty" : "isAccepted",
-    "type" : "boolean",
+    "type" : "String",
     "name" : "Is Accepted",
     "description" : "Accept/Reject decision"
   }, {
     "fieldName" : "s_is_notified",
     "jsonProperty" : "isNotified",
-    "type" : "boolean",
+    "type" : "String",
     "name" : "Is Notified",
     "description" : "Acceptance/rejection mail sent to authors or not?"
   }, {
     "fieldName" : "s_is_reviews_sent",
     "jsonProperty" : "isReviewsSent",
-    "type" : "boolean",
+    "type" : "String",
     "name" : "Is Reviews Sent",
     "description" : "Review sent in the mails or not?"
   }, {

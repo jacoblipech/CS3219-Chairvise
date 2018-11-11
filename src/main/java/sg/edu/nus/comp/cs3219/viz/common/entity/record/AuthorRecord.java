@@ -62,7 +62,7 @@ public class AuthorRecord extends BaseEntity {
     @Exportable(name = "Is Corresponding", nameInDB = "a_is_corresponding", description = "Is the author corresponding author for the submission")
     @Column(name="a_is_corresponding")
     @JsonProperty("isCorresponding")
-    private boolean isCorresponding;
+    private String isCorresponding;
 
     public Long getId() {
         return id;
@@ -144,11 +144,11 @@ public class AuthorRecord extends BaseEntity {
         this.personId = personId;
     }
 
-    public boolean isCorresponding() {
+    public String getIsCorresponding() {
         return isCorresponding;
     }
 
-    public void setCorresponding(boolean corresponding) {
-        isCorresponding = corresponding;
+    public void setIsCorresponding(String isCorresponding) {
+        this.isCorresponding = isCorresponding;
     }
 }

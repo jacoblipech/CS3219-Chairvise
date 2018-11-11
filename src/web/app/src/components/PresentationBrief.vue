@@ -8,7 +8,7 @@
     </el-form-item>
     <el-form-item label="Access Control" v-if="!isNewPresentation" >
       <el-tag>Created by {{ presentationForm.creatorIdentifier }}</el-tag>
-      <el-button type="success" size="small" class="share_button_left_margin" icon="el-icon-view" @click="openAccessControlPanel()" v-if="isLogin">SHARE</el-button>
+      <el-button type="success" size="small" class="share_button_left_margin" icon="el-icon-view" @click="openAccessControlPanel()" v-if="isLogin && isPresentationEditable">SHARE</el-button>
     </el-form-item>
     <el-dialog title="Share with other users:" :visible.sync="isAccessControlDialogVisible" width="70%" :close-on-click-modal="false">
       <access-control-panel :presentationId="id"></access-control-panel>
@@ -18,11 +18,11 @@
       <el-input v-model="presentationFormDescription" v-if="isInEditMode"/>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="downloadPDF()" v-if="!isInEditMode">Download as PDF</el-button>
-      <el-button type="primary" @click="changeEditMode(true)" v-if="!isInEditMode">Edit</el-button>
+      <el-button type="primary" @click="downloadPDF()" v-if="!isInEditMode && !isNewPresentation">Download as PDF</el-button>
+      <el-button type="primary" @click="changeEditMode(true)" v-if="!isInEditMode && isPresentationEditable">Edit</el-button>
       <el-button type="primary" @click="addPresentation()" v-if="isInEditMode">Save</el-button>
       <el-button type="info" @click="changeEditMode(false)" v-if="isInEditMode && !isNewPresentation">Cancel</el-button>
-      <el-button type="danger" v-if="!isNewPresentation && isLogin" @click="deletePresentation()" >Delete</el-button>
+      <el-button type="danger" v-if="!isNewPresentation && isLogin && isPresentationEditable" @click="deletePresentation()" >Delete</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -30,7 +30,8 @@
 <script>
 import AccessControlPanel from '@/components/AccessControlPanel'
 import {download} from "@/store/helpers/pdfDownloader"
-import {ID_NEW_PRESENTATION} from "@/common/const";
+import {ID_NEW_PRESENTATION, AccessLevel, SPECIAL_IDENTIFIER_PUBLIC} from "@/common/const";
+import {deepCopy} from "../common/utility";
 
 export default {
   name: 'PresentationBrief',
@@ -48,6 +49,9 @@ export default {
   computed: {
     isLogin() {
       return this.$store.state.userInfo.isLogin
+    },
+    isPresentationEditable() {
+      return this.$store.state.presentation.isPresentationEditable;
     },
 
     presentationForm() {
@@ -177,16 +181,30 @@ export default {
       this.$store.commit('resetPresentationForm');
       if (this.id !== ID_NEW_PRESENTATION) {
         this.$store.dispatch('getPresentation', this.id)
+          .then(() => {
+            // check writable or not
+            this.$store.dispatch('fetchAccessControlList', this.id)
+              .then(() => {
+                let currentUser = this.$store.state.userInfo.userEmail;
+                let accessControlList = this.$store.state.accessControl.accessControlList;
+                let isPresentationEditable =
+                  currentUser === this.presentationFormCreatorIdentifier
+                  || accessControlList.some(acl => acl.userIdentifier === currentUser && acl.accessLevel === AccessLevel.CAN_WRITE)
+                  || accessControlList.some(acl => acl.userIdentifier === SPECIAL_IDENTIFIER_PUBLIC && acl.accessLevel === AccessLevel.CAN_WRITE);
+                this.$store.commit('setIsPresentationEditable', isPresentationEditable)
+              })
+          })
       }
     },
     downloadPDF() {
       let vm = this;
-      vm.$store.commit('setRenderForPDF', true);
+      let wasPresentationEditable = deepCopy(vm.isPresentationEditable);
+      vm.$store.commit('setIsPresentationEditable', false);
       vm.$store.commit('setPageLoadingStatus', true);
 
       this.$nextTick(() => {
         download(vm.presentationFormName).then(() => {
-          vm.$store.commit('setRenderForPDF', false);
+          vm.$store.commit('setIsPresentationEditable', wasPresentationEditable);
           vm.$store.commit('setPageLoadingStatus', false);
         });
       });

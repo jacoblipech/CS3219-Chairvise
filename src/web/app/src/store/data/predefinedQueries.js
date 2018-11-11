@@ -1,6 +1,7 @@
 export default {
   "word_cloud_keywords_all_submission": {
     name: "Word Cloud for All Submissions Keywords",
+    group: 'Submission Record',
     data: {
       type: 'word_cloud',
       title: 'Word Cloud for All Submissions',
@@ -27,6 +28,7 @@ export default {
   },
   "word_cloud_keywords_reviewer_comment": {
     name: "Word Cloud for Reviewer Comment",
+    group: 'Review Record',
     data: {
       type: 'word_cloud',
       title: 'Word Cloud for Reviewer Comment',
@@ -53,6 +55,7 @@ export default {
   },
   "submission_rank_author": {
     name: "Submission Rank Author",
+    group: 'Author Record',
     data: {
       type: 'bar_chart',
       title: 'Submission Rank Author',
@@ -113,6 +116,7 @@ export default {
   },
   "submission_rank_country": {
     name: "Submission Rank Country",
+    group: 'Author Record',
     data: {
       type: 'pie_chart',
       title: 'Submission Rank Country',
@@ -154,6 +158,7 @@ export default {
   },
   "submission_rank_organization": {
     name: "Submission Rank Organization",
+    group: 'Author Record',
     data: {
       type: 'pie_chart',
       title: 'Submission Rank Organization',
@@ -195,6 +200,7 @@ export default {
   },
   "accepted_organization_rank": {
     name: "Accepted Submission Organization Rank",
+    group: 'Author Record',
     data: {
       type: 'bar_chart',
       title: 'Accepted Submission Organization Rank',
@@ -255,6 +261,7 @@ export default {
   },
   "review_score_distribution": {
     name: "Review Score Distribution",
+    group: 'Review Record',
     data: {
       type: 'bar_chart',
       title: 'Review Score Distribution',
@@ -303,6 +310,7 @@ export default {
   },
   "review_weighted_evaluation_score_stats_summary": {
     name: "Review Weighted Evaluation Score Statistic Summary",
+    group: 'Review Record',
     data: {
       type: 'stats',
       title: 'Review Weighted Evaluation Score Statistic Summary',
@@ -331,6 +339,7 @@ export default {
   },
   "review_expertise_level_stats_summary": {
     name: "Reviewer Expertise Level Statistic Summary",
+    group: 'Review Record',
     data: {
       type: 'stats',
       title: 'Reviewer Expertise Level Statistic Summary',
@@ -364,6 +373,7 @@ export default {
   },
   "submission_rank_track": {
     name: "Submission Rank Track",
+    group: 'Submission Record',
     data: {
       type: 'bar_chart',
       title: 'Submission Rank Track',
@@ -410,6 +420,7 @@ export default {
   },
   "acceptance_ratio_track": {
     name: "Acceptance Ratio Track",
+    group: 'Submission Record',
     data: {
       type: 'bar_chart',
       title: 'Acceptance Ratio Track',
@@ -456,6 +467,7 @@ export default {
   },
   "acceptance_ratio_by_Year": {
     name: "Acceptance Ratio by Year",
+    group: 'Submission Record',
     data: {
       type: 'line_chart',
       title: 'Acceptance Ratio by Year',
@@ -497,6 +509,7 @@ export default {
   },
   "recommendation_for_best_paper_distribution": {
     name: "Recommendation for Best Paper Distribution",
+    group: 'Review Record',
     data: {
       type: 'pie_chart',
       title: 'Recommendation for Best Paper Distribution',
@@ -533,6 +546,7 @@ export default {
   },
   "review_count_summary_for_each_submission": {
     name: "Review Count Summary for Each Submission",
+    group: 'Review Record',
     data: {
       type: 'stats',
       title: 'Review Count Summary for Each Submission',
@@ -563,6 +577,7 @@ export default {
   },
   "submission_acceptance_rate_rank_author": {
     name: "Submission Acceptance Rate Rank Author",
+    group: 'Author Record + Submission Record',
     data: {
       type: 'bar_chart',
       title: 'Submission Acceptance Rate Rank Author',
@@ -652,6 +667,7 @@ export default {
   },
   "submission_acceptance_rate_rank_organisation": {
     name: "Submission Acceptance Rate Rank Organization",
+    group: 'Author Record + Submission Record',
     data: {
       type: 'bar_chart',
       title: 'Submission Acceptance Rate Rank Organization',
@@ -727,6 +743,7 @@ export default {
   },
   "submission_acceptance_rate_rank_country": {
     name: "Submission Acceptance Rate Rank Country",
+    group: 'Author Record + Submission Record',
     data: {
       type: 'bar_chart',
       title: 'Submission Acceptance Rate Rank Country',
@@ -802,6 +819,7 @@ export default {
   },
   "reviewer_assignment_rank": {
     name: "Reviewer Assignment Rank",
+    group: 'Review Record',
     data: {
       type: 'bar_chart',
       title: 'Reviewer Assignment Rank',
@@ -852,6 +870,7 @@ export default {
   },
   "reviewer_avg_expertise_level_rank": {
     name: "Reviewer Average Expertise Level Rank",
+    group: 'Review Record',
     data: {
       type: 'bar_chart',
       title: 'Reviewer Average Expertise Level Rank',
@@ -902,6 +921,7 @@ export default {
   },
   "reviewer_avg_expertise_level_distribution": {
     name: "Reviewer Average Expertise Level Distribution",
+    group: 'Review Record',
     data: {
       type: 'bar_chart',
       title: 'Reviewer Average Expertise Level Rank',

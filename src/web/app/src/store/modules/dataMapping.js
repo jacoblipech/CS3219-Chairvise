@@ -7,6 +7,7 @@ export default {
     hasFileUploaded: false,
     hasTableTypeSelected: false,
     hasHeaderSpecified: false,
+    hasPredefinedSpecified: false,
     hasMappingFinished: false,
     isUploadSuccess: false,
     data: {
@@ -14,10 +15,11 @@ export default {
       uploadedData: [],
       uploadedLabel: [],
       mappingResult: [],
-      dataDetail: [],
       processedResult: [],
       tableType: null,
-      hasHeader: null
+      hasHeader: null,
+      predefinedMapping: null,
+      predefinedMappingId: null,
     },
     error: []
   },
@@ -69,14 +71,24 @@ export default {
       state.hasHeaderSpecified = false;
     },
 
+    setPredefinedMapping(state, payload) {
+      state.data.predefinedMapping = payload.mapping;
+      state.data.predefinedMappingId = payload.id;
+      state.hasPredefinedSpecified = true;
+    },
+
+    clearPredefinedMapping(state) {
+      state.data.predefinedMapping = null;
+      state.data.predefinedMappingId = null;
+      state.hasPredefinedSpecified = false;
+    },
+
     setMapping(state, payload) {
       try {
         state.error = [];
         state.data.mappingResult = payload.map;
-        state.data.dataDetail = payload.types;
         state.mappingFinished = true;
         var processedResult = processMapping(payload.map,
-            payload.types,
             state.data.uploadedData,
             state.data.dbSchema,
             state.data.hasHeader);
@@ -85,18 +97,14 @@ export default {
         state.error.push(err);
         state.mappingFinished = false;
         state.data.mappingResult = [];
-        state.data.dataDetail = [];
-        state.data.dataDetail = null;
         state.data.processedResult = [];
       }
     },
 
     clearMapping(state) {
       state.data.mappingResult = [];
-      state.data.dataDetail = [];
       state.data.processedResult = [];
       state.mappingFinished = false;
-      state.data.dataDetail = null;
     },
 
     setDataMappingError(state, err) {

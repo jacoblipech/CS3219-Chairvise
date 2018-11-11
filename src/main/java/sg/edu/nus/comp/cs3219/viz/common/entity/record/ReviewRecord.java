@@ -41,9 +41,13 @@ public class ReviewRecord {
     private String reviewerName;
 
     // Reviewer selects a field 1-5 to indicate expertise while submitting the review. For example 5: expert, 1: passing knowledge
-    @Exportable(name = "Expertise Level", nameInDB = "r_expertise_level", description = "Reviewer selects a field 1-5 to indicate expertise while submitting the review.")
+    @Exportable(name = "Expertise Level", nameInDB = "r_expertise_level", description = "Reviewer selects a field 1-5 to indicate expertise when submitting the review.")
     @Column(name="r_expertise_level")
     private double expertiseLevel;
+
+    @Exportable(name = "Confidence Level", nameInDB = "r_confidence_level", description = "Reviewer selects a field 1-5 to indicate confidence level for the review.")
+    @Column(name="r_confidence_level")
+    private double confidenceLevel;
 
     @Exportable(name = "Review Comment", nameInDB = "r_review_comment")
     @Column(name = "r_review_comment", columnDefinition="TEXT")
@@ -60,7 +64,7 @@ public class ReviewRecord {
 
     @Exportable(name = "Has Recommended for the Best Paper", nameInDB = "r_has_recommended_for_best_paper")
     @Column(name = "r_has_recommended_for_best_paper")
-    private boolean hasRecommendedForBestPaper;
+    private String hasRecommendedForBestPaper;
 
     public Long getId() {
         return id;
@@ -118,6 +122,14 @@ public class ReviewRecord {
         this.expertiseLevel = expertiseLevel;
     }
 
+    public double getConfidenceLevel() {
+        return confidenceLevel;
+    }
+
+    public void setConfidenceLevel(double confidenceLevel) {
+        this.confidenceLevel = confidenceLevel;
+    }
+
     public String getReviewComment() {
         return reviewComment;
     }
@@ -142,11 +154,11 @@ public class ReviewRecord {
         this.reviewSubmissionTime = reviewSubmissionTime;
     }
 
-    public boolean isHasRecommendedForBestPaper() {
+    public String getHasRecommendedForBestPaper() {
         return hasRecommendedForBestPaper;
     }
 
-    public void setHasRecommendedForBestPaper(boolean hasRecommendedForBestPaper) {
+    public void setHasRecommendedForBestPaper(String hasRecommendedForBestPaper) {
         this.hasRecommendedForBestPaper = hasRecommendedForBestPaper;
     }
 }
