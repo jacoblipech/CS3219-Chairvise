@@ -9,7 +9,8 @@
     </el-row>
     <div v-loading="isLoadingDBMetaData || isLoadingSectionList" v-if="!isNewPresentation">
       <el-row class="addRowRightAlign" v-if="isLogin && isPresentationEditable">
-        <el-select v-model="selectedNewSection" placeholder="Please select a section to add" style="width: 300px" filterable>
+        <el-select v-model="selectedNewSection" placeholder="Please select a section to add" style="width: 300px"
+                   filterable>
           <el-option-group
             v-for="group in predefinedSections"
             :key="group.label"
@@ -130,6 +131,9 @@
       },
 
       addNewSection() {
+        if (this.selectedNewSection.length === 0) {
+          return;
+        }
         this.$store.dispatch('addSectionDetail', {
           presentationId: this.presentationId,
           selectedNewSection: this.selectedNewSection,
