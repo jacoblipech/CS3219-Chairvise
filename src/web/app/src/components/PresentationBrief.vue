@@ -40,7 +40,7 @@
   import AccessControlPanel from '@/components/AccessControlPanel'
   import {download} from "@/store/helpers/pdfDownloader"
   import {AccessLevel, ID_NEW_PRESENTATION, SPECIAL_IDENTIFIER_PUBLIC} from "@/common/const";
-  import {deepCopy} from "../common/utility";
+  import {deepCopy} from "@/common/utility";
 
   export default {
     name: 'PresentationBrief',

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {processMapping} from '../helpers/processor.js'
+import {processMapping} from '@/store/helpers/processor.js'
 
 export default {
   state: {
