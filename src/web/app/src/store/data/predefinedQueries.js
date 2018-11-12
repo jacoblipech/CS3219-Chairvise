@@ -6,6 +6,7 @@ export default {
       type: 'word_cloud',
       title: 'Word Cloud for All Submissions',
       dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'This word cloud shows a list of key words found under abstract section for all submitted papers.',
       selections: [
         {
           expression: 's_keywords',
@@ -35,6 +36,7 @@ export default {
       type: 'word_cloud',
       title: 'Word Cloud for Reviewer Comment',
       dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'This word cloud shows a list of key words found under reviewer\'s comments for reviewed papers.',
       selections: [
         {
           expression: 'r_review_comment',
@@ -66,7 +68,7 @@ export default {
       type: 'bar_chart',
       title: 'Submission Rank Author',
       dataSet: '${PLACEHOLDER_DATA_SET}',
-      description: 'This showcases a bar chart of the number submissions contributed by each author',
+      description: 'This bar chart shows the number of papers submitted by each author in descending order. This tells us which author has more submissions than other authors.',
       selections: [
         {
           expression: 'COUNT(*)',
@@ -126,7 +128,7 @@ export default {
       type: 'bar_chart',
       title: 'Submission Rank Paper Author',
       dataSet: '${PLACEHOLDER_DATA_SET}',
-      description: 'This showcases a pie chart of the number submissions contributed by each country.',
+      description: 'This bar chart shows the number of papers each author submitted based in descending order. This tells us which authors submitted the more papers than other authors.',
       selections: [
         {
           expression: 'COUNT(*)',
@@ -179,6 +181,7 @@ export default {
       type: 'bar_chart',
       title: 'Submission Acceptance Rate Rank Paper Author',
       dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'This bar chart shows the percentage of acceptance rate of each author\'s papers in descending order. This tells us which authors has higher acceptance rate than other authors.',
       selections: [
         {
           expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)",
@@ -246,6 +249,7 @@ export default {
       type: 'bar_chart',
       title: 'Submission Accepted Rank Paper Author',
       dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'This bar chart shows the number of accepted papers submitted by each author in descending order. This tells us which authors has more accepted papers than other authors.',
       selections: [
         {
           expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)",
@@ -313,6 +317,7 @@ export default {
       type: 'pie_chart',
       title: 'Submission Rank Country',
       dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'This pie chart shows the percentage and number of papers submitted from each country. This tells us which country has more submissions than other countries.',
       selections: [
         {
           expression: 'COUNT(*)',
@@ -356,6 +361,7 @@ export default {
       type: 'pie_chart',
       title: 'Submission Rank Organization',
       dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'This pie chart shows the percentage and number of papers submitted from each organization. This tells us which organization has more submissions than other organizations.',
       selections: [
         {
           expression: 'COUNT(*)',
@@ -399,6 +405,7 @@ export default {
       type: 'bar_chart',
       title: 'Review Weighted Score Distribution',
       dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'This bar chart shows the distribution of the weighted review score for all papers. This is calculated by retrieving the overall reviewed score and reviewer\'s confidence score in order to obtain a weighted average of all the scores. This gives us an insight on how the general score range for each submission.',
       selections: [
         {
           expression: 'weighted_score_interval',
@@ -519,6 +526,7 @@ export default {
       type: 'stats',
       title: 'Review Weighted Evaluation Score Statistic Summary',
       dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'This table shows the weighted evaluation score statistics based on the minimum, maximum value, the average, median score and the standard deviation of the weighted evaluation scores. This gives us an insight on the evaluation score given by each reviewer in their review.',
       selections: [
         {
           expression: 'SUM(r_confidence_level * r_overall_evaluation_score) / SUM(r_confidence_level)',
@@ -549,6 +557,7 @@ export default {
       type: 'stats',
       title: 'Reviewer Expertise Level Statistic Summary',
       dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'This table shows the reviewer expertise level statistics based on the minimum, maximum value, the average, median score and the standard deviation of the weighted evaluation scores. This gives us an insight on how specialized each reviewer is in their review.',
       selections: [
         {
           expression: 'r_expertise_level',
@@ -577,6 +586,7 @@ export default {
       type: 'stats',
       title: 'Reviewer Confidence Level Statistic Summary',
       dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'This table shows the reviewer confidence level statistics based on the minimum, maximum value, the average, median score and the standard deviation of the weighted evaluation scores. This gives us an insight on how confident each reviewer is in their review.',
       selections: [
         {
           expression: 'r_confidence_level',
@@ -605,6 +615,7 @@ export default {
       type: 'bar_chart',
       title: 'Submission Rank Track',
       dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'This bar chart shows the number of papers submitted in each track. This tells us which track is more popular than other tracks.',
       selections: [
         {
           expression: 'COUNT(*)',
@@ -650,6 +661,7 @@ export default {
       type: 'bar_chart',
       title: 'Acceptance Ratio Track',
       dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'This bar char shows the acceptance rate of each paper based on tracks. This tells us which track has higher acceptance rate than others.',
       selections: [
         {
           expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)/COUNT(*)",
@@ -695,6 +707,7 @@ export default {
       type: 'line_chart',
       title: 'Acceptance Ratio by Year',
       dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'This area under line graph shows the acceptance rate of all submitted papers based on different years. This tells us which year has more papers getting accepted than other years.',
       selections: [
         {
           expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)/COUNT(*)",
@@ -738,6 +751,7 @@ export default {
       type: 'pie_chart',
       title: 'Recommendation for Best Paper Distribution',
       dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'This pie chart shows the number and percentage of papers recommended and not recommended for best paper. This tells us how many papers are worthy to be submitted for the best paper',
       selections: [
         {
           expression: "CASE WHEN r_has_recommended_for_best_paper = 'yes' THEN 'Recommended' ELSE 'Not Recommended' END",
@@ -776,6 +790,7 @@ export default {
       type: 'stats',
       title: 'Review Count Summary for Each Submission',
       dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'This table shows a statistic of the number of reviews for each submission based on  the minimum, maximum value, the average and median score. This gives us an insight to how many reviews are provided for each submission.',
       selections: [
         {
           expression: 'COUNT(*)',
@@ -808,6 +823,7 @@ export default {
       type: 'bar_chart',
       title: 'Submission Acceptance Rate Rank Author',
       dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'By combining author and submission data, this bar chart shows the percentage of acceptance rate of each author\'s papers in descending order. This tells us which authors has higher acceptance rate than other authors.',
       selections: [
         {
           expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)/COUNT(*)",
@@ -897,6 +913,7 @@ export default {
       type: 'bar_chart',
       title: 'Submission Accepted Rank Author',
       dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'By combining author and submission data, this bar chart shows the number of accepted papers submitted by each author in descending order. This tells us which authors has more accepted papers than other authors.',
       selections: [
         {
           expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)/COUNT(*)",
@@ -986,6 +1003,7 @@ export default {
       type: 'bar_chart',
       title: 'Submission Acceptance Rate Rank Organization',
       dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'By combining author and submission, this bar chart shows the percentage of acceptance rate of each organization\'s papers in descending order. This tells us which organizations has higher acceptance rate than other organizations.',
       selections: [
         {
           expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)/COUNT(*)",
@@ -1061,6 +1079,7 @@ export default {
       type: 'bar_chart',
       title: 'Submission Accepted Rank Organization',
       dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'By combining author and submission data, this bar chart shows the number of accepted papers submitted by each organization in descending order. This tells us which organizations has more accepted papers than other organizations.',
       selections: [
         {
           expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)/COUNT(*)",
@@ -1136,6 +1155,7 @@ export default {
       type: 'bar_chart',
       title: 'Submission Acceptance Rate Rank Country',
       dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'By combining author and submission, this bar chart shows the percentage of acceptance rate of each country\'s papers in descending order. This tells us which countries has higher acceptance rate than other countries.',
       selections: [
         {
           expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)/COUNT(*)",
@@ -1211,6 +1231,7 @@ export default {
       type: 'bar_chart',
       title: 'Submission Accepted Rank Country',
       dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'By combining author and submission data, this bar chart shows the number of accepted papers submitted by each country in descending order. This tells us which countries has more accepted papers than other countries.',
       selections: [
         {
           expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)/COUNT(*)",
@@ -1286,6 +1307,7 @@ export default {
       type: 'bar_chart',
       title: 'Reviewer Assignment Rank',
       dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'This bar chart shows the number of fields each reviewer is assigned to in descending order. A high number shows that the author is knowledgeable as he or she reviewed in multiple fields.',
       selections: [
         {
           expression: 'MAX(r_num_review_assignment)',
@@ -1335,6 +1357,7 @@ export default {
       type: 'bar_chart',
       title: 'Reviewer Average Expertise Level Rank',
       dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'This bar chart shows the average expertise level for each reviewer in descending order. This tells us how skilled each reviewer is in reviewer the papers.',
       selections: [
         {
           expression: 'AVG(r_confidence_level)',
@@ -1401,6 +1424,7 @@ export default {
       type: 'bar_chart',
       title: 'Reviewer Average Confidence Level Rank',
       dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'This bar chart shows the average confidence level for each reviewer in descending order. This tells us how confident each reviewer is in giving their review for other papers.',
       selections: [
         {
           expression: 'AVG(r_confidence_level)',
@@ -1467,6 +1491,7 @@ export default {
       type: 'bar_chart',
       title: 'Reviewer Average Evaluation Score Rank',
       dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'This bar chart shows the average evaluation score given by each reviewer in descending order. This gives us an insight of how generous the reviewer grade other papers in general.',
       selections: [
         {
           expression: 'AVG(r_confidence_level)',
@@ -1533,6 +1558,7 @@ export default {
       type: 'bar_chart',
       title: 'Number of Review Distribution',
       dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'This bar chart shows the distribution of the number of reviews for each submitted paper. This gives us an insight on how many reviews are made for each submission.',
       selections: [
         {
           expression: 'COUNT(*)-1',
@@ -1587,6 +1613,7 @@ export default {
       type: 'bar_chart',
       title: 'Reviewer Average Expertise Level Rank',
       dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'This bar chart shows the distribution of the expertise level of each reviewer in reviewing all the papers. This gives us an insight of how specialized each reviewer is in giving the review.',
       selections: [
         {
           expression: 'avg_expertise_level_interval',
@@ -1715,6 +1742,7 @@ export default {
       type: 'bar_chart',
       title: 'Reviewer Average Confidence Level Rank',
       dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'This bar chart shows the distribution of the confidence level of each reviewer in reviewing all the papers. This gives us an insight of how confident each reviewer is in giving the review.',
       selections: [
         {
           expression: 'avg_confidence_level_interval',
@@ -1843,6 +1871,7 @@ export default {
       type: 'bar_chart',
       title: 'Reviewer Average Evaluation Score Rank',
       dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'This bar chart shows the distribution of the evaluation level of each reviewer in reviewing all the papers. This gives us an insight of the evaluation score given by each reviewer.',
       selections: [
         {
           expression: 'avg_evaluation_score_interval',
@@ -1983,6 +2012,7 @@ export default {
       type: 'bar_chart',
       title: 'Acceptance Rate and Weighted Score',
       dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'By combining review and submission, this bar chart shows the percentage of acceptance rate of based on the weighted score of the submissions. This gives us insight on what percentage of the papers will be accepted given a review score.',
       selections: [
         {
           expression: 'weighted_score_interval',
@@ -2121,6 +2151,7 @@ export default {
       type: 'bar_chart',
       title: 'Average Weighted Score By Track',
       dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'By combining review and submission, this bar chart shows the average weighted score for papers in each track. This gives us insight on which track has been weighted scores than other tracks.',
       selections: [
         {
           expression: 'AVG(weighted_score)',
@@ -2166,6 +2197,7 @@ export default {
       type: 'bar_chart',
       title: 'Earliest Review in Days For Submission',
       dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'By combining review and submission, this bar chart shows the number of days taken for submissions to be reviews. This gives us insight on the efficiency of the reviewers.',
       selections: [
         {
           expression: 'COUNT(*) - 1',
@@ -2233,6 +2265,7 @@ export default {
       type: 'bar_chart',
       title: 'Average Expert Level For Submission',
       dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'This bar chart shows  the number of submissions for different average expertise level. This gives us an insight on the average expertise level for different number of submissions.',
       selections: [
         {
           expression: 'COUNT(*) - 1',
@@ -2343,6 +2376,7 @@ export default {
       type: 'bar_chart',
       title: 'Average Confidence Level For Submission',
       dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'This bar chart shows  the number of submissions for different average confidence level. This gives us an insight on the average confidence level for different number of submissions.',
       selections: [
         {
           expression: 'COUNT(*) - 1',
@@ -2453,6 +2487,7 @@ export default {
       type: 'bar_chart',
       title: 'Average Weighted Score Rank Paper Author',
       dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'By combining review and submission, this bar chart shows the average weighted score of all the submissions for each author. This gives us insight on which author performs better with his or her submissions than other authors.',
       selections: [
         {
           expression: 'AVG(weighted_score)',
@@ -2506,6 +2541,7 @@ export default {
       type: 'bar_chart',
       title: 'Average Weighted Score Rank Author',
       dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'By combining author and review, this bar chart shows the average weighted score of all the submissions for each author. This gives us insight on which author performs better with his or her submissions than other authors.',
       selections: [
         {
           expression: 'AVG(weighted_score)',
@@ -2582,6 +2618,7 @@ export default {
       type: 'bar_chart',
       title: 'Average Weighted Score Rank Organization',
       dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'By combining author and review, this bar chart shows the average weighted score of all the submissions for each organization. This gives us insight on which organization performs better with than other organizations.',
       selections: [
         {
           expression: 'AVG(weighted_score)',
@@ -2644,6 +2681,7 @@ export default {
       type: 'bar_chart',
       title: 'Average Weighted Score Rank Country',
       dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'By combining author and review, this bar chart shows the average weighted score of all the submissions for each country. This gives us insight on which country performs better with than other countries.',
       selections: [
         {
           expression: 'AVG(weighted_score)',
