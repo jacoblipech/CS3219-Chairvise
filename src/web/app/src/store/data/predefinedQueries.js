@@ -1611,7 +1611,7 @@ export default {
     group: 'Review Record',
     data: {
       type: 'bar_chart',
-      title: 'Reviewer Average Expertise Level Rank',
+      title: 'Reviewer Average Expertise Level Distribution',
       dataSet: '${PLACEHOLDER_DATA_SET}',
       description: 'This bar chart shows the distribution of the expertise level of each reviewer in reviewing all the papers. This gives us an insight of how specialized each reviewer is in giving the review.',
       selections: [
@@ -1740,7 +1740,7 @@ export default {
     group: 'Review Record',
     data: {
       type: 'bar_chart',
-      title: 'Reviewer Average Confidence Level Rank',
+      title: 'Reviewer Average Confidence Level Distribution',
       dataSet: '${PLACEHOLDER_DATA_SET}',
       description: 'This bar chart shows the distribution of the confidence level of each reviewer in reviewing all the papers. This gives us an insight of how confident each reviewer is in giving the review.',
       selections: [
@@ -1869,7 +1869,7 @@ export default {
     group: 'Review Record',
     data: {
       type: 'bar_chart',
-      title: 'Reviewer Average Evaluation Score Rank',
+      title: 'Reviewer Average Evaluation Score Distribution',
       dataSet: '${PLACEHOLDER_DATA_SET}',
       description: 'This bar chart shows the distribution of the evaluation level of each reviewer in reviewing all the papers. This gives us an insight of the evaluation score given by each reviewer.',
       selections: [
