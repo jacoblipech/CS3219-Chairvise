@@ -32,7 +32,6 @@ export function processMapping(mapping, data, dbFields, hasLabel) {
     data = data.slice(1);
   }
   if (checkDateResult !== undefined) {
-    console.log(checkDateResult)
     throw checkDateResult;
   }
   let result = [];
