@@ -31,7 +31,7 @@ export function processMapping(mapping, data, dbFields, hasLabel) {
   if (hasLabel) {
     data = data.slice(1);
   }
-  if (checkDateResult !== null) {
+  if (checkDateResult !== undefined) {
     throw checkDateResult;
   }
   let result = [];
