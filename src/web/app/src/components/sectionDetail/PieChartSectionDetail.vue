@@ -25,7 +25,8 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="Num of result to display" prop="extraData.numOfResultToDisplay" v-if="slotProps.isInAdvancedMode">
+      <el-form-item label="Num of result to display" prop="extraData.numOfResultToDisplay"
+                    v-if="slotProps.isInAdvancedMode">
         <el-slider v-model="slotProps.extraData.numOfResultToDisplay" :min="5" :max="30"></el-slider>
       </el-form-item>
     </template>
@@ -35,6 +36,7 @@
 <script>
   import BasicSectionDetail from '@/components/sectionDetail/BasicSectionDetail.vue'
   import PieChart from '@/components/sectionDetail/chart/PieChart.vue'
+  import {generateBorderColor, generateBackgroundColor} from '@/common/color'
 
   export default {
     name: "PieChartSectionDetail",
@@ -94,7 +96,9 @@
         this.dataset = {
           borderWidth: 1,
           label: extraData.dataSetLabel,
-          data
+          data,
+          backgroundColor: generateBackgroundColor(data.length),
+          borderColor: generateBorderColor(data.length),
         };
 
         // process options
@@ -103,7 +107,21 @@
             display: true
           },
           responsive: true,
-          maintainAspectRatio: false
+          maintainAspectRatio: false,
+          plugins: {
+            datalabels: {
+              // show both value and percentage
+              formatter: (value, ctx) => {
+                let sum = 0;
+                let dataArr = ctx.chart.data.datasets[0].data;
+                dataArr.map(data => {
+                  sum += data;
+                });
+                let percentage = (value * 100 / sum).toFixed(2) + "%";
+                return `${percentage} (${value})`;
+              },
+            }
+          }
         }
       }
     },

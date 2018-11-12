@@ -44,9 +44,7 @@ public class AnalysisController extends BaseRestController {
         // convert to map with key all in lower case
         return result.stream().map(m -> {
             Map<String, Object> map = new HashMap<>();
-            m.forEach((k, v) -> {
-                map.put(k.toLowerCase(), v);
-            });
+            m.forEach((k, v) -> map.put(k.toLowerCase(), v));
             return map;
         }).collect(Collectors.toList());
     }

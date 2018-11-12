@@ -30,7 +30,7 @@
 </template>
 
 <script>
-  import {min, max, sum, mean, median, standardDeviation} from 'simple-statistics'
+  import {max, mean, median, min, standardDeviation, sum} from 'simple-statistics'
   import BasicSectionDetail from '@/components/sectionDetail/BasicSectionDetail.vue'
 
   export default {

@@ -64,7 +64,9 @@ public class PresentationSectionControllerTest extends BaseTestREST {
                 .andExpect(jsonPath("$[0].selections[0].rename").value("hi"))
                 .andExpect(jsonPath("$[0].involvedRecords", hasSize(2)))
                 .andExpect(jsonPath("$[0].involvedRecords[0].name").value("record1"))
+                .andExpect(jsonPath("$[0].involvedRecords[0].customized").value(true))
                 .andExpect(jsonPath("$[0].involvedRecords[1].name").value("record2"))
+                .andExpect(jsonPath("$[0].involvedRecords[1].customized").value(true))
                 .andExpect(jsonPath("$[0].filters", hasSize(1)))
                 .andExpect(jsonPath("$[0].filters[0].field").value("filter1"))
                 .andExpect(jsonPath("$[0].filters[0].comparator").value("="))
@@ -179,7 +181,7 @@ public class PresentationSectionControllerTest extends BaseTestREST {
                 .orElseThrow(AssertionError::new);
         // make two consistent
         updatedPresentationSection.setId(presentationSectionUsedToUpdate.getId());
-        // type cannot be udpated
+        // type cannot be updated
         presentationSectionUsedToUpdate.setType(updatedPresentationSection.getType());
 
         Assert.assertEquals(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(updatedPresentationSection),

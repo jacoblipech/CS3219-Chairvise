@@ -35,6 +35,7 @@
 <script>
   import LineChart from '@/components/sectionDetail/chart/LineChart.vue'
   import BasicSectionDetail from '@/components/sectionDetail/BasicSectionDetail.vue'
+  import {generateBorderColor, generateBackgroundColor} from '@/common/color'
 
   export default {
     name: "LineChartSectionDetail",
@@ -80,7 +81,9 @@
         this.dataset = {
           borderWidth: 1,
           label: extraData.dataSetLabel,
-          data: result.map(record => record[extraData.yAxisFieldName])
+          data: result.map(record => record[extraData.yAxisFieldName]),
+          backgroundColor: generateBackgroundColor(2)[1],
+          borderColor: generateBorderColor(2)[1],
         };
 
         this.options = {
@@ -93,7 +96,7 @@
                 display: true
               }
             }],
-            xAxes: [ {
+            xAxes: [{
               ticks: {
                 autoSkip: false
               },
@@ -103,7 +106,13 @@
             }]
           },
           responsive: true,
-          maintainAspectRatio: false
+          maintainAspectRatio: false,
+          plugins: {
+            datalabels: {
+              anchor: 'end',
+              align: 'end'
+            }
+          }
         }
       }
     },

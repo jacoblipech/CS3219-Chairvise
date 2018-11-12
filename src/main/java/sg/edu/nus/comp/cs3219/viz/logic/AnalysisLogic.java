@@ -35,9 +35,8 @@ public class AnalysisLogic {
     private static void populateMapForClass(Class<?> classToExamine) {
         Arrays.stream(classToExamine.getDeclaredFields())
                 .filter(f -> f.getAnnotation(Exportable.class) != null)
-                .forEach(field -> {
-                    DATABASE_FIELD_NAME_TO_TYPE_MAP.put(field.getAnnotation(Exportable.class).nameInDB(), field.getType());
-                });
+                .forEach(field ->
+                        DATABASE_FIELD_NAME_TO_TYPE_MAP.put(field.getAnnotation(Exportable.class).nameInDB(), field.getType()));
     }
 
     private JdbcTemplate jdbcTemplate;
@@ -74,6 +73,7 @@ public class AnalysisLogic {
                 .collect(Collectors.joining(" AND "));
 
         String dataSetFilter = analysisRequest.getInvolvedRecords().stream()
+                .filter(r -> !r.isCustomized())
                 .map(t -> String.format("%s.data_set = '%s'", t.getName(), analysisRequest.getDataSet()))
                 .collect(Collectors.joining(" AND "));
 
@@ -85,8 +85,11 @@ public class AnalysisLogic {
                 .map(s -> String.format("%s %s", s.getField(), s.getOrder()))
                 .collect(Collectors.joining(","));
 
-        String baseSQL = String.format("SELECT %s FROM %s WHERE %s",
-                selectionsStr, tablesStr, dataSetFilter);
+        String baseSQL = String.format("SELECT %s FROM %s", selectionsStr, tablesStr);
+
+        if (!dataSetFilter.isEmpty()) {
+            baseSQL += String.format(" WHERE %s", dataSetFilter);
+        }
 
         if (!joinersStr.isEmpty()) {
             baseSQL += String.format(" AND %s", joinersStr);

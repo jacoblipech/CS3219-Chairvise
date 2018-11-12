@@ -11,8 +11,8 @@ import sg.edu.nus.comp.cs3219.viz.common.datatransfer.AccessLevel;
 import javax.persistence.*;
 
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames={"presentation_id", "user_identifier"}))
-public class PresentationAccessControl extends BaseEntity {
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"presentation_id", "user_identifier"}))
+public class PresentationAccessControl {
 
     @Id
     @GenericGenerator(name = "UseExistingIdOtherwiseGenerateUsingIdentity", strategy = "sg.edu.nus.comp.cs3219.viz.common.entity.UseExistingIdOtherwiseGenerateUsingIdentity")
@@ -21,7 +21,7 @@ public class PresentationAccessControl extends BaseEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="presentation_id")
+    @JoinColumn(name = "presentation_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Presentation presentation;
