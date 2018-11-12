@@ -63,6 +63,7 @@
 <script>
   import BarChart from '@/components/sectionDetail/chart/BarChart.vue'
   import BasicSectionDetail from '@/components/sectionDetail/BasicSectionDetail.vue'
+  import {generateBorderColor, generateBackgroundColor} from '@/common/color'
 
   export default {
     name: "BarChartSectionDetail",
@@ -161,7 +162,9 @@
         this.dataset = {
           borderWidth: 1,
           label: extraData.dataSetLabel,
-          data: this.partialResult.map(record => record[extraData.yAxisFieldName])
+          data: this.partialResult.map(record => record[extraData.yAxisFieldName]),
+          backgroundColor: generateBackgroundColor(this.partialResult.length),
+          borderColor: generateBorderColor(this.partialResult.length),
         };
 
         // to display more data

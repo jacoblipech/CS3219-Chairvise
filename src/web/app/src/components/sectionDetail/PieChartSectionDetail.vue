@@ -36,6 +36,7 @@
 <script>
   import BasicSectionDetail from '@/components/sectionDetail/BasicSectionDetail.vue'
   import PieChart from '@/components/sectionDetail/chart/PieChart.vue'
+  import {generateBorderColor, generateBackgroundColor} from '@/common/color'
 
   export default {
     name: "PieChartSectionDetail",
@@ -95,7 +96,9 @@
         this.dataset = {
           borderWidth: 1,
           label: extraData.dataSetLabel,
-          data
+          data,
+          backgroundColor: generateBackgroundColor(data.length),
+          borderColor: generateBorderColor(data.length),
         };
 
         // process options
