@@ -16,7 +16,10 @@
       <stats-section-detail :sectionDetail="sectionDetail" :presentationId="presentationId"/>
     </div>
     <div v-else>
-      Not A/B/C
+      <el-alert
+        :title="`Unexpected Section Detail Type: ${sectionDetail.type}`"
+        type="error">
+      </el-alert>
     </div>
   </el-row>
 </template>

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.hibernate.annotations.GenericGenerator;
-import sg.edu.nus.comp.cs3219.viz.common.entity.BaseEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,7 +12,7 @@ import javax.persistence.Id;
 
 @Exportable(name = "Author Record", nameInDB = "author_record")
 @Entity
-public class AuthorRecord extends BaseEntity {
+public class AuthorRecord {
 
     @Id
     @GenericGenerator(name = "UseExistingIdOtherwiseGenerateUsingIdentity", strategy = "sg.edu.nus.comp.cs3219.viz.common.entity.UseExistingIdOtherwiseGenerateUsingIdentity")

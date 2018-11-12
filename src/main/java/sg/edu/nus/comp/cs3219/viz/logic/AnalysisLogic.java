@@ -35,9 +35,8 @@ public class AnalysisLogic {
     private static void populateMapForClass(Class<?> classToExamine) {
         Arrays.stream(classToExamine.getDeclaredFields())
                 .filter(f -> f.getAnnotation(Exportable.class) != null)
-                .forEach(field -> {
-                    DATABASE_FIELD_NAME_TO_TYPE_MAP.put(field.getAnnotation(Exportable.class).nameInDB(), field.getType());
-                });
+                .forEach(field ->
+                        DATABASE_FIELD_NAME_TO_TYPE_MAP.put(field.getAnnotation(Exportable.class).nameInDB(), field.getType()));
     }
 
     private JdbcTemplate jdbcTemplate;

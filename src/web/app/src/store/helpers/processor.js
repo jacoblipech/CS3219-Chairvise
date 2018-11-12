@@ -8,6 +8,9 @@ function processDouble(raw) {
   if (typeof(raw) !== "string") {
     return 0;
   }
+
+  // TODO: figure out a better way to parse confidence level
+  // below is a hack
   let rawStringList = raw.toLocaleLowerCase().split("\n");
   for (let i = 0; i < rawStringList.length; i++) {
     let rawString = rawStringList[i];
@@ -28,7 +31,7 @@ export function processMapping(mapping, data, dbFields, hasLabel) {
   if (hasLabel) {
     data = data.slice(1);
   }
-  if (checkDateResult != null) {
+  if (checkDateResult !== null) {
     throw checkDateResult;
   }
   let result = [];
@@ -48,8 +51,8 @@ export function processMapping(mapping, data, dbFields, hasLabel) {
     let dataObject = {};
 
     let usingDate = false;
-    let isSeperateDate = false;
-    let localDate, localTime;
+    let isSeparateDate = false;
+    let localDate = null, localTime = null;
     // for each mapped database fields
     for (let idx in mapping) {
       let rawData = row[mapping[idx][1]];
@@ -57,12 +60,13 @@ export function processMapping(mapping, data, dbFields, hasLabel) {
 
       // if date is selected, directly parse date as usual
       if (fieldType === "Date") {
+        // TODO let user specify the format of the date instead of hardcoding
         rawData = moment(rawData, "YYYY-M-D H:m").format("YYYY-MM-DD hh:mm:ss");
         if (rawData === "Invalid date") {
           throw "invalid date format";
         }
         usingDate = true;
-        isSeperateDate = false;
+        isSeparateDate = false;
       }
 
       // if we are not using date and date time is not complete,
@@ -84,7 +88,7 @@ export function processMapping(mapping, data, dbFields, hasLabel) {
         if (rawData === "Invalid date") {
           throw "invalid date format";
         }
-        isSeperateDate = true;
+        isSeparateDate = true;
       }
 
       if (!usingDate && fieldType === "LocalTime" && localDate !== null) {
@@ -92,7 +96,7 @@ export function processMapping(mapping, data, dbFields, hasLabel) {
         if (rawData === "Invalid date") {
           throw "invalid date format";
         }
-        isSeperateDate = true;
+        isSeparateDate = true;
       }
 
       // parse integer
@@ -121,9 +125,9 @@ export function processMapping(mapping, data, dbFields, hasLabel) {
 
       // if is separate date format, assign using date field
       // else, assign directly using date field
-      if (isSeperateDate) {
+      if (isSeparateDate) {
         dataObject[dateField] = rawData;
-        isSeperateDate = false;
+        isSeparateDate = false;
       } else {
         dataObject[dbFields.fieldMetaDataList[mapping[idx][0]].jsonProperty] = rawData;
       }
