@@ -32,6 +32,7 @@ export function processMapping(mapping, data, dbFields, hasLabel) {
     data = data.slice(1);
   }
   if (checkDateResult !== undefined) {
+    console.log(checkDateResult)
     throw checkDateResult;
   }
   let result = [];
@@ -143,7 +144,7 @@ export function dateCheck(mapping, dbFields) {
   for (let idx in mapping) {
     let dbLabelType = dbFields.fieldMetaDataList[mapping[idx][0]].type;
     if (dbLabelType === "Date") {
-      return null;
+      return;
     }
     if (dbLabelType === "LocalDate") {
       localDateExists = true;
