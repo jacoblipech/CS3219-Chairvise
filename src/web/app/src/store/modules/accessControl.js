@@ -87,7 +87,7 @@ export default {
         })
     },
 
-    async addAccessControl({ commit }, {presentationId, userIdentifier, accessLevel}) {
+    async addAccessControl({commit}, {presentationId, userIdentifier, accessLevel}) {
       commit('setAccessControlFormLoading', true);
       await axios.post(`/api/presentations/${presentationId}/accessControl`, {
         userIdentifier,
@@ -104,7 +104,7 @@ export default {
         })
     },
 
-    async deleteAccessControl({ commit }, {id, presentationId}) {
+    async deleteAccessControl({commit}, {id, presentationId}) {
       commit('setAccessControlListLoading', true);
       await axios.delete(`/api/presentations/${presentationId}/accessControl/${id}`)
         .then(() => {
@@ -118,7 +118,7 @@ export default {
         })
     },
 
-    async updateAccessControl({ commit }, {id, presentationId, accessLevel}) {
+    async updateAccessControl({commit}, {id, presentationId, accessLevel}) {
       commit('setAccessControlListLoading', true);
       await axios.put(`/api/presentations/${presentationId}/accessControl/${id}`, {
         accessLevel

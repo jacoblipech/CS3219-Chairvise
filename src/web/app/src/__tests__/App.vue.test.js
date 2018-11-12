@@ -1,18 +1,18 @@
-import { shallowMount, createLocalVue } from '@vue/test-utils'
+import {createLocalVue, shallowMount} from '@vue/test-utils'
 import ElementUI from 'element-ui';
 import VueRouter from 'vue-router'
 import Vuex from 'vuex'
 import App from '../App'
 
-const localVue = createLocalVue()
+const localVue = createLocalVue();
 
-localVue.use(Vuex)
-localVue.use(VueRouter)
-localVue.use(ElementUI)
+localVue.use(Vuex);
+localVue.use(VueRouter);
+localVue.use(ElementUI);
 
 describe('App.vue', () => {
 
-  let store
+  let store;
 
   beforeEach(() => {
     store = new Vuex.Store({
@@ -28,10 +28,10 @@ describe('App.vue', () => {
         }
       }
     })
-  })
+  });
 
   test('App is a vue instance and mounted correctly', () => {
-    const wrapper = shallowMount(App, { store, localVue })
+    const wrapper = shallowMount(App, {store, localVue});
     expect(wrapper.isVueInstance()).toBeTruthy()
   })
-})
+});

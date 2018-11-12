@@ -142,7 +142,7 @@ public class AnalysisControllerTest extends BaseTestREST {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].s_authors").value("Laxxx Kaxx"))
+                .andExpect(jsonPath("$[0].s_is_accepted").value("no"))
                 .andExpect(jsonPath("$[0].a_country").value("United States"))
                 .andExpect(jsonPath("$[0].r_reviewer_name").value("Juxxxx Bruxxxx"));
     }

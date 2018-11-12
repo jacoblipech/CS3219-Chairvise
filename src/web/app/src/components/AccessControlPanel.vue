@@ -6,7 +6,7 @@
       @focus="$event.target.select()">
       <template slot="prepend">Any one with the link</template>
       <template slot="append">
-        <el-select :value="publicAccessLevel"  @change="modifyPublicAccessControl($event)" style="width: 150px">
+        <el-select :value="publicAccessLevel" @change="modifyPublicAccessControl($event)" style="width: 150px">
           <el-option label="Cannot Access" value="OFF"></el-option>
           <el-option label="Can View" value="CAN_READ"></el-option>
           <el-option label="Can Edit" value="CAN_WRITE"></el-option>
@@ -14,7 +14,8 @@
       </template>
     </el-input>
     <h4>Specific Access Control</h4>
-    <el-alert v-if="isAccessControlListApiError" :title="accessControlListApiErrorMsg" type="error" show-icon class="errorAlert" />
+    <el-alert v-if="isAccessControlListApiError" :title="accessControlListApiErrorMsg" type="error" show-icon
+              class="errorAlert"/>
     <el-table
       :data="accessControlList"
       style="width: 100%" emptyText="No Access Control for this Presentation!">
@@ -37,13 +38,16 @@
       </el-table-column>
     </el-table>
     <h4>Add New Access Control</h4>
-    <el-alert v-if="isAccessControlFormApiError" :title="accessControlFormApiErrorMsg" type="error" show-icon class="errorAlert"/>
-    <el-form ref="accessControlForm" label-position="left" label-width="120px" :model="accessControlForm" :rules="accessControlFormRule">
+    <el-alert v-if="isAccessControlFormApiError" :title="accessControlFormApiErrorMsg" type="error" show-icon
+              class="errorAlert"/>
+    <el-form ref="accessControlForm" label-position="left" label-width="120px" :model="accessControlForm"
+             :rules="accessControlFormRule">
       <el-form-item label="Email address" prop="userIdentifier">
         <el-input v-model="accessControlFormUserIdentifier" placeholder="Email of the user to share"></el-input>
       </el-form-item>
       <el-form-item label="Permissions" prop="accessLevel">
-        <el-select v-model="accessControlFormAccessLevel" placeholder="Permission the user will have" style="width: 100%">
+        <el-select v-model="accessControlFormAccessLevel" placeholder="Permission the user will have"
+                   style="width: 100%">
           <el-option label="View" value="CAN_READ"></el-option>
           <el-option label="Edit" value="CAN_WRITE"></el-option>
         </el-select>
@@ -56,8 +60,7 @@
 </template>
 
 <script>
-  import {ID_NEW_PRESENTATION} from "@/common/const";
-  import {SPECIAL_IDENTIFIER_PUBLIC} from '@/common/const'
+  import {ID_NEW_PRESENTATION, SPECIAL_IDENTIFIER_PUBLIC} from "@/common/const";
 
   export default {
     name: "AccessControlPanel",
@@ -80,9 +83,10 @@
       return {
         accessControlFormRule: {
           userIdentifier: [
-            { required: true, message: 'Please enter the email', trigger: 'blur' },
-            { type: 'email', message: 'Please enter a valid email', trigger: ['blur'] },
-            { validator: (rule, value, callback) => {
+            {required: true, message: 'Please enter the email', trigger: 'blur'},
+            {type: 'email', message: 'Please enter a valid email', trigger: ['blur']},
+            {
+              validator: (rule, value, callback) => {
                 if (this.accessControlList.some(ele => ele.userIdentifier === value)) {
                   callback(new Error('There is existent access control for the user'));
                 } else {
@@ -93,7 +97,7 @@
             }
           ],
           accessLevel: [
-            { required: true, message: 'Please give an access level', trigger: 'blur' },
+            {required: true, message: 'Please give an access level', trigger: 'blur'},
           ]
         },
         currentUrl: '',
@@ -255,7 +259,7 @@
 </script>
 
 <style scoped>
-.errorAlert {
-  margin-bottom: 15px;
-}
+  .errorAlert {
+    margin-bottom: 15px;
+  }
 </style>

@@ -28,19 +28,19 @@ export default {
     }
   },
   actions: {
-    async getAuthInfo({ commit }) {
+    async getAuthInfo({commit}) {
       commit('setPageLoadingStatus', true);
       const urlToGetBack = encodeURI(window.location.href);
       axios.get('/api/auth?redirectUrl=' + urlToGetBack)
-          .then(response => {
-            commit('setAuthInfo', response.data)
-          })
-          .catch(e => {
-            commit('setAuthInfoApiRequestFail', e.toString());
-          })
-          .finally(() => {
-            commit('setPageLoadingStatus', false)
-          })
+        .then(response => {
+          commit('setAuthInfo', response.data)
+        })
+        .catch(e => {
+          commit('setAuthInfoApiRequestFail', e.toString());
+        })
+        .finally(() => {
+          commit('setPageLoadingStatus', false)
+        })
     }
   }
 };

@@ -11,6 +11,8 @@
   "dependencies": {
     "axios": "^0.18.0",
     "chart.js": "^2.7.3",
+    "chartjs-plugin-datalabels": "^0.4.0",
+    "color": "^3.1.0",
     "element-ui": "^2.4.5",
     "html2canvas": "^1.0.0-alpha.12",
     "jspdf": "^1.4.1",
@@ -20,7 +22,6 @@
     "vue": "^2.5.17",
     "vue-chartjs": "^3.4.0",
     "vue-router": "^3.0.1",
-    "vue-scrollto": "^2.13.0",
     "vuex": "^3.0.1",
     "wordcloud": "^1.1.0"
   },
