@@ -293,7 +293,7 @@ export default {
         }
       ],
       extraData: {
-        dataSetLabel: 'Acceptance Rate',
+        dataSetLabel: 'Accepted Papers',
         fieldsShownInToolTips: [
           {
             label: 'Acceptance Rate',
@@ -975,7 +975,7 @@ export default {
         }
       ],
       extraData: {
-        dataSetLabel: 'Acceptance Rate',
+        dataSetLabel: 'Accepted Papers',
         fieldsShownInToolTips: [
           {
             label: 'Email',
@@ -1131,7 +1131,7 @@ export default {
         }
       ],
       extraData: {
-        dataSetLabel: 'Acceptance Rate',
+        dataSetLabel: 'Accepted Papers',
         fieldsShownInToolTips: [
           {
             label: 'Total Accepted',
@@ -1283,7 +1283,7 @@ export default {
         }
       ],
       extraData: {
-        dataSetLabel: 'Acceptance Rate',
+        dataSetLabel: 'Accepted Papers',
         fieldsShownInToolTips: [
           {
             label: 'Acceptance Rate',
