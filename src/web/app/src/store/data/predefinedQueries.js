@@ -115,6 +115,7 @@ export default {
         xAxisFieldName: 'author_name',
         yAxisFieldName: 'submission_count',
         numOfResultToDisplay: 10,
+        isColorfulBar: true,
       }
     }
   },
@@ -165,8 +166,8 @@ export default {
         fieldsShownInToolTips: [],
         xAxisFieldName: 's_author_name',
         yAxisFieldName: 'paper_count',
-
         numOfResultToDisplay: 10,
+        isColorfulBar: true,
       }
     }
   },
@@ -234,6 +235,7 @@ export default {
         xAxisFieldName: 's_author_name',
         yAxisFieldName: 'acceptance_rate',
         numOfResultToDisplay: 10,
+        isColorfulBar: true,
       }
     }
   },
@@ -301,6 +303,7 @@ export default {
         xAxisFieldName: 's_author_name',
         yAxisFieldName: 'accepted',
         numOfResultToDisplay: 10,
+        isColorfulBar: true,
       }
     }
   },
@@ -507,6 +510,7 @@ export default {
         xAxisFieldName: 'weighted_score_interval',
         yAxisFieldName: 'submission_count',
         numOfResultToDisplay: 50,
+        isColorfulBar: false,
       }
     }
   },
@@ -638,6 +642,7 @@ export default {
         xAxisFieldName: 's_track_name',
         yAxisFieldName: 'submission_count',
         numOfResultToDisplay: 10,
+        isColorfulBar: true,
       }
     }
   },
@@ -683,6 +688,7 @@ export default {
         xAxisFieldName: 's_track_name',
         yAxisFieldName: 'acceptance_ratio',
         numOfResultToDisplay: 10,
+        isColorfulBar: true,
       }
     }
   },
@@ -885,6 +891,7 @@ export default {
         xAxisFieldName: 'author_name',
         yAxisFieldName: 'acceptance_rate',
         numOfResultToDisplay: 10,
+        isColorfulBar: true,
       }
     }
   },
@@ -974,6 +981,7 @@ export default {
         xAxisFieldName: 'author_name',
         yAxisFieldName: 'accepted',
         numOfResultToDisplay: 10,
+        isColorfulBar: true,
       }
     }
   },
@@ -1049,6 +1057,7 @@ export default {
         xAxisFieldName: 'a_organisation',
         yAxisFieldName: 'acceptance_rate',
         numOfResultToDisplay: 10,
+        isColorfulBar: true,
       }
     }
   },
@@ -1124,6 +1133,7 @@ export default {
         xAxisFieldName: 'a_organisation',
         yAxisFieldName: 'accepted',
         numOfResultToDisplay: 10,
+        isColorfulBar: true,
       }
     }
   },
@@ -1199,6 +1209,7 @@ export default {
         xAxisFieldName: 'a_country',
         yAxisFieldName: 'acceptance_rate',
         numOfResultToDisplay: 10,
+        isColorfulBar: true,
       }
     }
   },
@@ -1274,6 +1285,7 @@ export default {
         xAxisFieldName: 'a_country',
         yAxisFieldName: 'accepted',
         numOfResultToDisplay: 10,
+        isColorfulBar: true,
       }
     }
   },
@@ -1323,6 +1335,7 @@ export default {
         xAxisFieldName: 'r_reviewer_name',
         yAxisFieldName: 'review_assignment',
         numOfResultToDisplay: 10,
+        isColorfulBar: true,
       }
     }
   },
@@ -1389,6 +1402,7 @@ export default {
         xAxisFieldName: 'r_reviewer_name',
         yAxisFieldName: 'avg_expertise_level',
         numOfResultToDisplay: 30,
+        isColorfulBar: true,
       }
     }
   },
@@ -1455,6 +1469,7 @@ export default {
         xAxisFieldName: 'r_reviewer_name',
         yAxisFieldName: 'avg_confidence_level',
         numOfResultToDisplay: 30,
+        isColorfulBar: true,
       }
     }
   },
@@ -1521,6 +1536,7 @@ export default {
         xAxisFieldName: 'r_reviewer_name',
         yAxisFieldName: 'avg_evaluation_score',
         numOfResultToDisplay: 30,
+        isColorfulBar: true,
       }
     }
   },
@@ -1575,6 +1591,7 @@ export default {
         xAxisFieldName: 'num_of_review',
         yAxisFieldName: 'num_of_submission',
         numOfResultToDisplay: 30,
+        isColorfulBar: false,
       }
     }
   },
@@ -1595,7 +1612,7 @@ export default {
           rename: 'num_of_reviewer',
         },
         {
-          expression: "ROUND(SUM(avg_evaluation_score) / (COUNT(*) - 1), 2）",
+          expression: "ROUND(SUM(avg_evaluation_score) / (COUNT(*) - 1), 2)",
           rename: 'evaluation_score_in_group',
         },
         {
@@ -1703,6 +1720,7 @@ export default {
         xAxisFieldName: 'avg_expertise_level_interval',
         yAxisFieldName: 'num_of_reviewer',
         numOfResultToDisplay: 30,
+        isColorfulBar: false,
       }
     }
   },
@@ -1831,6 +1849,7 @@ export default {
         xAxisFieldName: 'avg_confidence_level_interval',
         yAxisFieldName: 'num_of_reviewer',
         numOfResultToDisplay: 30,
+        isColorfulBar: false,
       }
     }
   },
@@ -1971,6 +1990,7 @@ export default {
         xAxisFieldName: 'avg_evaluation_score_interval',
         yAxisFieldName: 'num_of_reviewer',
         numOfResultToDisplay: 30,
+        isColorfulBar: false,
       }
     }
   },
@@ -2109,6 +2129,7 @@ export default {
         xAxisFieldName: 'weighted_score_interval',
         yAxisFieldName: 'acceptance_rate',
         numOfResultToDisplay: 50,
+        isColorfulBar: false,
       }
     }
   },
@@ -2154,6 +2175,7 @@ export default {
         xAxisFieldName: 's_track_name',
         yAxisFieldName: 'avg_weighted_score',
         numOfResultToDisplay: 50,
+        isColorfulBar: true,
       }
     }
   },
@@ -2221,6 +2243,7 @@ export default {
         xAxisFieldName: 'duration_get_reviewed',
         yAxisFieldName: 'num_of_submission',
         numOfResultToDisplay: 50,
+        isColorfulBar: false,
       }
     }
   },
@@ -2331,6 +2354,7 @@ export default {
         xAxisFieldName: 'avg_expertise_level_interval',
         yAxisFieldName: 'num_of_submission',
         numOfResultToDisplay: 50,
+        isColorfulBar: false,
       }
     }
   },
@@ -2441,6 +2465,7 @@ export default {
         xAxisFieldName: 'avg_confidence_level_interval',
         yAxisFieldName: 'num_of_submission',
         numOfResultToDisplay: 50,
+        isColorfulBar: false,
       }
     }
   },
@@ -2492,8 +2517,8 @@ export default {
         fieldsShownInToolTips: [],
         xAxisFieldName: 's_author_name',
         yAxisFieldName: 'avg_weighted_score',
-
         numOfResultToDisplay: 10,
+        isColorfulBar: true,
       }
     }
   },
@@ -2568,8 +2593,8 @@ export default {
         ],
         xAxisFieldName: 'author_name',
         yAxisFieldName: 'avg_weighted_score',
-
         numOfResultToDisplay: 10,
+        isColorfulBar: true,
       }
     }
   },
@@ -2630,8 +2655,8 @@ export default {
         ],
         xAxisFieldName: 'a_organisation',
         yAxisFieldName: 'avg_weighted_score',
-
         numOfResultToDisplay: 10,
+        isColorfulBar: true,
       }
     }
   },
@@ -2692,8 +2717,8 @@ export default {
         ],
         xAxisFieldName: 'a_country',
         yAxisFieldName: 'avg_weighted_score',
-
         numOfResultToDisplay: 10,
+        isColorfulBar: true,
       }
     }
   },
