@@ -70,7 +70,7 @@ public class PresentationAccessControlController extends BaseRestController {
     }
 
     @DeleteMapping("/presentations/{presentationId}/accessControl/{accessControlId}")
-    public ResponseEntity<?> removePermission(@PathVariable Long presentationId, @PathVariable Long accessControlId) throws URISyntaxException {
+    public ResponseEntity<?> removePermission(@PathVariable Long presentationId, @PathVariable Long accessControlId) {
         Presentation presentation = presentationLogic.findById(presentationId)
                 .orElseThrow(() -> new PresentationNotFoundException(presentationId));
         gateKeeper.verifyAccessForPresentation(presentation, AccessLevel.CAN_WRITE);

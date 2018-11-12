@@ -11,7 +11,7 @@
         </el-menu-item>
       </li>
       <li v-for="presentation in presentations" :key="presentation.id">
-        <el-menu-item :index="'/analyze/' + presentation.id">
+        <el-menu-item :index="`/analyze/${presentation.id}`">
           <i class="el-icon-document"></i>
           <span slot="title">
           {{ presentation.name }}

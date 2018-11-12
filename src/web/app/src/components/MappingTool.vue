@@ -33,8 +33,8 @@
       <!-- button group -->
       <el-row class="button-row">
         <el-col>
-          <el-button class="back-button" type="info" v-on:click="backClicked">back</el-button>
-          <el-button class="back-button" type="success" v-on:click="uploadClicked">upload</el-button>
+          <el-button class="back-button" type="info" v-on:click="backClicked">Back</el-button>
+          <el-button class="back-button" type="success" v-on:click="uploadClicked">Upload</el-button>
         </el-col>
       </el-row>
       <!-- end of button group -->
@@ -67,7 +67,7 @@
       title="Confirm"
       :visible.sync="hasSubmitted"
       width="30%" center>
-      <span>After submission, your will not be abled to modify your mapping. Are you sure that the columns are correctly mapped?</span>
+      <span>After submission, your will not be able to modify your mapping. Are you sure that the columns are correctly mapped?</span>
       <span slot="footer" class="dialog-footer">
         <el-button v-on:click="hasSubmitted = false">Cancel</el-button>
         <el-button type="primary" v-on:click="submitMapping">Confirm</el-button>
@@ -99,8 +99,10 @@
 
         // ordered list of tags that have been
         // mapped with their data type details
-        mappedDBTag: filterPredefinedMap(deepCopy(this.$store.state.dataMapping.data.predefinedMapping.dbTagIndices), this.$store.state.dataMapping.data.dbSchema.fieldMetaDataList),
-        mappedImportTag: filterPredefinedMap(deepCopy(this.$store.state.dataMapping.data.predefinedMapping.importedTagIndices), this.$store.state.dataMapping.data.uploadedLabel),
+        mappedDBTag: filterPredefinedMap(deepCopy(this.$store.state.dataMapping.data.predefinedMapping.dbTagIndices),
+          this.$store.state.dataMapping.data.dbSchema.fieldMetaDataList),
+        mappedImportTag: filterPredefinedMap(deepCopy(this.$store.state.dataMapping.data.predefinedMapping.importedTagIndices),
+          this.$store.state.dataMapping.data.uploadedLabel),
 
         hasSubmitted: false,
         tableType: ""
@@ -113,7 +115,7 @@
       // a list of size k * 2, k is the number of mapped pairs
       // the mapped pairs are indexes.
       mappedPairs: function () {
-        var temp = this.mappedImportTag;
+        let temp = this.mappedImportTag;
         return this.mappedDBTag.map(function (e, i) {
           return [e, temp[i]];
         });
@@ -125,11 +127,11 @@
         if (this.$store.state.dataMapping.data.hasHeader) {
           return this.$store.state.dataMapping.data.uploadedLabel;
         }
-        var lst = [];
-        for (var i = 0; i < this.$store.state.dataMapping.data.uploadedLabel.length; i++) {
+        let lst = [];
+        for (let i = 0; i < this.$store.state.dataMapping.data.uploadedLabel.length; i++) {
           lst.push("Column " + (i + 1));
         }
-        return lst
+        return lst;
       },
 
       // gets errors
@@ -194,9 +196,9 @@
         this.$store.commit("clearPredefinedMapping");
       },
       uploadClicked: function () {
-        var map = deepCopy(this.mappedPairs);
+        let map = deepCopy(this.mappedPairs);
         this.$store.commit("setMapping", {"map": map});
-        if (this.errors.length == 0) {
+        if (this.errors.length === 0) {
           this.hasSubmitted = true;
         }
       },
@@ -223,8 +225,6 @@
 </script>
 
 <style scoped>
-  @import url("https://fonts.googleapis.com/css?family=Montserrat:300,400,500");
-
   @keyframes pulse {
     from {
       -webkit-transform: scale3d(1, 1, 1);
@@ -243,7 +243,7 @@
   }
 
   .map-container h3 {
-    letter-spacing: 0.5px;
+    letter-spacing: 1px;
   }
 
   .tags-group-move {
@@ -352,7 +352,7 @@
   .pair-tag {
     margin: 5px 5px;
     padding: 15px 14px;
-    letter-spacing: 0.5px;
+    letter-spacing: 1px;
     border-bottom: 1px solid #eee;
     color: #565656;
   }
@@ -390,8 +390,8 @@
   }
 
   .el-tag {
-    margin-left: 0px;
-    padding: 0px;
+    margin-left: 0;
+    padding: 0;
     width: 70px;
     text-align: center;
     font-size: 9px;

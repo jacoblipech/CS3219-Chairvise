@@ -29,6 +29,10 @@
     text-align: justify;
   }
 
+  img {
+    width: 30%;
+  }
+
   div {
     text-align: center;
   }

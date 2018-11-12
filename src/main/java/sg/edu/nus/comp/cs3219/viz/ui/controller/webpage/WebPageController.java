@@ -12,7 +12,7 @@ public class WebPageController {
     }
 
     @RequestMapping("/")
-    public String welcomeStanger() {
+    public String welcomeStranger() {
         return "redirect:/web/";
     }
 

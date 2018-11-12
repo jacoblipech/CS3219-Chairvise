@@ -88,11 +88,11 @@ export default {
         state.error = [];
         state.data.mappingResult = payload.map;
         state.mappingFinished = true;
-        var processedResult = processMapping(payload.map,
-          state.data.uploadedData,
-          state.data.dbSchema,
-          state.data.hasHeader);
-        state.data.processedResult = processedResult;
+        state.data.processedResult =
+          processMapping(payload.map,
+            state.data.uploadedData,
+            state.data.dbSchema,
+            state.data.hasHeader);
       } catch (err) {
         state.error.push(err);
         state.mappingFinished = false;
@@ -119,7 +119,7 @@ export default {
   actions: {
     async persistMapping({commit, state}) {
       commit("setPageLoadingStatus", true);
-      var endpoint;
+      let endpoint;
       switch (state.data.tableType) {
         case 0:
           endpoint = "author";

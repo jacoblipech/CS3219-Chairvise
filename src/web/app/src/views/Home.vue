@@ -35,7 +35,7 @@
 </script>
 <style scoped>
   .el-aside {
-    width: "250px";
+    width: 250px;
   }
 
   .el-main {

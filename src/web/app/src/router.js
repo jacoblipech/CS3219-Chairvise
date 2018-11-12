@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import {ID_NEW_PRESENTATION} from "@/common/const";
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
   mode: 'history',
@@ -39,7 +39,7 @@ export default new Router({
       path: '/importData',
       name: 'importData',
       meta: {
-        title: 'Import Page'
+        title: 'Import Data Page'
       },
       component: () => import(/* webpackChunkName: "importData" */ './views/ImportData.vue')
     },

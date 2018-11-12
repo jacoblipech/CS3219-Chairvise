@@ -24,7 +24,7 @@ public class AuthInfoController extends BaseRestController {
 
         AuthInfo authInfo = new AuthInfo();
         authInfo.setLogin(userInfo != null);
-        // development server doesn't have urlPrefix while productiono server has
+        // development server doesn't have urlPrefix while production server has
         String urlPrefix = Config.isDevServer() ? Config.APP_URL : "";
         if (authInfo.isLogin()) {
             authInfo.setLogoutUrl(urlPrefix + gateKeeper.getLogoutUrl(redirect));

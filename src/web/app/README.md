@@ -1,4 +1,6 @@
-# app
+# Frontend of Conference Data Visualization Management System
+
+See [README.md](../../../README.md)
 
 ## Project setup
 ```

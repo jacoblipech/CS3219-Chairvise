@@ -181,7 +181,7 @@ public class PresentationSectionControllerTest extends BaseTestREST {
                 .orElseThrow(AssertionError::new);
         // make two consistent
         updatedPresentationSection.setId(presentationSectionUsedToUpdate.getId());
-        // type cannot be udpated
+        // type cannot be updated
         presentationSectionUsedToUpdate.setType(updatedPresentationSection.getType());
 
         Assert.assertEquals(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(updatedPresentationSection),
