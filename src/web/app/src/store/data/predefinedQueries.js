@@ -187,7 +187,7 @@ export default {
           rename: 'submitted'
         },
         {
-          expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)/COUNT(*)",
+          expression: "ROUND(SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)/COUNT(*), 2)",
           rename: 'acceptance_rate'
         },
         {
@@ -254,7 +254,7 @@ export default {
           rename: 'submitted'
         },
         {
-          expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)/COUNT(*)",
+          expression: "ROUND(SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)/COUNT(*), 2)",
           rename: 'acceptance_rate'
         },
         {
@@ -519,7 +519,7 @@ export default {
       dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
-          expression: 'SUM(r_confidence_level * r_overall_evaluation_score) / SUM(r_confidence_level)',
+          expression: 'ROUND(SUM(r_confidence_level * r_overall_evaluation_score) / SUM(r_confidence_level), 2)',
           rename: 'weighted_score'
         },
       ],
@@ -650,7 +650,7 @@ export default {
       dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
-          expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)/COUNT(*)",
+          expression: "ROUND(SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)/COUNT(*), 2)",
           rename: 'acceptance_ratio'
         },
         {
@@ -695,7 +695,7 @@ export default {
       dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
-          expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)/COUNT(*)",
+          expression: "ROUND(SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)/COUNT(*), 2)",
           rename: 'acceptance_ratio'
         },
         {
@@ -808,7 +808,7 @@ export default {
       dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
-          expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)/COUNT(*)",
+          expression: "ROUND(SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)/COUNT(*), 2)",
           rename: 'acceptance_rate'
         },
         {
@@ -897,7 +897,7 @@ export default {
       dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
-          expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)/COUNT(*)",
+          expression: "ROUND(SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)/COUNT(*), 2)",
           rename: 'acceptance_rate'
         },
         {
@@ -986,7 +986,7 @@ export default {
       dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
-          expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)/COUNT(*)",
+          expression: "ROUND(SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)/COUNT(*), 2)",
           rename: 'acceptance_rate'
         },
         {
@@ -1061,7 +1061,7 @@ export default {
       dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
-          expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)/COUNT(*)",
+          expression: "ROUND(SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)/COUNT(*), 2)",
           rename: 'acceptance_rate'
         },
         {
@@ -1136,7 +1136,7 @@ export default {
       dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
-          expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)/COUNT(*)",
+          expression: "ROUND(SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)/COUNT(*), 2)",
           rename: 'acceptance_rate'
         },
         {
@@ -1211,7 +1211,7 @@ export default {
       dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
-          expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)/COUNT(*)",
+          expression: "ROUND(SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)/COUNT(*), 2)",
           rename: 'acceptance_rate'
         },
         {
@@ -1335,15 +1335,15 @@ export default {
       dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
-          expression: 'AVG(r_confidence_level)',
+          expression: 'ROUND(AVG(r_confidence_level), 2)',
           rename: 'avg_confidence_level'
         },
         {
-          expression: 'AVG(r_expertise_level)',
+          expression: 'ROUND(AVG(r_expertise_level), 2)',
           rename: 'avg_expertise_level'
         },
         {
-          expression: 'AVG(r_overall_evaluation_score)',
+          expression: 'ROUND(AVG(r_overall_evaluation_score), 2)',
           rename: 'avg_evaluation_score'
         },
         {
@@ -1401,15 +1401,15 @@ export default {
       dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
-          expression: 'AVG(r_confidence_level)',
+          expression: 'ROUND(AVG(r_confidence_level), 2)',
           rename: 'avg_confidence_level'
         },
         {
-          expression: 'AVG(r_expertise_level)',
+          expression: 'ROUND(AVG(r_expertise_level), 2)',
           rename: 'avg_expertise_level'
         },
         {
-          expression: 'AVG(r_overall_evaluation_score)',
+          expression: 'ROUND(AVG(r_overall_evaluation_score), 2)',
           rename: 'avg_evaluation_score'
         },
         {
@@ -1467,15 +1467,15 @@ export default {
       dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
-          expression: 'AVG(r_confidence_level)',
+          expression: 'ROUND(AVG(r_confidence_level), 2)',
           rename: 'avg_confidence_level'
         },
         {
-          expression: 'AVG(r_expertise_level)',
+          expression: 'ROUND(AVG(r_expertise_level), 2)',
           rename: 'avg_expertise_level'
         },
         {
-          expression: 'AVG(r_overall_evaluation_score)',
+          expression: 'ROUND(AVG(r_overall_evaluation_score), 2)',
           rename: 'avg_evaluation_score'
         },
         {
@@ -1595,11 +1595,11 @@ export default {
           rename: 'num_of_reviewer',
         },
         {
-          expression: "SUM(avg_evaluation_score) / (COUNT(*) - 1)",
+          expression: "ROUND(SUM(avg_evaluation_score) / (COUNT(*) - 1), 2）",
           rename: 'evaluation_score_in_group',
         },
         {
-          expression: "SUM(avg_confidence_level) / (COUNT(*) - 1)",
+          expression: "ROUND(SUM(avg_confidence_level) / (COUNT(*) - 1), 2)",
           rename: 'confidence_level_in_group',
         }
       ],
@@ -1723,11 +1723,11 @@ export default {
           rename: 'num_of_reviewer',
         },
         {
-          expression: "SUM(avg_evaluation_score) / (COUNT(*) - 1)",
+          expression: "ROUND(SUM(avg_evaluation_score) / (COUNT(*) - 1), 2)",
           rename: 'evaluation_score_in_group',
         },
         {
-          expression: "SUM(avg_expertise_level) / (COUNT(*) - 1)",
+          expression: "ROUND(SUM(avg_expertise_level) / (COUNT(*) - 1), 2)",
           rename: 'expertise_level_in_group',
         }
       ],
@@ -1851,11 +1851,11 @@ export default {
           rename: 'num_of_reviewer',
         },
         {
-          expression: "SUM(avg_confidence_level) / (COUNT(*) - 1)",
+          expression: "ROUND(SUM(avg_confidence_level) / (COUNT(*) - 1), 2)",
           rename: 'confidence_level_in_group',
         },
         {
-          expression: "SUM(avg_expertise_level) / (COUNT(*) - 1)",
+          expression: "ROUND(SUM(avg_expertise_level) / (COUNT(*) - 1), 2)",
           rename: 'expertise_level_in_group',
         }
       ],
@@ -1995,7 +1995,7 @@ export default {
           rename: 'submitted'
         },
         {
-          expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END) / (COUNT(*) - 1)",
+          expression: "ROUND(SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END) / (COUNT(*) - 1), 2)",
           rename: 'acceptance_rate'
         },
       ],
@@ -2121,7 +2121,7 @@ export default {
       dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
-          expression: 'AVG(weighted_score)',
+          expression: 'ROUND(AVG(weighted_score), 2)',
           rename: 'avg_weighted_score'
         },
         {
@@ -2453,7 +2453,7 @@ export default {
       dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
-          expression: 'AVG(weighted_score)',
+          expression: 'ROUND(AVG(weighted_score), 2)',
           rename: 'avg_weighted_score'
         },
         {
@@ -2506,7 +2506,7 @@ export default {
       dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
-          expression: 'AVG(weighted_score)',
+          expression: 'ROUND(AVG(weighted_score), 2)',
           rename: 'avg_weighted_score'
         },
         {
@@ -2582,7 +2582,7 @@ export default {
       dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
-          expression: 'AVG(weighted_score)',
+          expression: 'ROUND(AVG(weighted_score), 2)',
           rename: 'avg_weighted_score'
         },
         {
@@ -2644,7 +2644,7 @@ export default {
       dataSet: '${PLACEHOLDER_DATA_SET}',
       selections: [
         {
-          expression: 'AVG(weighted_score)',
+          expression: 'ROUND(AVG(weighted_score), 2)',
           rename: 'avg_weighted_score'
         },
         {
