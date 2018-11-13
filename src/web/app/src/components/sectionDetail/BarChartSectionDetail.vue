@@ -33,6 +33,13 @@
       <el-form-item label="Legend Label Name" prop="extraData.dataSetLabel" v-if="slotProps.isInAdvancedMode">
         <el-input v-model="slotProps.extraData.dataSetLabel" placeholder="Label Name"></el-input>
       </el-form-item>
+      <el-form-item label="Colorful Bar" prop="extraData.isColorfulBar" v-if="slotProps.isInAdvancedMode">
+        <el-switch
+          v-model="slotProps.extraData.isColorfulBar"
+          active-text="Colorful Bar"
+          inactive-text="Single Color Bar">
+        </el-switch>
+      </el-form-item>
       <el-form-item label="Num of result to display" prop="extraData.numOfResultToDisplay"
                     v-if="slotProps.isInAdvancedMode">
         <el-slider v-model="slotProps.extraData.numOfResultToDisplay" :min="5" :max="30"></el-slider>
@@ -167,6 +174,16 @@
           borderColor: generateBorderColor(this.partialResult.length),
         };
 
+        // generate color
+        if (extraData.isColorfulBar) {
+          this.dataset.backgroundColor = generateBackgroundColor(this.partialResult.length);
+          this.dataset.borderColor = generateBorderColor(this.partialResult.length);
+        } else {
+          // choose a color in random
+          this.dataset.backgroundColor = generateBackgroundColor(this.partialResult.length)[this.partialResult.length - 1];
+          this.dataset.borderColor = generateBorderColor(this.partialResult.length)[this.partialResult.length - 1];
+        }
+
         // to display more data
         let toolTipFooterCallback = (tooltipItems) => {
           let currentIndex = tooltipItems[0].index;
@@ -194,7 +211,13 @@
             }]
           },
           legend: {
-            display: true
+            display: true,
+            position: 'bottom'
+          },
+          layout: {
+            padding: {
+              top: 30,
+            }
           },
           responsive: true,
           maintainAspectRatio: false,
