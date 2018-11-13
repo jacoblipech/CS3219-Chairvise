@@ -105,6 +105,15 @@
               },
             }]
           },
+          legend: {
+            display: true,
+            position: 'bottom'
+          },
+          layout: {
+            padding: {
+              top: 30,
+            }
+          },
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
