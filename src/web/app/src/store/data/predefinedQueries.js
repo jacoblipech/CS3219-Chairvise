@@ -661,7 +661,7 @@ export default {
       type: 'bar_chart',
       title: 'Acceptance Ratio Track',
       dataSet: '${PLACEHOLDER_DATA_SET}',
-      description: 'This bar char shows the acceptance rate of each paper based on tracks. This tells us which track has higher acceptance rate than others.',
+      description: 'This bar chart shows the acceptance rate of each paper based on tracks. This tells us which track has higher acceptance rate than others.',
       selections: [
         {
           expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)/COUNT(*)",
