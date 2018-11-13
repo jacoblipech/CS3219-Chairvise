@@ -182,6 +182,7 @@ export default {
       type: 'bar_chart',
       title: 'Submission Rank Paper Author in Full Papers',
       dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'This bar chart shows the top accepted papers in the Full Papers track. This tells us the ranking of the authors in each individual track. Users can use the filter function to change to different tracks to view the top accepted authors in that track.',
       selections: [
         {
           expression: 'COUNT(*)',
@@ -887,6 +888,7 @@ export default {
       type: 'bar_chart',
       title: 'Submission Rank Author in Full Papers',
       dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'By combining author and submission data, This bar chart shows the top accepted papers in the Full Papers track. This tells us the ranking of the authors in each individual track. Users can use the filter function to change to different tracks to view the top accepted authors in that track.',
       selections: [
         {
           expression: 'COUNT(*)',
