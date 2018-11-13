@@ -129,7 +129,7 @@ export default {
       type: 'bar_chart',
       title: 'Submission Rank Paper Author',
       dataSet: '${PLACEHOLDER_DATA_SET}',
-      description: 'This bar chart shows the number of papers each author submitted based in descending order. This tells us which authors submitted the more papers than other authors. We have split the authors field in each submission into individual authors and aggregate the submissions for each author.',
+      description: 'This bar chart shows the number of papers submitted by each author in descending order. This tells us which authors submitted more papers than other authors. We have split the authors field in each submission into individual authors and aggregate the submissions for each author.',
       selections: [
         {
           expression: 'COUNT(*)',
@@ -467,7 +467,7 @@ export default {
       type: 'bar_chart',
       title: 'Review Weighted Score Distribution',
       dataSet: '${PLACEHOLDER_DATA_SET}',
-      description: 'This bar chart shows the distribution of the weighted review score for all papers. This is calculated by retrieving the overall reviewed score and reviewer\'s confidence score in order to obtain a weighted average of all the scores. This gives us an insight on how the general score range for each submission.',
+      description: 'This bar chart shows the distribution of the weighted review score for all papers. This is calculated by retrieving the overall reviewed score and reviewer\'s confidence score in order to obtain a weighted average of all the scores. This gives us an insight on how the general score ranges for each submission.',
       selections: [
         {
           expression: 'weighted_score_interval',
@@ -620,7 +620,7 @@ export default {
       type: 'stats',
       title: 'Reviewer Expertise Level Statistic Summary',
       dataSet: '${PLACEHOLDER_DATA_SET}',
-      description: 'This table shows the reviewer expertise level statistics based on the minimum, maximum value, the average, median score and the standard deviation of the weighted evaluation scores. This gives us an insight on how specialized each reviewer is in their review.',
+      description: 'This table shows the reviewer expertise level statistics based on the minimum, maximum value, the average, median score and the standard deviation of the weighted evaluation scores. This gives us an insight on how specialized the reviewers are in their review.',
       selections: [
         {
           expression: 'r_expertise_level',
@@ -649,7 +649,7 @@ export default {
       type: 'stats',
       title: 'Reviewer Confidence Level Statistic Summary',
       dataSet: '${PLACEHOLDER_DATA_SET}',
-      description: 'This table shows the reviewer confidence level statistics based on the minimum, maximum value, the average, median score and the standard deviation of the weighted evaluation scores. This gives us an insight on how confident each reviewer is in their review.',
+      description: 'This table shows the reviewer confidence level statistics based on the minimum, maximum value, the average, median score and the standard deviation of the weighted evaluation scores. This gives us an insight on how confident the reviewers are in their review.',
       selections: [
         {
           expression: 'r_confidence_level',
@@ -2531,7 +2531,7 @@ export default {
       type: 'bar_chart',
       title: 'Average Confidence Level For Submission',
       dataSet: '${PLACEHOLDER_DATA_SET}',
-      description: 'This bar chart shows  the number of submissions for different average confidence level. This gives us an insight on the average confidence level for different number of submissions.',
+      description: 'This bar chart shows the number of submissions for different average confidence level. This gives us an insight on how confident, from a range of 1 to 5, the reviewers are in reviewing all the submitted papers. If a large number of submissions have a confident level of 4 to 5, it means that most reviewers are confident in their reviews.',
       selections: [
         {
           expression: 'COUNT(*) - 1',
