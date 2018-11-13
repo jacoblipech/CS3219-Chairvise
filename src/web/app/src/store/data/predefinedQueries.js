@@ -128,7 +128,7 @@ export default {
       type: 'bar_chart',
       title: 'Submission Rank Paper Author',
       dataSet: '${PLACEHOLDER_DATA_SET}',
-      description: 'This bar chart shows the number of papers each author submitted based in descending order. This tells us which authors submitted the more papers than other authors.',
+      description: 'This bar chart shows the number of papers each author submitted based in descending order. This tells us which authors submitted the more papers than other authors. We have split the authors field in each submission into individual authors and aggregate the submissions for each author.',
       selections: [
         {
           expression: 'COUNT(*)',
@@ -181,7 +181,7 @@ export default {
       type: 'bar_chart',
       title: 'Submission Acceptance Rate Rank Paper Author',
       dataSet: '${PLACEHOLDER_DATA_SET}',
-      description: 'This bar chart shows the percentage of acceptance rate of each author\'s papers in descending order. This tells us which authors has higher acceptance rate than other authors.',
+      description: 'This bar chart shows the percentage of acceptance rate of each author\'s papers in descending order. This tells us which authors has higher acceptance rate than other authors. We have split the authors field in each submission into individual authors and calculate the acceptance rate for each author.',
       selections: [
         {
           expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)",
@@ -249,7 +249,7 @@ export default {
       type: 'bar_chart',
       title: 'Submission Accepted Rank Paper Author',
       dataSet: '${PLACEHOLDER_DATA_SET}',
-      description: 'This bar chart shows the number of accepted papers submitted by each author in descending order. This tells us which authors has more accepted papers than other authors.',
+      description: 'This bar chart shows the number of accepted papers submitted by each author in descending order. This tells us which authors has more accepted papers than other authors. We have split the authors field in each submission into individual authors and aggregate the accepted submissions for each author.',
       selections: [
         {
           expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)",
@@ -317,7 +317,7 @@ export default {
       type: 'pie_chart',
       title: 'Submission Rank Country',
       dataSet: '${PLACEHOLDER_DATA_SET}',
-      description: 'This pie chart shows the percentage and number of papers submitted from each country. This tells us which country has more submissions than other countries.',
+      description: 'This pie chart shows the percentage and number of papers submitted from each country. This tells us which country has more submissions than other countries. We have included others to account for all countries involved.',
       selections: [
         {
           expression: 'COUNT(*)',
@@ -361,7 +361,7 @@ export default {
       type: 'pie_chart',
       title: 'Submission Rank Organization',
       dataSet: '${PLACEHOLDER_DATA_SET}',
-      description: 'This pie chart shows the percentage and number of papers submitted from each organization. This tells us which organization has more submissions than other organizations.',
+      description: 'This pie chart shows the percentage and number of papers submitted from each organization. This tells us which organization has more submissions than other organizations. We have included others to account for all organizations involved.',
       selections: [
         {
           expression: 'COUNT(*)',
@@ -751,7 +751,7 @@ export default {
       type: 'pie_chart',
       title: 'Recommendation for Best Paper Distribution',
       dataSet: '${PLACEHOLDER_DATA_SET}',
-      description: 'This pie chart shows the number and percentage of papers recommended and not recommended for best paper. This tells us how many papers are worthy to be submitted for the best paper',
+      description: 'This pie chart shows the number and percentage of papers recommended and not recommended for best paper. This tells us how many papers are worthy to be submitted for the best paper. We have plotted into a pie chart as it is clearer to show a binary value.',
       selections: [
         {
           expression: "CASE WHEN r_has_recommended_for_best_paper = 'yes' THEN 'Recommended' ELSE 'Not Recommended' END",
