@@ -6,7 +6,7 @@ export default {
       type: 'word_cloud',
       title: 'Word Cloud for All Submissions',
       dataSet: '${PLACEHOLDER_DATA_SET}',
-      description: 'This word cloud shows a list of key words found under abstract section for all submitted papers.',
+      description: 'This word cloud shows a list of key words found under the abstract section for all the submitted papers.',
       selections: [
         {
           expression: 's_keywords',
@@ -36,7 +36,7 @@ export default {
       type: 'word_cloud',
       title: 'Word Cloud for Reviewer Comment',
       dataSet: '${PLACEHOLDER_DATA_SET}',
-      description: 'This word cloud shows a list of key words found under reviewer\'s comments for reviewed papers.',
+      description: 'This word cloud shows a list of key words found under the reviewer\'s comments for all the reviewed papers.',
       selections: [
         {
           expression: 'r_review_comment',
@@ -129,7 +129,7 @@ export default {
       type: 'bar_chart',
       title: 'Submission Rank Paper Author',
       dataSet: '${PLACEHOLDER_DATA_SET}',
-      description: 'This bar chart shows the number of papers submitted by each author in descending order. This tells us which authors submitted more papers than other authors. We have split the authors field in each submission into individual authors and aggregate the submissions for each author.',
+      description: 'This bar chart shows the number of papers submitted by each author in descending order. This tells us which authors submitted more papers than other authors. As this is not an absolute number, it is calculated by splitting the authors field in each submission into individual authors and aggregate the number of submissions for each author.',
       selections: [
         {
           expression: 'COUNT(*)',
@@ -467,7 +467,7 @@ export default {
       type: 'bar_chart',
       title: 'Review Weighted Score Distribution',
       dataSet: '${PLACEHOLDER_DATA_SET}',
-      description: 'This bar chart shows the distribution of the weighted review score for all papers. This is calculated by retrieving the overall reviewed score and reviewer\'s confidence score in order to obtain a weighted average of all the scores. This gives us an insight on how the general score ranges for each submission.',
+      description: 'This bar chart shows the distribution of the weighted review score for all papers. This is calculated by retrieving the overall reviewed score and reviewer\'s confidence score in order to obtain a weighted average of all the scores. This gives us an insight on how the weighted score ranges for each submission in general.',
       selections: [
         {
           expression: 'weighted_score_interval',
@@ -2163,7 +2163,7 @@ export default {
       type: 'bar_chart',
       title: 'Acceptance Rate and Weighted Score',
       dataSet: '${PLACEHOLDER_DATA_SET}',
-      description: 'By combining review and submission, this bar chart shows the percentage of acceptance rate of based on the weighted score of the submissions. This gives us insight on what percentage of the papers will be accepted given a review score.',
+      description: 'By combining review and submission, this bar chart shows the percentage of acceptance rate of based on the weighted score of the submissions. This gives us an insight on what percentage of the papers will be accepted given a review score.',
       selections: [
         {
           expression: 'weighted_score_interval',
@@ -2303,7 +2303,7 @@ export default {
       type: 'bar_chart',
       title: 'Average Weighted Score By Track',
       dataSet: '${PLACEHOLDER_DATA_SET}',
-      description: 'By combining review and submission, this bar chart shows the average weighted score for papers in each track. This gives us insight on which track has been weighted scores than other tracks.',
+      description: 'By combining review and submission, this bar chart shows the average weighted score for papers in each track. This gives us an insight on which track has been weighted scores than other tracks.',
       selections: [
         {
           expression: 'ROUND(AVG(weighted_score), 2)',
@@ -2350,7 +2350,7 @@ export default {
       type: 'bar_chart',
       title: 'Earliest Review in Days For Submission',
       dataSet: '${PLACEHOLDER_DATA_SET}',
-      description: 'By combining review and submission, this bar chart shows the number of days taken for submissions to be reviews. This gives us insight on the efficiency of the reviewers.',
+      description: 'By combining review and submission, this bar chart shows the number of days taken for submissions to be reviews. This gives us an insight on the efficiency of the reviewers.',
       selections: [
         {
           expression: 'COUNT(*) - 1',
@@ -2419,7 +2419,7 @@ export default {
       type: 'bar_chart',
       title: 'Average Expert Level For Submission',
       dataSet: '${PLACEHOLDER_DATA_SET}',
-      description: 'This bar chart shows  the number of submissions for different average expertise level. This gives us an insight on the average expertise level for different number of submissions.',
+      description: 'This bar chart shows the number of submissions for different average expertise level. This gives us an insight on the average expertise level for a range of different submissions.',
       selections: [
         {
           expression: 'COUNT(*) - 1',
@@ -2643,7 +2643,7 @@ export default {
       type: 'bar_chart',
       title: 'Average Weighted Score Rank Paper Author',
       dataSet: '${PLACEHOLDER_DATA_SET}',
-      description: 'By combining review and submission, this bar chart shows the average weighted score of all the submissions for each author. This gives us insight on which author performs better with his or her submissions than other authors.',
+      description: 'By combining review and submission, this bar chart shows the average weighted score of all the submissions for each author. This gives us an insight on which author performs better with his or her submissions than other authors.',
       selections: [
         {
           expression: 'ROUND(AVG(weighted_score), 2)',
@@ -2697,7 +2697,7 @@ export default {
       type: 'bar_chart',
       title: 'Average Weighted Score Rank Author',
       dataSet: '${PLACEHOLDER_DATA_SET}',
-      description: 'By combining author and review, this bar chart shows the average weighted score of all the submissions for each author. This gives us insight on which author performs better with his or her submissions than other authors.',
+      description: 'By combining author and review, this bar chart shows the average weighted score of all the submissions for each author. This gives us an insight on which author performs better with his or her submissions than other authors.',
       selections: [
         {
           expression: 'ROUND(AVG(weighted_score), 2)',
@@ -2774,7 +2774,7 @@ export default {
       type: 'bar_chart',
       title: 'Average Weighted Score Rank Organization',
       dataSet: '${PLACEHOLDER_DATA_SET}',
-      description: 'By combining author and review, this bar chart shows the average weighted score of all the submissions for each organization. This gives us insight on which organization performs better with than other organizations.',
+      description: 'By combining author and review, this bar chart shows the average weighted score of all the submissions for each organization. This gives us an insight on which organization performs better with than other organizations.',
       selections: [
         {
           expression: 'ROUND(AVG(weighted_score), 2)',
@@ -2837,7 +2837,7 @@ export default {
       type: 'bar_chart',
       title: 'Average Weighted Score Rank Country',
       dataSet: '${PLACEHOLDER_DATA_SET}',
-      description: 'By combining author and review, this bar chart shows the average weighted score of all the submissions for each country. This gives us insight on which country performs better with than other countries.',
+      description: 'By combining author and review, this bar chart shows the average weighted score of all the submissions for each country. This gives us an insight on which country performs better with than other countries.',
       selections: [
         {
           expression: 'ROUND(AVG(weighted_score), 2)',
