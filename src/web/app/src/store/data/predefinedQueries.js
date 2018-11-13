@@ -171,6 +171,64 @@ export default {
       }
     }
   },
+  "submission_rank_paper_author_in_full_papers": {
+    name: "Submission Rank Paper Author in Full Papers",
+    group: 'Submission Record',
+    data: {
+      type: 'bar_chart',
+      title: 'Submission Rank Paper Author in Full Papers',
+      dataSet: '${PLACEHOLDER_DATA_SET}',
+      selections: [
+        {
+          expression: 'COUNT(*)',
+          rename: 'paper_count'
+        },
+        {
+          expression: "s_author_name",
+          rename: 's_author_name'
+        }
+      ],
+      involvedRecords: [
+        {
+          name: "(SELECT s_author_name, s_track_name FROM submission_record, submission_record_author_set, submission_author_record " +
+            "WHERE s_id = submission_record_s_id AND author_set_s_author_id = s_author_id AND submission_record.data_set = '${PLACEHOLDER_DATA_SET}') AS `tmp`",
+          customized: true,
+        }
+      ],
+      filters: [
+        {
+          field: 's_track_name',
+          comparator: '=',
+          value: 'Full Papers'
+        }
+      ],
+      joiners: [],
+      groupers: [
+        {
+          field: "s_author_name"
+        }
+      ],
+      sorters: [
+        {
+          field: 'paper_count',
+          order: 'DESC',
+        },
+        {
+          field: 's_author_name',
+          order: 'ASC',
+        }
+      ],
+      extraData: {
+        type: 'category',
+        dataSetLabel: 'Paper Counts',
+        fieldsShownInToolTips: [],
+        xAxisFieldName: 's_author_name',
+        yAxisFieldName: 'paper_count',
+        numOfResultToDisplay: 10,
+        isColorfulBar: true,
+      }
+    }
+  },
   "submission_acceptance_rate_rank_paper_author": {
     name: "Submission Acceptance Rate Rank Paper Author",
     group: 'Submission Record',
@@ -802,6 +860,77 @@ export default {
       sorters: [],
       extraData: {
         types: ['min', 'max', 'avg', 'median'],
+      }
+    }
+  },
+  "submission_rank_author_in_full_papers": {
+    name: "Submission Rank Author in Full Papers",
+    group: 'Author Record + Submission Record',
+    data: {
+      type: 'bar_chart',
+      title: 'Submission Rank Author in Full Papers',
+      dataSet: '${PLACEHOLDER_DATA_SET}',
+      selections: [
+        {
+          expression: 'COUNT(*)',
+          rename: 'submission_count'
+        },
+        {
+          expression: "CONCAT(a_first_name, ' ', a_last_name)",
+          rename: 'author_name'
+        },
+        {
+          expression: "a_email",
+          rename: 'author_email'
+        }
+      ],
+      involvedRecords: [
+        {
+          name: 'author_record',
+          customized: false,
+        },
+        {
+          name: 'submission_record',
+          customized: false,
+        }
+      ],
+      filters: [{
+        field: 's_track_name',
+        comparator: '=',
+        value: 'Full Papers',
+      }],
+      joiners: [{
+        left: 'a_submission_id',
+        right: 's_submission_id',
+      }],
+      groupers: [
+        {
+          field: "a_email"
+        },
+        {
+          field: "a_first_name"
+        },
+        {
+          field: "a_last_name"
+        }
+      ],
+      sorters: [
+        {
+          field: 'submission_count',
+          order: 'DESC',
+        },
+        {
+          field: 'a_email',
+          order: 'ASC',
+        }
+      ],
+      extraData: {
+        dataSetLabel: 'Submission Counts',
+        fieldsShownInToolTips: [{label: 'Email', field: 'author_email'}],
+        xAxisFieldName: 'author_name',
+        yAxisFieldName: 'submission_count',
+        numOfResultToDisplay: 10,
+        isColorfulBar: true,
       }
     }
   },
