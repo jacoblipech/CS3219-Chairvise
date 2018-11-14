@@ -29,6 +29,78 @@ export default {
       }
     }
   },
+  "word_cloud_keywords_accpted_submission": {
+    name: "Word Cloud for Accepted Submissions Keywords",
+    group: 'Submission Record',
+    data: {
+      type: 'word_cloud',
+      title: 'Word Cloud for Accepted Submissions Keywords',
+      dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'This word cloud shows a list of key words found under the abstract section for all the accpted papers.',
+      selections: [
+        {
+          expression: 's_keywords',
+          rename: 's_keywords'
+        }
+      ],
+      involvedRecords: [
+        {
+          name: 'submission_record',
+          customized: false,
+        }
+      ],
+      filters: [
+        {
+          field: 's_is_accepted',
+          comparator: '=',
+          value: 'accept'
+        }
+      ],
+      joiners: [],
+      groupers: [],
+      sorters: [],
+      extraData: {
+        delimiters: ['\\r', '\\n'],
+        ignoreWords: [],
+      }
+    }
+  },
+  "word_cloud_keywords_submission_in_full_papers": {
+    name: "Word Cloud for All Full Papers Submissions Keywords",
+    group: 'Submission Record',
+    data: {
+      type: 'word_cloud',
+      title: 'Word Cloud for All Full Papers Submissions Keywords',
+      dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'This word cloud shows a list of key words found under the abstract section for all the submitted papers in Full Papers Track.',
+      selections: [
+        {
+          expression: 's_keywords',
+          rename: 's_keywords'
+        }
+      ],
+      involvedRecords: [
+        {
+          name: 'submission_record',
+          customized: false,
+        }
+      ],
+      filters: [
+        {
+          field: 's_track_name',
+          comparator: '=',
+          value: 'Full Papers'
+        }
+      ],
+      joiners: [],
+      groupers: [],
+      sorters: [],
+      extraData: {
+        delimiters: ['\\r', '\\n'],
+        ignoreWords: [],
+      }
+    }
+  },
   "word_cloud_keywords_reviewer_comment": {
     name: "Word Cloud for Reviewer Comment",
     group: 'Review Record',
