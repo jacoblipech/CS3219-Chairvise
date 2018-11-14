@@ -90,7 +90,7 @@
             case 'avg':
               this.tableData.push({
                 type: 'Average',
-                value: mean(data),
+                value: mean(data).toFixed(2),
               });
               break;
             case 'median':
@@ -102,7 +102,7 @@
             case 'std':
               this.tableData.push({
                 type: 'Standard Deviation',
-                value: standardDeviation(data),
+                value: standardDeviation(data).toFixed(2),
               });
               break;
           }

@@ -624,8 +624,8 @@ export default {
       description: 'This table shows the reviewer expertise level statistics based on the minimum, maximum value, the average, median score and the standard deviation of the weighted evaluation scores. This gives us an insight on how specialized the reviewers are in their review.',
       selections: [
         {
-          expression: 'r_expertise_level',
-          rename: 'r_expertise_level'
+          expression: 'ROUND(AVG(r_expertise_level), 2)',
+          rename: 'avg_expertise_level'
         },
       ],
       involvedRecords: [
@@ -636,7 +636,9 @@ export default {
       ],
       filters: [],
       joiners: [],
-      groupers: [],
+      groupers: [{
+        field: 'r_submission_id'
+      }],
       sorters: [],
       extraData: {
         types: ['min', 'max', 'avg', 'median', 'std'],
@@ -653,8 +655,8 @@ export default {
       description: 'This table shows the reviewer confidence level statistics based on the minimum, maximum value, the average, median score and the standard deviation of the weighted evaluation scores. This gives us an insight on how confident the reviewers are in their review.',
       selections: [
         {
-          expression: 'r_confidence_level',
-          rename: 'r_confidence_level'
+          expression: 'ROUND(AVG(r_confidence_level), 2)',
+          rename: 'avg_confidence_level'
         },
       ],
       involvedRecords: [
@@ -665,7 +667,11 @@ export default {
       ],
       filters: [],
       joiners: [],
-      groupers: [],
+      groupers: [
+        {
+          field: 'r_submission_id'
+        }
+      ],
       sorters: [],
       extraData: {
         types: ['min', 'max', 'avg', 'median', 'std'],
