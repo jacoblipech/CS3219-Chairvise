@@ -24,6 +24,11 @@ export function download(presentationFormName) {
 function getDescription() {
   return html2canvas(document.getElementById("presentation-description")).then(element => {
     let imageData = element.toDataURL("image/png");
+    if (imageData === "data:,") {
+      // according to documentation of toDataURL, if the canvas is of 0 width, 0 height,
+      // the function will return string "data:,". If the canvas is empty, directly return
+      return;
+    }
     let descriptionHeight = element.height * PDF_CHART_WIDTH / element.width;
     doc.addImage(imageData, "PNG", PDF_CHART_MARGIN_LEFT, DESCRIPTION_MARGIN_TOP, PDF_CHART_WIDTH, descriptionHeight, "", "FAST");
   });
