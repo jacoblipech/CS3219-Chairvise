@@ -114,9 +114,9 @@ public class AnalysisLogic {
 
     String wrapValue(String fieldName, String val) {
         Class fieldType = DATABASE_FIELD_NAME_TO_TYPE_MAP.get(fieldName);
-        if (fieldType.equals(Integer.class) || fieldType.equals(int.class)
-                || fieldType.equals(Double.class) || fieldType.equals(double.class)
-                || fieldType.equals(Boolean.class) || fieldType.equals(boolean.class)) {
+        if (Integer.class.equals(fieldType) || int.class.equals(fieldType)
+                || Double.class.equals(fieldType) || double.class.equals(fieldType)
+                || Boolean.class.equals(fieldType) || boolean.class.equals(fieldType)) {
             return val;
         }
         return String.format("'%s'", val);
