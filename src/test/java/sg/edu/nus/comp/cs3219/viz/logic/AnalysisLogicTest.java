@@ -386,10 +386,4 @@ public class AnalysisLogicTest extends BaseTestWithDBAccess {
         Assert.assertEquals("'NUS'", analysisLogic.wrapValue("a_organisation", "NUS"));
         Assert.assertEquals("'NUS'", analysisLogic.wrapValue("unknown", "NUS"));
     }
-
-    @Test(expected = NullPointerException.class)
-    public void testWrapValue_unknownFieldName_shouldThrowException() {
-        analysisLogic.wrapValue("unknown_name", "true");
-    }
-
 }
