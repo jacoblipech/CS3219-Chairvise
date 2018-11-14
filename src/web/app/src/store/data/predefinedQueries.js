@@ -244,15 +244,15 @@ export default {
       description: 'This bar chart shows the percentage of acceptance rate of each author\'s papers in descending order. This tells us which authors has higher acceptance rate than other authors. We have split the authors field in each submission into individual authors and calculate the acceptance rate for each author.',
       selections: [
         {
-          expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)",
+          expression: "accepted",
           rename: 'accepted'
         },
         {
-          expression: "COUNT(*)",
+          expression: "submitted",
           rename: 'submitted'
         },
         {
-          expression: "ROUND(SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)/COUNT(*), 2)",
+          expression: "acceptance_rate",
           rename: 'acceptance_rate'
         },
         {
@@ -262,18 +262,19 @@ export default {
       ],
       involvedRecords: [
         {
-          name: "(SELECT s_author_name, s_is_accepted FROM submission_record, submission_record_author_set, submission_author_record " +
-            "WHERE s_id = submission_record_s_id AND author_set_s_author_id = s_author_id AND submission_record.data_set = '${PLACEHOLDER_DATA_SET}') AS `tmp`",
+          name: "(SELECT SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END) AS `accepted`, " +
+            "COUNT(*) AS `submitted`, " +
+            "ROUND(SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)/COUNT(*), 2) AS `acceptance_rate`, " +
+            "s_author_name FROM " +
+              "(SELECT s_author_name, s_is_accepted FROM submission_record, submission_record_author_set, submission_author_record " +
+              "WHERE s_id = submission_record_s_id AND author_set_s_author_id = s_author_id AND submission_record.data_set = '${PLACEHOLDER_DATA_SET}') AS `tmp1` " +
+            "GROUP BY s_author_name) AS `tmp2`",
           customized: true,
         }
       ],
       filters: [],
       joiners: [],
-      groupers: [
-        {
-          field: "s_author_name"
-        },
-      ],
+      groupers: [],
       sorters: [
         {
           field: 'acceptance_rate',
@@ -963,61 +964,49 @@ export default {
       description: 'By combining author and submission data, this bar chart shows the percentage of acceptance rate of each author\'s papers in descending order. This tells us which authors has higher acceptance rate than other authors.',
       selections: [
         {
-          expression: "ROUND(SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)/COUNT(*), 2)",
+          expression: "acceptance_rate",
           rename: 'acceptance_rate'
         },
         {
-          expression: "CONCAT(a_first_name, ' ', a_last_name)",
+          expression: "author_name",
           rename: 'author_name'
         },
         {
-          expression: "a_email",
+          expression: "author_email",
           rename: 'author_email'
         },
         {
-          expression: "COUNT(*)",
+          expression: "submitted",
           rename: 'submitted'
         },
         {
-          expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)",
+          expression: "accepted",
           rename: 'accepted'
         }
       ],
       involvedRecords: [
         {
-          name: 'author_record',
-          customized: false,
+          name: '(SELECT ROUND(SUM(CASE WHEN s_is_accepted = \'accept\' THEN 1 ELSE 0 END)/COUNT(*), 2) AS `acceptance_rate`,' +
+            'CONCAT(a_first_name, \' \', a_last_name) AS `author_name`,' +
+            'a_email AS `author_email`,' +
+            'COUNT(*) AS `submitted`,' +
+            'SUM(CASE WHEN s_is_accepted = \'accept\' THEN 1 ELSE 0 END) AS `accepted` ' +
+            'FROM author_record, submission_record WHERE ' +
+            "author_record.data_set = '${PLACEHOLDER_DATA_SET}' AND submission_record.data_set = '${PLACEHOLDER_DATA_SET}' " +
+            'AND a_submission_id = s_submission_id GROUP BY a_email, a_first_name, a_last_name) AS `tmp`',
+          customized: true,
         },
-        {
-          name: 'submission_record',
-          customized: false,
-        }
       ],
       filters: [],
-      joiners: [
-        {
-          left: "a_submission_id",
-          right: "s_submission_id",
-        }
-      ],
-      groupers: [
-        {
-          field: "a_email"
-        },
-        {
-          field: "a_first_name"
-        },
-        {
-          field: "a_last_name"
-        }
-      ],
+      joiners: [],
+      groupers: [],
       sorters: [
         {
           field: 'acceptance_rate',
           order: 'DESC',
         },
         {
-          field: 'a_email',
+          field: 'author_email',
           order: 'ASC',
         }
       ],
@@ -1145,7 +1134,7 @@ export default {
       description: 'By combining author and submission, this bar chart shows the percentage of acceptance rate of each organization\'s papers in descending order. This tells us which organizations has higher acceptance rate than other organizations.',
       selections: [
         {
-          expression: "ROUND(SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)/COUNT(*), 2)",
+          expression: "acceptance_rate",
           rename: 'acceptance_rate'
         },
         {
@@ -1153,36 +1142,27 @@ export default {
           rename: 'a_organisation'
         },
         {
-          expression: "COUNT(*)",
+          expression: "submitted",
           rename: 'submitted'
         },
         {
-          expression: "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)",
+          expression: "accepted",
           rename: 'accepted'
         }
       ],
       involvedRecords: [
         {
-          name: 'author_record',
-          customized: false,
+          name: "(SELECT ROUND(SUM(CASE WHEN s_is_accepted = \'accept\' THEN 1 ELSE 0 END)/COUNT(*), 2) AS `acceptance_rate`," +
+            "a_organisation, COUNT(*) AS `submitted`, SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END) AS `accepted` FROM " +
+            "author_record, submission_record WHERE " +
+            "author_record.data_set = '${PLACEHOLDER_DATA_SET}' AND submission_record.data_set = '${PLACEHOLDER_DATA_SET}' " +
+            "AND a_submission_id = s_submission_id GROUP BY a_organisation) AS `tmp`",
+          customized: true,
         },
-        {
-          name: 'submission_record',
-          customized: false,
-        }
       ],
       filters: [],
-      joiners: [
-        {
-          left: "a_submission_id",
-          right: "s_submission_id",
-        }
-      ],
-      groupers: [
-        {
-          field: "a_organisation"
-        }
-      ],
+      joiners: [],
+      groupers: [],
       sorters: [
         {
           field: 'acceptance_rate',

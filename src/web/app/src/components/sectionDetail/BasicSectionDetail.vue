@@ -48,7 +48,7 @@
         </el-form-item>
 
         <el-form-item label="Record Involved" prop="involvedRecords" v-if="isInAdvancedMode" key="involvedRecords">
-          <el-select v-model="editForm.involvedRecords" multiple placeholder="Please select" allow-create>
+          <el-select v-model="editForm.involvedRecords" multiple placeholder="Please select" filterable allow-create>
             <el-option
               v-for="option in involvedRecordsOptions"
               :key="option.value"
