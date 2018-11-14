@@ -89,6 +89,8 @@ public class AnalysisLogic {
 
         if (!dataSetFilter.isEmpty()) {
             baseSQL += String.format(" WHERE %s", dataSetFilter);
+        } else {
+            baseSQL += " WHERE true";
         }
 
         if (!joinersStr.isEmpty()) {

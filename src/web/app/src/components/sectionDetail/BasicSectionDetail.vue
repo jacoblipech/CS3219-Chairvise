@@ -95,7 +95,7 @@
         <el-form-item v-for="(filter, index) in editForm.filters" :label="'Filter ' + index"
                       :key="'f' + index"
                       :prop="'filters.' + index" :rules="editFormFiltersRule">
-          <el-select placeholder="Field" v-model="filter.field">
+          <el-select placeholder="Field" v-model="filter.field" filterable allow-create>
             <el-option-group
               v-for="group in filtersFieldOptions"
               :key="group.label"

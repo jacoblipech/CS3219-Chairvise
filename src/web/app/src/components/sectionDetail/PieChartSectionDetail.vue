@@ -104,7 +104,13 @@
         // process options
         this.options = {
           legend: {
-            display: true
+            display: true,
+            position: 'bottom'
+          },
+          layout: {
+            padding: {
+              top: 15,
+            }
           },
           responsive: true,
           maintainAspectRatio: false,
