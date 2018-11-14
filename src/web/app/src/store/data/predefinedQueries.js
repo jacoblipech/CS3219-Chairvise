@@ -2340,34 +2340,38 @@ export default {
           expression: "duration_get_reviewed",
           rename: 'duration_get_reviewed'
         },
+        {
+          expression: "IF(duration_get_reviewed = 21, '>21', duration_get_reviewed)",
+          rename: 'duration_get_reviewed_group'
+        },
       ],
       involvedRecords: [
         {
-          name: "(SELECT IF(DATEDIFF(MIN(r_review_submission_time), s_submission_time) < 21, CONVERT(DATEDIFF(MIN(r_review_submission_time), s_submission_time), char), '>=21')  AS `duration_get_reviewed` " +
+          name: "(SELECT IF(DATEDIFF(MIN(r_review_submission_time), s_submission_time) < 21, DATEDIFF(MIN(r_review_submission_time), s_submission_time), 21)  AS `duration_get_reviewed` " +
             "FROM review_record, submission_record WHERE review_record.data_set = '${PLACEHOLDER_DATA_SET}' AND submission_record.data_set = '${PLACEHOLDER_DATA_SET}' " +
             "AND review_record.r_submission_id = submission_record.s_submission_id GROUP BY r_submission_id, s_submission_time " +
-            "UNION ALL SELECT '0'" +
-            "UNION ALL SELECT '1'" +
-            "UNION ALL SELECT '2'" +
-            "UNION ALL SELECT '3'" +
-            "UNION ALL SELECT '4'" +
-            "UNION ALL SELECT '5'" +
-            "UNION ALL SELECT '6'" +
-            "UNION ALL SELECT '7'" +
-            "UNION ALL SELECT '8'" +
-            "UNION ALL SELECT '9'" +
-            "UNION ALL SELECT '10'" +
-            "UNION ALL SELECT '11'" +
-            "UNION ALL SELECT '12'" +
-            "UNION ALL SELECT '13'" +
-            "UNION ALL SELECT '14'" +
-            "UNION ALL SELECT '15'" +
-            "UNION ALL SELECT '16'" +
-            "UNION ALL SELECT '17'" +
-            "UNION ALL SELECT '18'" +
-            "UNION ALL SELECT '19'" +
-            "UNION ALL SELECT '20'" +
-            "UNION ALL SELECT '>=21') AS `tmp`",
+            "UNION ALL SELECT 0 " +
+            "UNION ALL SELECT 1 " +
+            "UNION ALL SELECT 2 " +
+            "UNION ALL SELECT 3 " +
+            "UNION ALL SELECT 4 " +
+            "UNION ALL SELECT 5 " +
+            "UNION ALL SELECT 6 " +
+            "UNION ALL SELECT 7 " +
+            "UNION ALL SELECT 8 " +
+            "UNION ALL SELECT 9 " +
+            "UNION ALL SELECT 10 " +
+            "UNION ALL SELECT 11 " +
+            "UNION ALL SELECT 12 " +
+            "UNION ALL SELECT 13 " +
+            "UNION ALL SELECT 14 " +
+            "UNION ALL SELECT 15 " +
+            "UNION ALL SELECT 16 " +
+            "UNION ALL SELECT 17 " +
+            "UNION ALL SELECT 18 " +
+            "UNION ALL SELECT 19 " +
+            "UNION ALL SELECT 20 " +
+            "UNION ALL SELECT 21) AS `tmp`",
           customized: true,
         }
       ],
@@ -2385,7 +2389,7 @@ export default {
       extraData: {
         dataSetLabel: 'Num of Submission',
         fieldsShownInToolTips: [],
-        xAxisFieldName: 'duration_get_reviewed',
+        xAxisFieldName: 'duration_get_reviewed_group',
         yAxisFieldName: 'num_of_submission',
         numOfResultToDisplay: 50,
         isColorfulBar: false,
