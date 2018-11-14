@@ -986,11 +986,11 @@ export default {
       ],
       involvedRecords: [
         {
-          name: '(SELECT ROUND(SUM(CASE WHEN s_is_accepted = \'accept\' THEN 1 ELSE 0 END)/COUNT(*), 2) AS `acceptance_rate`,' +
-            'CONCAT(a_first_name, \' \', a_last_name) AS `author_name`,' +
+          name: "(SELECT ROUND(SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)/COUNT(*), 2) AS `acceptance_rate`," +
+            "CONCAT(a_first_name, ' ', a_last_name) AS `author_name`," +
             'a_email AS `author_email`,' +
             'COUNT(*) AS `submitted`,' +
-            'SUM(CASE WHEN s_is_accepted = \'accept\' THEN 1 ELSE 0 END) AS `accepted` ' +
+            "SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END) AS `accepted` " +
             'FROM author_record, submission_record WHERE ' +
             "author_record.data_set = '${PLACEHOLDER_DATA_SET}' AND submission_record.data_set = '${PLACEHOLDER_DATA_SET}' " +
             'AND a_submission_id = s_submission_id GROUP BY a_email, a_first_name, a_last_name) AS `tmp`',
@@ -1030,6 +1030,92 @@ export default {
         yAxisFieldName: 'acceptance_rate',
         numOfResultToDisplay: 10,
         isColorfulBar: true,
+      }
+    }
+  },
+  "submission_acceptance_rate_author_distribution": {
+    name: "Submission Acceptance Rate Author Distribution",
+    group: 'Author Record + Submission Record',
+    data: {
+      type: 'bar_chart',
+      title: 'Submission Acceptance Rate Author Distribution',
+      dataSet: '${PLACEHOLDER_DATA_SET}',
+      description: 'By combining author and submission data, this bar chart shows the distribution of acceptance rate for all authors. This tells us the capability of researchers who choose to submit in the conference.',
+      selections: [
+        {
+          expression: "COUNT(*) - 1",
+          rename: 'number_of_author'
+        },
+        {
+          expression: "acceptance_rate_interval",
+          rename: 'acceptance_rate_interval'
+        },
+      ],
+      involvedRecords: [
+        {
+          name: "(SELECT CASE \n" +
+            "  WHEN acceptance_rate <= 0.1 THEN 1\n" +
+            "  WHEN acceptance_rate <= 0.2 THEN 2\n" +
+            "  WHEN acceptance_rate <= 0.3 THEN 3\n" +
+            "  WHEN acceptance_rate <= 0.4 THEN 4\n" +
+            "  WHEN acceptance_rate <= 0.5 THEN 5\n" +
+            "  WHEN acceptance_rate <= 0.6 THEN 6\n" +
+            "  WHEN acceptance_rate <= 0.7 THEN 7\n" +
+            "  WHEN acceptance_rate <= 0.8 THEN 8\n" +
+            "  WHEN acceptance_rate <= 0.9 THEN 9\n" +
+            "  WHEN acceptance_rate <= 1.0 THEN 10\n" +
+            "END AS `acceptance_rate_interval_sort`, CASE " +
+            "  WHEN acceptance_rate <= 0.1 THEN '0.0 ~ 0.1'\n" +
+            "  WHEN acceptance_rate <= 0.2 THEN '0.1 ~ 0.2'\n" +
+            "  WHEN acceptance_rate <= 0.3 THEN '0.2 ~ 0.3'\n" +
+            "  WHEN acceptance_rate <= 0.4 THEN '0.3 ~ 0.4'\n" +
+            "  WHEN acceptance_rate <= 0.5 THEN '0.4 ~ 0.5'\n" +
+            "  WHEN acceptance_rate <= 0.6 THEN '0.5 ~ 0.6'\n" +
+            "  WHEN acceptance_rate <= 0.7 THEN '0.6 ~ 0.7'\n" +
+            "  WHEN acceptance_rate <= 0.8 THEN '0.7 ~ 0.8'\n" +
+            "  WHEN acceptance_rate <= 0.9 THEN '0.8 ~ 0.9'\n" +
+            "  WHEN acceptance_rate <= 1.0 THEN '0.9 ~ 1.0'\n" +
+            "END AS `acceptance_rate_interval` FROM " +
+            "(SELECT ROUND(SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)/COUNT(*), 2) AS `acceptance_rate`" +
+            'FROM author_record, submission_record WHERE ' +
+            "author_record.data_set = '${PLACEHOLDER_DATA_SET}' AND submission_record.data_set = '${PLACEHOLDER_DATA_SET}' " +
+            'AND a_submission_id = s_submission_id GROUP BY a_email, a_first_name, a_last_name ' +
+            'UNION ALL SELECT 0.1 ' +
+            'UNION ALL SELECT 0.2 ' +
+            'UNION ALL SELECT 0.3 ' +
+            'UNION ALL SELECT 0.4 ' +
+            'UNION ALL SELECT 0.5 ' +
+            'UNION ALL SELECT 0.6 ' +
+            'UNION ALL SELECT 0.7 ' +
+            'UNION ALL SELECT 0.8 ' +
+            'UNION ALL SELECT 0.9 ' +
+            'UNION ALL SELECT 1.0) AS `tmp1` ) AS `tmp2`',
+          customized: true,
+        },
+      ],
+      filters: [],
+      joiners: [],
+      groupers: [
+        {
+          field: 'acceptance_rate_interval'
+        },
+        {
+          field: 'acceptance_rate_interval_sort'
+        }
+      ],
+      sorters: [
+        {
+          field: 'acceptance_rate_interval_sort',
+          order: 'ASC',
+        }
+      ],
+      extraData: {
+        dataSetLabel: 'Number of Author',
+        fieldsShownInToolTips: [],
+        xAxisFieldName: 'acceptance_rate_interval',
+        yAxisFieldName: 'number_of_author',
+        numOfResultToDisplay: 20,
+        isColorfulBar: false,
       }
     }
   },
@@ -1152,7 +1238,7 @@ export default {
       ],
       involvedRecords: [
         {
-          name: "(SELECT ROUND(SUM(CASE WHEN s_is_accepted = \'accept\' THEN 1 ELSE 0 END)/COUNT(*), 2) AS `acceptance_rate`," +
+          name: "(SELECT ROUND(SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END)/COUNT(*), 2) AS `acceptance_rate`," +
             "a_organisation, COUNT(*) AS `submitted`, SUM(CASE WHEN s_is_accepted = 'accept' THEN 1 ELSE 0 END) AS `accepted` FROM " +
             "author_record, submission_record WHERE " +
             "author_record.data_set = '${PLACEHOLDER_DATA_SET}' AND submission_record.data_set = '${PLACEHOLDER_DATA_SET}' " +
