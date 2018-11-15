@@ -5,6 +5,8 @@ This project is a tool to analyze paper submission information for conferences. 
 
 Production Website at: [https://viz-group1.appspot.com/web/home](https://viz-group1.appspot.com/web/home)
 
+Slides used during DEMO session: https://docs.google.com/presentation/d/1kfkScby_ytpa1Dt2pFpVRB06yhOHD4JYeImYiQimEl0/edit?usp=sharing
+
 [Project_Report_A0147978E_A0155563B_A0147995H_A0156105N.pdf](./Project_Report_A0147978E_A0155563B_A0147995H_A0156105N.pdf)
 
 ##### Technology stack
